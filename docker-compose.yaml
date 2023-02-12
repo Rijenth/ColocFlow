@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  Vue:
+    container_name: Vue
+    image: node:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 5174:5174
