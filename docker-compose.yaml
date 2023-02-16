@@ -11,3 +11,49 @@ services:
       - ./frontend:/app
     ports:
       - 5174:5174
+
+  php:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: php
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./backend:/var/www
+    networks:
+      - colocflow
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: laravel
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    networks:
+      - colocflow
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./backend:/var/www
+      - ./backend/nginx:/etc/nginx/conf.d
+    networks:
+      - colocflow
+    depends_on:
+      - php
+
+
+networks:
+  colocflow:
+    driver: bridge
