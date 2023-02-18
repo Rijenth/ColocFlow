@@ -45,4 +45,85 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    // this application is an api, all errors are returned in json format
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Throwable $exception
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function render($request, Throwable $exception)
+    {
+
+        if ($exception instanceof \Illuminate\Validation\ValidationException) {
+            return response()->json([
+                'status' => 422,
+                'detail' => "One or more fields are invalid",
+                'errors' => $exception->errors()
+            ], 422);
+        }
+
+        if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
+            return response()->json([
+                "status" => 401,
+                "detail" => "Unauthenticated",
+            ], 401);
+        }
+
+        if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
+            return response()->json([
+                "status" => 403,
+                "detail" => "Forbidden",
+            ], 403);
+        }
+
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            return response()->json([
+                "status" => 404,
+                "detail" => "Not Found",
+                'error' => $exception->getMessage()
+            ], 404);
+        }
+
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            return response()->json([
+                "status" => 404,
+                "detail" => "Not Found",
+                'error' => $exception->getMessage()
+            ], 404);
+        }
+
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+            return response()->json([
+                "status" => 405,
+                "detail" => "Method Not Allowed",
+                'error' => $exception->getMessage()
+            ], 405);
+        }
+
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException) {
+            return response()->json([
+                "status" => 429,
+                "detail" => "Too Many Requests",
+                'error' => $exception->getMessage()
+            ], 429);
+        }
+
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+            return response()->json([
+                "status" => $exception->getStatusCode(),
+                "detail" => $exception->getMessage(),
+                'error' => $exception->getMessage()
+            ], $exception->getStatusCode());
+        }
+
+        return response()->json([
+            "status" => 500,
+            "detail" => "Internal Server Error",
+            'error' => $exception->getMessage()
+        ], 500);
+    }
 }
