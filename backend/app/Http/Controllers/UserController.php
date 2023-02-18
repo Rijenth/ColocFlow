@@ -21,9 +21,6 @@ class UserController extends Controller
             'lastname' => $data['data']['attributes']['lastname'],
         ]);
 
-        $accessToken = $user->createToken('authToken')->accessToken;
-
-        return new UserResource($user, $accessToken);
-
+        return new UserResource($user);
     }
 }

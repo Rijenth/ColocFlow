@@ -17,13 +17,18 @@ const router = createRouter({
     {
       path: "/welcome",
       name: "welcome",
-      component: () => import("../views/WelcomePage.vue"),
+      component: () => import("../views/WelcomePageView.vue"),
     },
     {
       path: "/dashboard",
       name: "dashboard",
       component: () => import("../views/DashboardView.vue"),
     },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "not-found",
+      component: () => import("../views/NotFoundView.vue"),
+    }
   ],
 });
 

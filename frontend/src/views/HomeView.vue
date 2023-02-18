@@ -1,6 +1,4 @@
 <template>
-  <!--   <LoginForm />
-  <RegisterForm /> -->
   <component
     @updateComponent="updateSelectedComponent"
     :is="selectedComponent"
