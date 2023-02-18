@@ -43,19 +43,27 @@
 </template>
 
 <script lang="ts">
-import RedirectButton from "./RedirectButton.vue";
+  import RedirectButton from "./RedirectButton.vue";
 
-export default {
-  name: "RegisterForm",
+  interface User {
+    username: string;
+    password: string;
+    lastName: string;
+    firstName: string;
+  }
 
-  components: {
-    RedirectButton,
-  },
+  export default {
+    name: "RegisterForm",
 
-  methods: {
-    updateSelectedComponent() {
-      this.$emit("updateComponent", "LoginForm");
+    components: {
+      RedirectButton,
     },
-  },
-};
+    
+
+    methods: {
+      updateSelectedComponent() {
+        this.$emit("updateComponent", "LoginForm");
+      },
+    },
+  };
 </script>
