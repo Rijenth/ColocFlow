@@ -1,69 +1,154 @@
 <template>
-  <div class="flex h-screen items-center justify-center">
-    <div class="w-80 p-4 bg-gray-900 text-white rounded-lg shadow-xl">
-      <h2 class="text-lg font-bold mb-2">Formulaire d'inscription</h2>
-      <p class="text-s mb-4">
+  <div class='flex h-screen items-center justify-center'>
+    <div class='w-80 p-4 bg-gray-900 text-white rounded-lg shadow-xl'>
+      <h2 class='text-lg font-bold mb-2'>Formulaire d'inscription</h2>
+      <p class='text-s mb-4'>
         Pour vous inscrire, nous allons avoir besoin des informations suivantes
       </p>
+      <form method='post' @submit.prevent='registerUser'>
+        <input
+          class='input-field input-register'
+          type='text'
+          placeholder='Nom de famille'
+          v-model='user.lastname'
+          @keydown.space.prevent
+        />
 
-      <input
-        class="border-2 rounded border-gray-300 w-full p-2 mb-4"
-        type="text"
-        placeholder="Nom de famille"
-      />
+        <input
+          class='input-field input-register'
+          type='text'
+          placeholder='Prénom'
+          v-model='user.firstname'
+          @keydown.space.prevent
+        />
 
-      <input
-        class="border-2 rounded border-gray-300 w-full p-2 mb-4"
-        type="text"
-        placeholder="Prénom"
-      />
+        <input
+          class='input-field input-register'
+          type='text'
+          placeholder="Nom d'utilisateur"
+          v-model='user.username'
+          @keydown.space.prevent
+        />
 
-      <input
-        class="border-2 rounded border-gray-300 w-full p-2 mb-4"
-        type="text"
-        placeholder="Nom d'utilisateur"
-      />
+        <input
+          class='input-field input-register'
+          type='password'
+          placeholder='Mot de passe'
+          v-model='user.password'
+          @keydown.space.prevent
+        />
 
-      <input
-        class="border-2 rounded border-gray-300 w-full p-2 mb-4"
-        type="password"
-        placeholder="Mot de passe"
-      />
+        <input
+          class='input-field input-register'
+          type='password'
+          placeholder='Confirmer votre mot de passe'
+          v-model='confirmPassword'
+          @keydown.space.prevent
+        />
 
-      <input
-        class="border-2 rounded border-gray-300 w-full p-2 mb-4"
-        type="password"
-        placeholder="Confirmer votre mot de passe"
-      />
-
-      <RedirectButton text="Inscription" />
-      <RedirectButton @click="updateSelectedComponent" text="Retour" />
+        <RedirectButton text='Inscription' />
+        <RedirectButton @click='updateSelectedComponent' text='Retour' />
+      </form>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-  import RedirectButton from "./RedirectButton.vue";
+<script lang='ts'>
+  import RedirectButton from './RedirectButton.vue';
+  import { useSwal } from '@/composables/useSwal';
+  import axios from 'axios';
 
+  const { flash } = useSwal();
+  
   interface User {
     username: string;
     password: string;
-    lastName: string;
-    firstName: string;
+    lastname: string;
+    firstname: string;
   }
 
   export default {
-    name: "RegisterForm",
+    name: 'RegisterForm',
 
     components: {
       RedirectButton,
     },
-    
 
+    data: () => ({
+      user: {
+        username: '',
+        password: '',
+        lastname: '',
+        firstname: '',
+      } as User,
+      confirmPassword: '',
+    }),
+    
     methods: {
       updateSelectedComponent() {
-        this.$emit("updateComponent", "LoginForm");
+        this.$emit('updateComponent', 'LoginForm');
       },
+      async registerUser() {
+        if (! this.fieldsAreEmpty) {
+          flash('Erreur !', 'Erreur, tous les champs doivent être remplis', 'info')
+          return;
+        }
+
+        if (! this.userPasswordIsConfirmed) {
+          flash('Erreur !', 'Erreur, les mots de passe ne correspondent pas', 'error')
+          return;
+        }
+
+        const token = await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+
+        if (token.status === 204) {
+          const body = {
+            data: {
+              attributes: {
+                username: this.user.username,
+                password: this.user.password,
+                lastname: this.user.lastname,
+                firstname: this.user.firstname,
+              }
+            }
+          }
+
+          await axios.post('http://localhost:8000/register', JSON.stringify(body),  {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((response) => {
+              if (response.status === 201) {
+                flash('Succès !', 'Vous êtes maintenant inscrit !', 'success')
+                this.updateSelectedComponent();
+              }
+            })
+            .catch((error) => {
+              if (error.response.status === 422) {
+                flash('Erreur !', 'Ce nom d\'utilisateur est déjà utilisé', 'error')
+              } else {
+                flash('Erreur !', 'Une erreur est survenue, merci de contacter l\'administrateur', 'error')
+              }
+            });
+        }
+      }
+    },
+
+    computed: {
+      userPasswordIsConfirmed() {
+        return this.user.password === this.confirmPassword;
+      },
+      fieldsAreEmpty() {
+        return (
+          this.user.username !== '' &&
+          this.user.password !== '' &&
+          this.user.lastname !== '' &&
+          this.user.firstname !== ''
+        );
+      },
+      
     },
   };
 </script>

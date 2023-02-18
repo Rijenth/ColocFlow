@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
             ], 422);
         }
 
-        if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
+        if ($exception instanceof \Illuminate\Auth\AuthenticationException || $exception instanceof \Illuminate\Session\TokenMismatchException) {
             return response()->json([
                 "status" => 401,
                 "detail" => "Unauthenticated",
