@@ -61,69 +61,68 @@ class Handler extends ExceptionHandler
         if ($exception instanceof \Illuminate\Validation\ValidationException) {
             return response()->json([
                 'status' => 422,
-                'detail' => "One or more fields are invalid",
-                'errors' => $exception->errors()
+                'message' => 'One or more fields are invalid.',
+                'details' => $exception->errors()
             ], 422);
         }
 
         if ($exception instanceof \Illuminate\Auth\AuthenticationException || $exception instanceof \Illuminate\Session\TokenMismatchException) {
             return response()->json([
-                "status" => 401,
-                "detail" => "Unauthenticated",
+                'status' => 401,
+                'message' => 'You are not authorized to access this resource.',
             ], 401);
         }
 
         if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
             return response()->json([
-                "status" => 403,
-                "detail" => "Forbidden",
+                'status' => 403,
+                'message' => 'You are not authorized to access this resource.',
             ], 403);
         }
 
         if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
             return response()->json([
-                "status" => 404,
-                "detail" => "Not Found",
-                'error' => $exception->getMessage()
+                'status' => 404,
+                'message' => 'This resource does not exist.',
+                'details' => $exception->getMessage()
             ], 404);
         }
 
         if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
             return response()->json([
-                "status" => 404,
-                "detail" => "Not Found",
-                'error' => $exception->getMessage()
+                'status' => 404,
+                'message' => 'This resource does not exist.',
+                'details' => $exception->getMessage()
             ], 404);
         }
 
         if ($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
             return response()->json([
-                "status" => 405,
-                "detail" => "Method Not Allowed",
-                'error' => $exception->getMessage()
+                'status' => 405,
+                'message' => 'This method is not allowed.',
+                'details' => $exception->getMessage()
             ], 405);
         }
 
         if ($exception instanceof \Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException) {
             return response()->json([
-                "status" => 429,
-                "detail" => "Too Many Requests",
-                'error' => $exception->getMessage()
+                'status' => 429,
+                'message' => 'You have exceeded the rate limit.',
+                'details' => $exception->getMessage()
             ], 429);
         }
 
         if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
             return response()->json([
-                "status" => $exception->getStatusCode(),
-                "detail" => $exception->getMessage(),
-                'error' => $exception->getMessage()
+                'status' => $exception->getStatusCode(),
+                'message' => $exception->getMessage(),
             ], $exception->getStatusCode());
         }
 
         return response()->json([
-            "status" => 500,
-            "detail" => "Internal Server Error",
-            'error' => $exception->getMessage()
+            'status' => 500,
+            'message' => 'An internal server error has occurred.',
+            'details' => $exception->getMessage()
         ], 500);
     }
 }
