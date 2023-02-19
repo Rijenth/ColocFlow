@@ -56,7 +56,7 @@
 <script lang="ts">
 import RedirectButton from "./RedirectButton.vue";
 import { useSwal } from "@/composables/useSwal";
-import axios from "axios";
+import axios from "@/axios/axios";
 
 const { flash } = useSwal();
 
@@ -107,9 +107,7 @@ export default {
         return;
       }
 
-      const token = await axios.get(
-        "http://localhost:8000/sanctum/csrf-cookie"
-      );
+      const token = await axios.get("/sanctum/csrf-cookie");
 
       if (token.status === 204) {
         const body = {
@@ -124,8 +122,7 @@ export default {
         };
 
         await axios
-          .post("http://localhost:8000/register", JSON.stringify(body), {
-            withCredentials: true,
+          .post("/register", JSON.stringify(body), {
             headers: {
               "Content-Type": "application/json",
             },
@@ -139,13 +136,19 @@ export default {
           .catch((error) => {
             if (error.response.status === 422) {
               flash(
-                "Erreur !",
+                "Unprocessable entity",
                 "Ce nom d'utilisateur est déjà utilisé",
+                "error"
+              );
+            } else if (error.response.status === 401) {
+              flash(
+                "Unauthorized",
+                "Vous n'êtes pas autorisé à accéder à cette page",
                 "error"
               );
             } else {
               flash(
-                "Erreur !",
+                "Internal server error",
                 "Une erreur est survenue, merci de contacter l'administrateur",
                 "error"
               );
