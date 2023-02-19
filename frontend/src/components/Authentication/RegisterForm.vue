@@ -7,7 +7,7 @@
       </p>
       <form method="post" @submit.prevent="registerUser">
         <input
-          class="input-field input-register"
+          class="input-field input-auth"
           type="text"
           placeholder="Nom de famille"
           v-model="user.lastname"
@@ -15,7 +15,7 @@
         />
 
         <input
-          class="input-field input-register"
+          class="input-field input-auth"
           type="text"
           placeholder="Prénom"
           v-model="user.firstname"
@@ -23,7 +23,7 @@
         />
 
         <input
-          class="input-field input-register"
+          class="input-field input-auth"
           type="text"
           placeholder="Nom d'utilisateur"
           v-model="user.username"
@@ -31,7 +31,7 @@
         />
 
         <input
-          class="input-field input-register"
+          class="input-field input-auth"
           type="password"
           placeholder="Mot de passe"
           v-model="user.password"
@@ -39,7 +39,7 @@
         />
 
         <input
-          class="input-field input-register"
+          class="input-field input-auth"
           type="password"
           placeholder="Confirmer votre mot de passe"
           v-model="confirmPassword"
@@ -93,7 +93,7 @@ export default {
         flash(
           "Erreur !",
           "Erreur, tous les champs doivent être remplis",
-          "info"
+          "warning"
         );
         return;
       }
@@ -102,7 +102,7 @@ export default {
         flash(
           "Erreur !",
           "Erreur, les mots de passe ne correspondent pas",
-          "error"
+          "warning"
         );
         return;
       }

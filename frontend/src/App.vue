@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+import { useLogout } from "../src/composables/useLogout";
+
+const { logout } = useLogout();
 </script>
 
 <template>
@@ -11,19 +14,25 @@ import { RouterLink, RouterView } from "vue-router";
         </li>
         <li class="flex">
           <RouterLink
-            class="px-3 py-2 text-white hover:bg-gray-800 rounded mr-3"
+            class="p-2 text-white hover:bg-gray-800 rounded mr-1"
             to="/"
-            >Home</RouterLink
+            >Accueil</RouterLink
           >
           <RouterLink
-            class="px-3 py-2 text-white hover:bg-gray-800 rounded mr-3"
+            class="p-2 text-white hover:bg-gray-800 rounded mr-1"
             to="/dashboard"
             >Dashboard</RouterLink
           >
           <RouterLink
-            class="px-3 py-2 text-white hover:bg-gray-800 rounded"
+            class="p-2 text-white hover:bg-gray-800 rounded mr-1"
             to="/about"
-            >About</RouterLink
+            >À propos</RouterLink
+          >
+          <RouterLink
+            class="p-2 text-white hover:bg-gray-800 rounded mr-1"
+            @click.prevent="logout"
+            to="/"
+            >Deconnexion</RouterLink
           >
         </li>
       </ul>
@@ -32,5 +41,3 @@ import { RouterLink, RouterView } from "vue-router";
 
   <RouterView />
 </template>
-
-<style></style>

@@ -6,6 +6,6 @@
   @apply text-black;
 }
 
-.input-register {
+.input-auth {
   @apply border-2 rounded border-gray-300 w-full p-2 mb-4;
 }
