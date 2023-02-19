@@ -69,7 +69,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof \Illuminate\Auth\AuthenticationException || $exception instanceof \Illuminate\Session\TokenMismatchException) {
             return response()->json([
                 'status' => 401,
-                'message' => 'You are not authorized to access this resource.',
+                'message' => 'Unauthenticated.',
             ], 401);
         }
 
@@ -80,15 +80,7 @@ class Handler extends ExceptionHandler
             ], 403);
         }
 
-        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'This resource does not exist.',
-                'details' => $exception->getMessage()
-            ], 404);
-        }
-
-        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException || $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
             return response()->json([
                 'status' => 404,
                 'message' => 'This resource does not exist.',
