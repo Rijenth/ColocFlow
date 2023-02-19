@@ -1,10 +1,3 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import { useLogout } from "../src/composables/useLogout";
-
-const { logout } = useLogout();
-</script>
-
 <template>
   <header class="bg-gray-900 p-3">
     <nav>
@@ -32,6 +25,7 @@ const { logout } = useLogout();
             class="p-2 text-white hover:bg-gray-800 rounded mr-1"
             @click.prevent="logout"
             to="/"
+            v-if="isAuthenticated"
             >Deconnexion</RouterLink
           >
         </li>
@@ -41,3 +35,34 @@ const { logout } = useLogout();
 
   <RouterView />
 </template>
+
+<script lang="ts">
+import { RouterLink, RouterView } from "vue-router";
+import { useLogout } from "../src/composables/useLogout";
+import { useAuthStore } from "../src/stores/useAuthStore";
+
+export default {
+  name: "App",
+
+  components: {
+    RouterLink,
+    RouterView,
+  },
+
+  setup() {
+    const { logout } = useLogout();
+    const authStore = useAuthStore();
+
+    return {
+      logout,
+      authStore,
+    };
+  },
+
+  computed: {
+    isAuthenticated() {
+      return this.authStore.isAuthenticated;
+    },
+  },
+};
+</script>
