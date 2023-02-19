@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-screen items-center justify-center">
-    <div class="flex h-3/5 p-4 bg-gray-900 text-white rounded-xl shadow-xl">
+    <div class="flex h-auto p-4 bg-gray-900 text-white rounded-xl shadow-xl">
       <CreateColoc />
       <JoinColoc />
     </div>
