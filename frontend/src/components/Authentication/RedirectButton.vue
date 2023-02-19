@@ -1,6 +1,6 @@
 <template>
   <button
-    class="bg-blue-600 mr-2 text-white p-2 px-3 rounded hover:bg-blue-400"
+    class="bg-blue-800 mr-2 text-white p-2 px-3 rounded hover:bg-blue-400"
     @click="redirect"
   >
     {{ text }}
