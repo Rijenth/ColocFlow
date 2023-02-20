@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserController;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,17 +28,12 @@ Route::get('/', function () {
 
 // Route qui necessite une authentification
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/logout', function (Request $request) {
-        Auth::guard('web')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return response()->noContent();
-    })->name('authentication.logout');
+    Route::post('/logout', [AuthenticationController::class, 'logout'])->name('authentication.logout');
 
     Route::get('/auth-user', function (Request $request) {
+        $user = User::find($request->user()->id);
         return response()->json([
-            'message' => 'You are logged in',
-            'user' => $request->user(),
+            'data' => new UserResource($user),
         ]);
     })->name('authentication.user');
 
@@ -45,24 +43,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::post('/register', [UserController::class, 'store'])->name('user.register');
 
-Route::post('/login', function(Request $request) {
-    $credentials = $request->validate([
-        'username' => ['required'],
-        'password' => ['required'],
-    ]);
-
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-
-        return response()->noContent();
-    }
-
-    return response()->json([
-        "status" => 401,
-        "detail" => "Unauthorized",
-        'message' => 'The provided credentials do not match our records.',
-    ], 401);
-
-})->name('login');
+Route::post('/login', [AuthenticationController::class, 'login'])->name('login');
 
 
