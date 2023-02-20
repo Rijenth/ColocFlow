@@ -57,7 +57,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-
         if ($exception instanceof \Illuminate\Validation\ValidationException) {
             return response()->json([
                 'status' => 422,
@@ -66,11 +65,18 @@ class Handler extends ExceptionHandler
             ], 422);
         }
 
-        if ($exception instanceof \Illuminate\Auth\AuthenticationException || $exception instanceof \Illuminate\Session\TokenMismatchException) {
+        if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
             return response()->json([
                 'status' => 401,
                 'message' => 'Unauthenticated.',
             ], 401);
+        }
+
+        if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+            return response()->json([
+                'status' => 419,
+                'message' => 'Your session has expired.',
+            ], 419);
         }
 
         if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {

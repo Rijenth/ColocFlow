@@ -86,7 +86,7 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          if (response.status === 204) {
+          if (response.status === 200) {
             this.authStore.login();
             this.$router.push("/welcome");
           }
