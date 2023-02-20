@@ -40,8 +40,8 @@ export default {
 
   data() {
     return {
-      username: "rijenth" as string,
-      password: "password" as string,
+      username: "" as string,
+      password: "" as string,
     };
   },
 
@@ -88,6 +88,8 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             this.authStore.login();
+            this.authStore.setToken(response.data.token);
+            this.authStore.setUser(response.data.user);
             this.$router.push("/welcome");
           }
         })
