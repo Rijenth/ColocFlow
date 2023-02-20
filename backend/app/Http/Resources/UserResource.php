@@ -14,14 +14,14 @@ class UserResource extends JsonResource
             'id' => $this->resource->getKey(),
             'attributes' => $this->resource->toArray(),
             'relationships' => [
-                $this->mergeWhen($this->resource->colocations->isNotEmpty(), [
-                    'colocations' => [
-                        'data' => $this->resource->colocations->map(fn ($colocation) => [
-                            'type' => "Colocation",
-                            'id' => $colocation->getKey(),
-                        ])
+                $this->mergeWhen($this->resource->colocation()->exists(), fn () => [
+                    'colocation' => [
+                        'data' => [
+                            'type' => 'Colocations',
+                            'id' => $this->resource->colocation->getKey(),
+                        ]
                     ]
-                ])
+                ]),
             ]
         ];
     }

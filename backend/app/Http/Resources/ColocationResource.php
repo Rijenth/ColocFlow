@@ -14,7 +14,7 @@ class ColocationResource extends JsonResource
             'id' => $this->resource->getKey(),
             'attributes' => $this->resource->toArray(),
             'relationships' => [
-                $this->mergeWhen($this->resource->user->exists(), [
+                $this->mergeWhen($this->resource->user()->exists(), fn () => [
                     'user' => [
                         'data' => [
                             'type' => "User",

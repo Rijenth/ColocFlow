@@ -47,8 +47,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function colocations()
+    public function colocation()
     {
-        return $this->hasMany(Colocation::class);
+        return $this->hasOne(Colocation::class);
     }
 }

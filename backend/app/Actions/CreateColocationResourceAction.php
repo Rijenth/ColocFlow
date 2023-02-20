@@ -15,7 +15,7 @@ class CreateColocationResourceAction
     {
         $user = User::find(auth()->user()->id);
 
-        $colocation = $user->colocations()->make();
+        $colocation = $user->colocation()->make();
 
         $colocation = $this->updateColocationResourceAction->execute($colocation, $data);
 

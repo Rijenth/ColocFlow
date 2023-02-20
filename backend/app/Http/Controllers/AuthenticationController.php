@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,15 +22,8 @@ class AuthenticationController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            // il faut utiliser ce token en front pour authentifier les appels API
-            // le token est détruit à la déconnexion
-
-            // stocker le user en front
-            // stocker le token en front
-            // afficher les infos de l'utilisateur connecté sur le composant accueil
-
             return response()->json([
-                'user' => $user,
+                'user' => new UserResource($user),
                 'token' => $token,
             ]);
         }

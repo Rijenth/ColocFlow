@@ -120,7 +120,8 @@ class Handler extends ExceptionHandler
         return response()->json([
             'status' => 500,
             'message' => 'An internal server error has occurred.',
-            'details' => $exception->getMessage()
+            'details' => $exception->getMessage(),
+            'trace' => $exception->getTrace()
         ], 500);
     }
 }
