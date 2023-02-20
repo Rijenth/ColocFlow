@@ -90,7 +90,12 @@ export default {
             this.authStore.login();
             this.authStore.setToken(response.data.token);
             this.authStore.setUser(response.data.user);
-            this.$router.push("/welcome");
+
+            if (this.authStore.getUser.relationships && this.authStore.getUser.relationships.colocation) {
+              this.$router.push("/dashboard");
+            } else {
+              this.$router.push("/welcome");
+            }
           }
         })
         .catch((error) => {
