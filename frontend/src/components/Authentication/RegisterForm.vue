@@ -1,55 +1,59 @@
 <template>
-  <div class="flex h-screen items-center justify-center">
-    <div class="w-80 p-4 bg-gray-900 text-white rounded-lg shadow-xl">
-      <h2 class="text-lg font-bold mb-2">Formulaire d'inscription</h2>
-      <p class="text-s mb-4">
-        Pour vous inscrire, nous allons avoir besoin des informations suivantes
-      </p>
-      <form method="post" @submit.prevent="registerUser">
-        <input
-          class="input-field input-auth"
-          type="text"
-          placeholder="Nom de famille"
-          v-model="user.lastname"
-          @keydown.space.prevent
-        />
+  <div
+    class="md:w-1/2 m-6 border p-4 bg-gray-900 text-white rounded-lg shadow-xl"
+  >
+    <h2 class="text-lg font-bold mb-2">Formulaire d'inscription</h2>
+    <p class="text-s mb-4">
+      Pour vous inscrire, nous allons avoir besoin des informations suivantes
+    </p>
+    <form method="post" @submit.prevent="registerUser">
+      <input
+        class="input-field input-auth"
+        type="text"
+        placeholder="Nom de famille"
+        v-model="user.lastname"
+        @keydown.space.prevent
+      />
 
-        <input
-          class="input-field input-auth"
-          type="text"
-          placeholder="Prénom"
-          v-model="user.firstname"
-          @keydown.space.prevent
-        />
+      <input
+        class="input-field input-auth"
+        type="text"
+        placeholder="Prénom"
+        v-model="user.firstname"
+        @keydown.space.prevent
+      />
 
-        <input
-          class="input-field input-auth"
-          type="text"
-          placeholder="Nom d'utilisateur"
-          v-model="user.username"
-          @keydown.space.prevent
-        />
+      <input
+        class="input-field input-auth"
+        type="text"
+        placeholder="Nom d'utilisateur"
+        v-model="user.username"
+        @keydown.space.prevent
+      />
 
-        <input
-          class="input-field input-auth"
-          type="password"
-          placeholder="Mot de passe"
-          v-model="user.password"
-          @keydown.space.prevent
-        />
+      <input
+        class="input-field input-auth"
+        type="password"
+        placeholder="Mot de passe"
+        v-model="user.password"
+        @keydown.space.prevent
+      />
 
-        <input
-          class="input-field input-auth"
-          type="password"
-          placeholder="Confirmer votre mot de passe"
-          v-model="confirmPassword"
-          @keydown.space.prevent
-        />
+      <input
+        class="input-field input-auth"
+        type="password"
+        placeholder="Confirmer votre mot de passe"
+        v-model="confirmPassword"
+        @keydown.space.prevent
+      />
 
-        <RedirectButton text="Inscription" />
-        <RedirectButton @click="updateSelectedComponent" text="Retour" />
-      </form>
-    </div>
+      <RedirectButton class="w-full" text="Inscription" />
+      <RedirectButton
+        class="mt-4 w-full"
+        @click="updateSelectedComponent"
+        text="Retour"
+      />
+    </form>
   </div>
 </template>
 

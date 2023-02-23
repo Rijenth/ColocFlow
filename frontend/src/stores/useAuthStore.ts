@@ -50,7 +50,7 @@ export const useAuthStore = defineStore("auth", {
     },
     getToken(): string {
       return this.token;
-    }
+    },
   },
 
   actions: {

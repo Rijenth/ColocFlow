@@ -1,8 +1,12 @@
 <template>
-  <div class="flex h-screen items-center justify-center">
-    <div class="flex h-auto p-4 bg-gray-900 text-white rounded-xl shadow-xl">
-      <CreateColoc />
+  <div
+    class="flex flex-col md:flex-row md:items-center p-4 bg-gray-900 text-white md:rounded-xl md:shadow-xl"
+  >
+    <div class="w-full border rounded md:border-none p-4 md:w-1/2">
       <JoinColoc />
+    </div>
+    <div class="w-full border rounded md:border-none p-4 mt-4 md:w-1/2">
+      <CreateColoc class="md:md:border-l-2" />
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-80 border-l-2">
+  <div class="w-80">
     <h2 class="text-lg font-bold mb-2 text-center">Rejoindre une colocation</h2>
     <div class="text-s m-4 ml-6 align-middle text-left">
       <p>

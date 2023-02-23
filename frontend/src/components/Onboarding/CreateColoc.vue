@@ -1,6 +1,6 @@
 <template>
   <div class="w-80">
-    <h2 class="text-lg font-bold mb-2 text-center underline-2 mb-4">
+    <h2 class="text-lg font-bold mb-2 text-center underline-2">
       Créer une colocation
     </h2>
     <form class="flex flex-col items-center">
@@ -10,7 +10,7 @@
           type="text"
           v-model="Colocation.name"
           class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
-          placeholder="La colonie"
+          placeholder="La joyeuse colonie"
         />
 
         <label class="text-left text-white my-2"
@@ -18,7 +18,7 @@
         >
         <input
           type="text"
-          v-model="Colocation.code"
+          v-model="Colocation.access_key"
           class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
           placeholder="*************"
         />
@@ -28,15 +28,14 @@
         >
         <input
           type="text"
-          v-model="confirmCode"
+          v-model="confirmAccessKey"
           class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
           placeholder="*************"
         />
 
         <label class="text-left text-white my-2">Loyer mensuel</label>
         <input
-          type="number"
-          v-model="Colocation.rent"
+          v-model="Colocation.monthly_rent"
           class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
           v-on:keypress="NumbersOnly"
         />
@@ -45,8 +44,7 @@
           >Nombre max de colocataires</label
         >
         <input
-          type="number"
-          v-model="Colocation.limit"
+          v-model="Colocation.max_roomates"
           class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
           v-on:keypress="NumbersOnly"
         />
@@ -64,25 +62,22 @@
 <script lang="ts">
 interface Colocation {
   name: string;
-  code: string;
-  rent: number;
-  roommates: number;
-  limit: number;
-  user_id: number;
+  access_key: string;
+  monthly_rent: number;
+  max_roomates: number;
 }
+
 export default {
   name: "CreateColoc",
   data() {
     return {
       Colocation: {
         name: "",
-        code: "",
-        rent: 0,
-        roommates: 0,
-        limit: 0,
-        user_id: 1,
+        access_key: "",
+        monthly_rent: 0,
+        max_roomates: 0,
       } as Colocation,
-      confirmCode: "",
+      confirmAccessKey: "",
     };
   },
 

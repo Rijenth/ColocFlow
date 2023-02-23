@@ -1,8 +1,8 @@
 <template>
-  <div class="flex h-screen items-center justify-center">
-    <div class="w-80 p-4 bg-gray-900 text-white rounded-lg shadow-xl">
+  <div class="flex justify-center md:h-screen md:items-center">
+    <div class="w-80 p-4 bg-gray-900 border rounded-lg text-white md:shadow-xl">
       <h2 class="text-lg font-bold mb-2">Bienvenue sur ColocFlow</h2>
-      <p class="text-s mb-4">Votre logiciel de gestion de colocation</p>
+      <p class="text-s mb-4">Logiciel de gestion de colocation</p>
       <form @submit.prevent="submitForm">
         <input
           class="input-field input-auth"
@@ -18,8 +18,15 @@
           @keydown.space.prevent
           v-model="password"
         />
-        <RedirectButton text="Connexion" />
-        <RedirectButton @click="updateSelectedComponent" text="Inscription" />
+        <RedirectButton class="w-full" text="Connexion" />
+        <div class="text-center mt-2">
+          <a
+            class="hover:text-blue-800"
+            href="/register"
+            v-on:click.prevent="updateSelectedComponent"
+            >Inscription</a
+          >
+        </div>
       </form>
     </div>
   </div>
@@ -91,7 +98,10 @@ export default {
             this.authStore.setToken(response.data.token);
             this.authStore.setUser(response.data.user);
 
-            if (this.authStore.getUser.relationships && this.authStore.getUser.relationships.colocation) {
+            if (
+              this.authStore.getUser.relationships &&
+              this.authStore.getUser.relationships.colocation
+            ) {
               this.$router.push("/dashboard");
             } else {
               this.$router.push("/welcome");
