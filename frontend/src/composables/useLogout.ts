@@ -12,7 +12,6 @@ export function useLogout() {
       .then(() => {
         authStore.logout();
         authStore.unsetUser();
-        authStore.setToken("");
       })
       .catch(() => {
         flash(

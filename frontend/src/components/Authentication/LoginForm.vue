@@ -95,9 +95,7 @@ export default {
         .then((response) => {
           if (response.status === 200) {
             this.authStore.login();
-            this.authStore.setToken(response.data.token);
             this.authStore.setUser(response.data.user);
-
             if (
               this.authStore.getUser.relationships &&
               this.authStore.getUser.relationships.colocation

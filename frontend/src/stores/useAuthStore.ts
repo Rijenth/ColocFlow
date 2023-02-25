@@ -22,7 +22,6 @@ interface User {
 interface AuthState {
   authenticated: boolean;
   user: User;
-  token: string;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -38,7 +37,6 @@ export const useAuthStore = defineStore("auth", {
       },
       relationships: {},
     },
-    token: "",
   }),
 
   getters: {
@@ -47,9 +45,6 @@ export const useAuthStore = defineStore("auth", {
     },
     getUser(): User {
       return this.user;
-    },
-    getToken(): string {
-      return this.token;
     },
   },
 
@@ -74,9 +69,6 @@ export const useAuthStore = defineStore("auth", {
         },
         relationships: {},
       };
-    },
-    setToken(token: string) {
-      this.token = token;
     },
   },
 });

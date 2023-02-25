@@ -20,11 +20,8 @@ class AuthenticationController extends Controller
 
             $request->session()->regenerate();
 
-            $token = $user->createToken('auth_token')->plainTextToken;
-
             return response()->json([
                 'user' => new UserResource($user),
-                'token' => $token,
             ]);
         }
 
@@ -37,13 +34,6 @@ class AuthenticationController extends Controller
 
     public function logout(Request $request)
     {
-        $authUser = auth()->user();
-
-        if ($authUser) {
-            $user = User::where('username', $authUser->username)->first();
-            $user->tokens()->delete();
-        }
-
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
