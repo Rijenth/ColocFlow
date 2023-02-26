@@ -47,13 +47,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function colocation()
+    public function owner()
     {
         return $this->hasOne(Colocation::class);
     }
 
     public function roomate()
     {
-        return $this->belongsTo(Colocation::class);
+        return $this->belongsTo(Colocation::class, 'colocation_id');
     }
 }

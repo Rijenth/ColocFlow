@@ -42,9 +42,9 @@ class UpdateColocationResourceAction
     public function updateRoomatesRelationship(Colocation $colocation, array $data): void
     {
         if (! empty($data)) {
-            $users = User::findMany(collect($data)->pluck('id')->toArray());
+            $user = User::findOrFail($data['id']);
 
-            $colocation->roomates()->saveMany($users);
+            $colocation->roomates()->save($user);
         }
     }
 }

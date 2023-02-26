@@ -28,9 +28,8 @@ class UpdateColocationRequest extends FormRequest
             "data.attributes.max_roomates" => "integer|min:0",
             "data.relationships.roomates" => "array",
             "data.relationships.roomates.data" => "array",
-            "data.relationships.roomates.data.*.id" => "integer|exists:users,id",
-            "data.relationships.roomates.data.*.type" => "string|in:Users",
-            "data.relationships.roomates.data.*.attributes.name" => "string",
+            "data.relationships.roomates.data.id" => "integer|exists:users,id",
+            "data.relationships.roomates.data.type" => "string|in:Users",
         ];
     }
 }
