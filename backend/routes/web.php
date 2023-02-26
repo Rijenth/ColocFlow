@@ -27,7 +27,6 @@ Route::get('/', function () {
     ]);
 });
 
-// Route qui necessite une authentification
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('authentication.logout');
 

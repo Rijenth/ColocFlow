@@ -1,7 +1,13 @@
 import { defineStore } from "pinia";
 
-interface relationships {
-  colocation?: {
+interface Relationships {
+  owner?: {
+    data: {
+      type: string;
+      id: number;
+    };
+  };
+  roomate?: {
     data: {
       type: string;
       id: number;
@@ -17,7 +23,7 @@ interface User {
     username: string;
     colocation_id: number | null;
   };
-  relationships: relationships;
+  relationships: Relationships;
 }
 
 interface AuthState {

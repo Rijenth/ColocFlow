@@ -15,7 +15,7 @@ class ColocationResource extends JsonResource
             'attributes' => $this->resource->toArray(),
             'relationships' => [
                 $this->mergeWhen($this->resource->owner()->exists(), fn () => [
-                    'Owner' => [
+                    'owner' => [
                         'data' => [
                             'type' => "Users",
                             'id' => $this->resource->owner->getKey(),
@@ -23,7 +23,7 @@ class ColocationResource extends JsonResource
                     ]
                 ]),
                 $this->mergeWhen($this->resource->roomates()->exists(), fn () => [
-                    'Roomates' => [
+                    'roomates' => [
                         'data' => $this->resource->roomates->map(fn ($user) => [
                             'type' => "Users",
                             'id' => $user->getKey(),

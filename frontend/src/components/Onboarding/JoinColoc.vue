@@ -103,12 +103,10 @@ export default {
             data: {
               relationships: {
                 roomates: {
-                  data: [
-                    {
-                      type: user.type,
-                      id: user.id,
-                    },
-                  ],
+                  data: {
+                    type: user.type,
+                    id: user.id,
+                  },
                 },
               },
             },
@@ -145,11 +143,7 @@ export default {
         } else if (err.response && err.response.status === 401) {
           this.flash("Erreur !", "Le code d'accès est incorrect", "error");
         } else {
-          this.flash(
-            "Erreur !",
-            "Un problème est survenue. Merci de contacter l'administrateur.",
-            "error"
-          );
+          this.flash("Erreur !", err.message, "error");
         }
       }
     },

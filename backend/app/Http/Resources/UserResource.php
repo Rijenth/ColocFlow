@@ -15,7 +15,7 @@ class UserResource extends JsonResource
             'attributes' => $this->resource->toArray(),
             'relationships' => [
                 $this->mergeWhen($this->resource->owner()->exists(), fn () => [
-                    'Owner' => [
+                    'owner' => [
                         'data' => [
                             'type' => 'Colocations',
                             'id' => $this->resource->owner->getKey(),
@@ -23,7 +23,7 @@ class UserResource extends JsonResource
                     ]
                 ]),
                 $this->mergeWhen($this->resource->roomate()->exists(), fn () => [
-                    'Roomate' => [
+                    'roomate' => [
                         'data' => [
                             'type' => 'Colocations',
                             'id' => $this->resource->roomate->getKey(),

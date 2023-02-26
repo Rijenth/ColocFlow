@@ -36,6 +36,7 @@
 import axios from "@/axios/axios";
 import RedirectButton from "./RedirectButton.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useColocationStore } from "@/stores/useColocationStore";
 import { useSwal } from "@/composables/useSwal";
 
 export default {
@@ -54,10 +55,12 @@ export default {
 
   setup() {
     const authStore = useAuthStore();
+    const colocationStore = useColocationStore();
     const { flash } = useSwal();
 
     return {
       authStore,
+      colocationStore,
       flash,
     };
   },
@@ -68,68 +71,91 @@ export default {
     },
     async submitForm() {
       if (!this.formIsValid) {
-        this.flash(
+        return this.flash(
           "Formulaire vide",
           "Veuillez remplir tous les champs",
           "warning"
         );
-        return;
       }
 
-      const token = await axios.get("/sanctum/csrf-cookie");
+      try {
+        const token = await axios.get("/sanctum/csrf-cookie");
 
-      if (token.status !== 204) {
-        this.flash(
-          "Authentification Error",
-          "Une erreur est survenue. Merci de contacter l'administrateur",
-          "error"
-        );
-        return;
-      }
-
-      await axios
-        .post("/login", {
-          username: this.username,
-          password: this.password,
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            this.authStore.login();
-            this.authStore.setUser(response.data.user);
-
-            if (
-              (this.authStore.getUser.relationships &&
-                this.authStore.getUser.relationships.colocation) ||
-              this.authStore.getColocationId !== null
-            ) {
-              this.$router.push("/dashboard");
-              return;
-            }
-
-            this.$router.push("/welcome");
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 401) {
-            this.flash("Unauthorized", error.response.data.message, "error");
-            return;
-          }
-
-          if (error.response.status === 422) {
-            this.flash(
-              "Unprocessable Entity",
-              "Veuillez reessayer en remplissant tous les champs requis",
-              "error"
-            );
-            return;
-          }
-
-          this.flash(
-            "Erreur !",
-            "Un problème est survenue. Merci de contacter l'administrateur",
+        if (token.status !== 204) {
+          return this.flash(
+            "Authentification Error",
+            "Une erreur est survenue. Merci de contacter l'administrateur",
             "error"
           );
+        }
+
+        const login = await axios.post("/login", {
+          username: this.username,
+          password: this.password,
         });
+
+        if (login.status === 200) {
+          this.authStore.login();
+          this.authStore.setUser(login.data.user);
+
+          if (
+            (this.authStore.getUser.relationships &&
+              this.authStore.getUser.relationships.owner) ||
+            this.authStore.getColocationId !== null
+          ) {
+            let colocation = null;
+
+            if (this.authStore.getColocationId !== null) {
+              colocation = await axios.get(
+                `api/colocations/${this.authStore.getColocationId}`
+              );
+            } else if (
+              this.authStore.getUser.relationships &&
+              this.authStore.getUser.relationships.owner
+            ) {
+              colocation = await axios.get(
+                `api/colocations/${this.authStore.getUser.relationships.owner.data.id}`
+              );
+            }
+
+            if (colocation.status !== 200) {
+              return this.flash(
+                "Erreur !",
+                "Un problème est survenue lors de la récupération de la colocation. Merci de contacter l'administrateur",
+                "error"
+              );
+            }
+
+            this.colocationStore.setColocation(colocation.data);
+
+            return this.$router.push("/dashboard");
+          }
+
+          return this.$router.push("/welcome");
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          return this.flash(
+            "Unauthorized",
+            error.response.data.message,
+            "error"
+          );
+        }
+
+        if (error.response.status === 422) {
+          return this.flash(
+            "Unprocessable Entity",
+            "Veuillez reessayer en remplissant tous les champs requis",
+            "error"
+          );
+        }
+
+        return this.flash(
+          "Erreur !",
+          "Un problème est survenue. Merci de contacter l'administrateur",
+          "error"
+        );
+      }
     },
   },
 
