@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserController;
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\ColocationResource;
 use App\Http\Resources\UserResource;
+use App\Models\Colocation;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,7 +38,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ]);
     })->name('authentication.user');
 
+    Route::get('/get-colocation', function(Request $request) {
+        $colocation = Colocation::whereHas('owner', function($query) use ($request) {
+            $query->where('username', $request->username);
+        })->firstOrFail();
 
+        if (Hash::check($request->access_key, $colocation->access_key) === false) {
+            return response()->json([
+                'message' => 'Access key is incorrect',
+            ], 401);
+        }
+
+        return new ColocationResource($colocation);
+    })->name('colocation.get');
 });
 
 Route::post('/register', [UserController::class, 'store'])->name('user.register');

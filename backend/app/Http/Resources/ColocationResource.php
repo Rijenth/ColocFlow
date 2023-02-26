@@ -14,14 +14,22 @@ class ColocationResource extends JsonResource
             'id' => $this->resource->getKey(),
             'attributes' => $this->resource->toArray(),
             'relationships' => [
-                $this->mergeWhen($this->resource->user()->exists(), fn () => [
-                    'user' => [
+                $this->mergeWhen($this->resource->owner()->exists(), fn () => [
+                    'Owner' => [
                         'data' => [
-                            'type' => "User",
-                            'id' => $this->resource->user->getKey(),
+                            'type' => "Users",
+                            'id' => $this->resource->owner->getKey(),
                         ]
                     ]
-                ])
+                ]),
+                $this->mergeWhen($this->resource->roomates()->exists(), fn () => [
+                    'Roomates' => [
+                        'data' => $this->resource->roomates->map(fn ($user) => [
+                            'type' => "Users",
+                            'id' => $user->getKey(),
+                        ])
+                    ]
+                ]),
             ]
         ];
     }

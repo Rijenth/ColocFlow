@@ -96,14 +96,17 @@ export default {
           if (response.status === 200) {
             this.authStore.login();
             this.authStore.setUser(response.data.user);
+
             if (
-              this.authStore.getUser.relationships &&
-              this.authStore.getUser.relationships.colocation
+              (this.authStore.getUser.relationships &&
+                this.authStore.getUser.relationships.colocation) ||
+              this.authStore.getColocationId !== null
             ) {
               this.$router.push("/dashboard");
-            } else {
-              this.$router.push("/welcome");
+              return;
             }
+
+            this.$router.push("/welcome");
           }
         })
         .catch((error) => {
@@ -122,8 +125,8 @@ export default {
           }
 
           this.flash(
-            "Unknown",
-            "Une erreur est survenue. Merci de contacter l'administrateur",
+            "Erreur !",
+            "Un problème est survenue. Merci de contacter l'administrateur",
             "error"
           );
         });

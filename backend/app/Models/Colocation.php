@@ -18,14 +18,20 @@ class Colocation extends Model
     ];
 
     protected $hidden = [
+        'access_key',
         'created_at',
         'id',
         'updated_at',
         'user_id',
     ];
 
-    public function user()
+    public function owner()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function roomates()
+    {
+        return $this->hasMany(User::class);
     }
 }
