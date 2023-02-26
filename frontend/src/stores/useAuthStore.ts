@@ -15,6 +15,7 @@ interface User {
     lastname: string;
     firstname: string;
     username: string;
+    colocation_id: number | null;
   };
   relationships: relationships;
 }
@@ -34,6 +35,7 @@ export const useAuthStore = defineStore("auth", {
         lastname: "",
         firstname: "",
         username: "",
+        colocation_id: null,
       },
       relationships: {},
     },
@@ -45,6 +47,9 @@ export const useAuthStore = defineStore("auth", {
     },
     getUser(): User {
       return this.user;
+    },
+    getColocationId(): number | null {
+      return this.user.attributes.colocation_id;
     },
   },
 
@@ -66,6 +71,7 @@ export const useAuthStore = defineStore("auth", {
           lastname: "",
           firstname: "",
           username: "",
+          colocation_id: null,
         },
         relationships: {},
       };

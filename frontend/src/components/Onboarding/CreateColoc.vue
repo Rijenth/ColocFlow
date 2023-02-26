@@ -3,7 +3,7 @@
     <h2 class="text-lg font-bold mb-2 text-center underline-2">
       Créer une colocation
     </h2>
-    <form class="flex flex-col items-center">
+    <form class="flex flex-col items-center" @submit.prevent="StoreColocation">
       <div class="flex flex-col w-3/4">
         <label class="text-left text-white my-2">Nom de la colocation</label>
         <input
@@ -60,6 +60,9 @@
 </template>
 
 <script lang="ts">
+import { useSwal } from "@/composables/useSwal";
+import axios from "@/axios/axios";
+
 interface Colocation {
   name: string;
   access_key: string;
@@ -81,6 +84,11 @@ export default {
     };
   },
 
+  setup() {
+    const { flash } = useSwal();
+    return { flash };
+  },
+
   methods: {
     NumbersOnly(event: any) {
       const charCode = event.which ? event.which : event.keyCode;
@@ -89,6 +97,49 @@ export default {
         return false;
       }
       return true;
+    },
+    async StoreColocation() {
+      if (this.FormIsValid() === false) {
+        this.flash("Erreur !", "Veuillez remplir tous les champs", "warning");
+        return;
+      } else if (this.Colocation.access_key !== this.confirmAccessKey) {
+        this.flash(
+          "error",
+          "Les codes d'accès ne correspondent pas",
+          "warning"
+        );
+        return;
+      }
+
+      const Data = {
+        data: {
+          attributes: {
+            name: this.Colocation.name,
+            access_key: this.Colocation.access_key,
+            monthly_rent: this.Colocation.monthly_rent,
+            max_roomates: this.Colocation.max_roomates,
+          },
+        },
+      };
+
+      await axios
+        .post("/api/colocations", Data)
+        .then((response) => {
+          if (response.status === 200)
+            this.flash("Succès !", "Colocation créée avec succès", "success");
+          this.$router.push({ name: "dashboard" });
+        })
+        .catch((error) => {
+          this.flash("Error !", error.response.data.message, "error");
+        });
+    },
+    FormIsValid() {
+      return (
+        this.Colocation.name !== "" &&
+        this.Colocation.access_key !== "" &&
+        this.Colocation.monthly_rent !== "" &&
+        this.Colocation.max_roomates !== ""
+      );
     },
   },
 };
