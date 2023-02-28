@@ -49,12 +49,12 @@
             >
           </li>
           <li v-if="isAuthenticated" class="border-b md:border-none">
-            <RouterLink
-              class="block text-white hover:bg-gray-800 py-2 px-4 rounded"
+            <button
+              class="block text-white hover:bg-gray-800 py-2 px-4 rounded w-full"
               @click.prevent="logout"
-              to="/"
-              >Deconnexion</RouterLink
             >
+              Deconnexion
+            </button>
           </li>
         </ul>
       </div>

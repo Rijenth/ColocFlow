@@ -2,6 +2,7 @@ import axios from "../axios/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
 import { useSwal } from "./useSwal";
+import router from "@/router";
 
 export function useLogout() {
   function logout() {
@@ -15,6 +16,7 @@ export function useLogout() {
         authStore.logout();
         authStore.unsetUser();
         colocationStore.unSetColocation();
+        router.push({ name: "home" });
       })
       .catch(() => {
         flash(
