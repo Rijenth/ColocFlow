@@ -8,9 +8,10 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     volumes:
-      - ./frontend:/app
+      - ./frontend/src:/app/src
     ports:
       - 5174:5174
+    restart: always
 
   php:
     build:
