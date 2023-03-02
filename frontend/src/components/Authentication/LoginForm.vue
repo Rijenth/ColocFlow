@@ -18,7 +18,7 @@
           @keydown.space.prevent
           v-model="password"
         />
-        <RedirectButton class="w-full" text="Connexion" />
+        <LoadingButton :is-loading="loading" class="w-full" text="Connexion" />
         <div class="text-center mt-2">
           <a
             class="hover:text-blue-800"
@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import axios from "@/axios/axios";
-import RedirectButton from "./RedirectButton.vue";
+import LoadingButton from "./LoadingButton.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
 import { useSwal } from "@/composables/useSwal";
@@ -43,13 +43,14 @@ export default {
   name: "LoginForm",
 
   components: {
-    RedirectButton,
+    LoadingButton,
   },
 
   data() {
     return {
       username: "" as string,
       password: "" as string,
+      loading: false,
     };
   },
 
@@ -69,6 +70,9 @@ export default {
     updateSelectedComponent() {
       this.$emit("updateComponent", "RegisterForm");
     },
+    toggleLoading() {
+      this.loading = !this.loading;
+    },
     async submitForm() {
       if (!this.formIsValid) {
         return this.flash(
@@ -78,10 +82,14 @@ export default {
         );
       }
 
+      this.toggleLoading();
+
       try {
         const token = await axios.get("/sanctum/csrf-cookie");
 
         if (token.status !== 204) {
+          this.toggleLoading();
+
           return this.flash(
             "Authentification Error",
             "Une erreur est survenue. Merci de contacter l'administrateur",
@@ -128,12 +136,18 @@ export default {
 
             this.colocationStore.setColocation(colocation.data);
 
+            this.toggleLoading();
+
             return this.$router.push("/dashboard");
           }
+
+          this.toggleLoading();
 
           return this.$router.push("/welcome");
         }
       } catch (error) {
+        this.toggleLoading();
+
         if (error.response.status === 401) {
           return this.flash(
             "Unauthorized",

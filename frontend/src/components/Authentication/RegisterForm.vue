@@ -47,18 +47,22 @@
         @keydown.space.prevent
       />
 
-      <RedirectButton class="w-full" text="Inscription" />
-      <RedirectButton
-        class="mt-4 w-full"
-        @click="updateSelectedComponent"
-        text="Retour"
-      />
+      <LoadingButton :is-loading="loading" class="w-full" text="Inscription" />
+
+      <div class="text-center mt-2">
+        <a
+          class="hover:text-blue-800"
+          href="/"
+          v-on:click.prevent="updateSelectedComponent"
+          >Retour</a
+        >
+      </div>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import RedirectButton from "./RedirectButton.vue";
+import LoadingButton from "./LoadingButton.vue";
 import { useSwal } from "@/composables/useSwal";
 import axios from "@/axios/axios";
 
@@ -75,7 +79,7 @@ export default {
   name: "RegisterForm",
 
   components: {
-    RedirectButton,
+    LoadingButton,
   },
 
   data: () => ({
@@ -86,11 +90,15 @@ export default {
       firstname: "",
     } as User,
     confirmPassword: "",
+    loading: false,
   }),
 
   methods: {
     updateSelectedComponent() {
       this.$emit("updateComponent", "LoginForm");
+    },
+    toggleLoading() {
+      this.loading = !this.loading;
     },
     async registerUser() {
       if (!this.fieldsAreEmpty) {
@@ -110,6 +118,8 @@ export default {
         );
         return;
       }
+
+      this.toggleLoading();
 
       const token = await axios.get("/sanctum/csrf-cookie");
 
@@ -134,6 +144,9 @@ export default {
           .then((response) => {
             if (response.status === 201) {
               flash("Succès !", "Vous êtes maintenant inscrit !", "success");
+
+              this.toggleLoading();
+
               this.updateSelectedComponent();
             }
           })
@@ -157,6 +170,7 @@ export default {
                 "error"
               );
             }
+            this.toggleLoading();
           });
       }
     },

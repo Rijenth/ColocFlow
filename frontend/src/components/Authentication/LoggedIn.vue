@@ -21,25 +21,20 @@
       <li>-> Création de budget</li>
       <li>-> Création de calendrier</li>
     </ul>
-    <RedirectButton
-      class="w-full"
-      @click.prevent="logout"
-      to="/"
-      text="Deconnexion"
-    />
+    <LoadingButton class="w-full" @click.prevent="logout" text="Deconnexion" />
   </div>
 </template>
 
 <script lang="ts">
 import { useAuthStore } from "@/stores/useAuthStore";
-import RedirectButton from "./RedirectButton.vue";
+import LoadingButton from "./LoadingButton.vue";
 import { useLogout } from "@/composables/useLogout";
 
 export default {
   name: "AuthView",
 
   components: {
-    RedirectButton,
+    LoadingButton,
   },
 
   data() {
