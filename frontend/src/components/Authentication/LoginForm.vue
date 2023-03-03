@@ -105,6 +105,7 @@ export default {
         if (login.status === 200) {
           this.authStore.login();
           this.authStore.setUser(login.data.user);
+          let destination = "/welcome";
 
           if (
             (this.authStore.getUser.relationships &&
@@ -138,12 +139,12 @@ export default {
 
             this.toggleLoading();
 
-            return this.$router.push("/dashboard");
+            destination = "/dashboard";
           }
 
           this.toggleLoading();
 
-          return this.$router.push("/welcome");
+          this.$router.push(destination);
         }
       } catch (error) {
         this.toggleLoading();

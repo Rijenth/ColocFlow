@@ -16,7 +16,9 @@ export function useLogout() {
         authStore.logout();
         authStore.unsetUser();
         colocationStore.unSetColocation();
-        router.push({ name: "home" });
+        if (router.currentRoute.value.name !== "home") {
+          router.push({ name: "home" });
+        }
       })
       .catch(() => {
         flash(

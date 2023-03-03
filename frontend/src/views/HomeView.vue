@@ -1,13 +1,12 @@
 <template>
-  <AuthView v-if="isAuthenticated === false" />
-  <LoggedIn v-else />
+  <AuthView v-if="authenticated === false" />
+  <LoggedIn @isLoggedIn="updateComponent" v-else />
 </template>
 
 <script lang="ts">
 import AuthView from "../views/AuthView.vue";
 import LoggedIn from "@/components/Authentication/LoggedIn.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { computed } from "vue";
 
 export default {
   name: "HomeView",
@@ -17,27 +16,29 @@ export default {
     LoggedIn,
   },
 
+  data() {
+    return {
+      authenticated: false,
+    };
+  },
+
   setup() {
     const authStore = useAuthStore();
-    const isAuthenticated = computed(() => authStore.isAuthenticated);
+    const isAuthenticated = authStore.isAuthenticated;
 
     return {
       isAuthenticated,
     };
   },
 
-  // Méthode avec ref et watchEffect
-  /*   setup() {
-    const authStore = useAuthStore();
-    const isAuthenticated = ref(authStore.isAuthenticated);
+  methods: {
+    updateComponent(value: boolean) {
+      this.authenticated = value;
+    },
+  },
 
-    watchEffect(() => {
-      isAuthenticated.value = authStore.isAuthenticated;
-    });
-
-    return {
-      isAuthenticated,
-    };
-  },  */
+  mounted() {
+    this.authenticated = this.isAuthenticated;
+  },
 };
 </script>

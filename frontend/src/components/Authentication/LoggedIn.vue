@@ -21,7 +21,12 @@
       <li>-> Création de budget</li>
       <li>-> Création de calendrier</li>
     </ul>
-    <LoadingButton class="w-full" @click.prevent="logout" text="Deconnexion" />
+    <LoadingButton
+      class="w-full"
+      @click.prevent="updateAuthenticationState"
+      :is-loading="loading"
+      text="Deconnexion"
+    />
   </div>
 </template>
 
@@ -40,6 +45,7 @@ export default {
   data() {
     return {
       username: "" as string,
+      loading: false,
     };
   },
 
@@ -51,6 +57,19 @@ export default {
       authStore,
       logout,
     };
+  },
+
+  methods: {
+    async updateAuthenticationState() {
+      this.toggleLoading();
+
+      await this.logout();
+
+      this.$emit("isLoggedIn", false);
+    },
+    toggleLoading() {
+      this.loading = !this.loading;
+    },
   },
 
   mounted() {
