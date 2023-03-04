@@ -85,18 +85,6 @@ export default {
       this.toggleLoading();
 
       try {
-        const token = await axios.get("/sanctum/csrf-cookie");
-
-        if (token.status !== 204) {
-          this.toggleLoading();
-
-          return this.flash(
-            "Authentification Error",
-            "Une erreur est survenue. Merci de contacter l'administrateur",
-            "error"
-          );
-        }
-
         const login = await axios.post("/login", {
           username: this.username,
           password: this.password,

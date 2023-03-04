@@ -121,58 +121,54 @@ export default {
 
       this.toggleLoading();
 
-      const token = await axios.get("/sanctum/csrf-cookie");
-
-      if (token.status === 204) {
-        const body = {
-          data: {
-            attributes: {
-              username: this.user.username,
-              password: this.user.password,
-              lastname: this.user.lastname,
-              firstname: this.user.firstname,
-            },
+      const body = {
+        data: {
+          attributes: {
+            username: this.user.username,
+            password: this.user.password,
+            lastname: this.user.lastname,
+            firstname: this.user.firstname,
           },
-        };
+        },
+      };
 
-        await axios
-          .post("/register", JSON.stringify(body), {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((response) => {
-            if (response.status === 201) {
-              flash("Succès !", "Vous êtes maintenant inscrit !", "success");
+      await axios
+        .post("/register", JSON.stringify(body), {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            flash("Succès !", "Vous êtes maintenant inscrit !", "success");
 
-              this.toggleLoading();
-
-              this.updateSelectedComponent();
-            }
-          })
-          .catch((error) => {
-            if (error.response.status === 422) {
-              flash(
-                "Unprocessable entity",
-                "Ce nom d'utilisateur est déjà utilisé",
-                "error"
-              );
-            } else if (error.response.status === 401) {
-              flash(
-                "Unauthorized",
-                "Vous n'êtes pas autorisé à accéder à cette page",
-                "error"
-              );
-            } else {
-              flash(
-                "Internal server error",
-                "Une erreur est survenue, merci de contacter l'administrateur",
-                "error"
-              );
-            }
             this.toggleLoading();
-          });
-      }
+
+            this.updateSelectedComponent();
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 422) {
+            flash(
+              "Unprocessable entity",
+              "Ce nom d'utilisateur est déjà utilisé",
+              "error"
+            );
+          } else if (error.response.status === 401) {
+            flash(
+              "Unauthorized",
+              "Vous n'êtes pas autorisé à accéder à cette page",
+              "error"
+            );
+          } else {
+            flash(
+              "Internal server error",
+              "Une erreur est survenue, merci de contacter l'administrateur",
+              "error"
+            );
+          }
+          this.toggleLoading();
+        });
     },
   },
 
