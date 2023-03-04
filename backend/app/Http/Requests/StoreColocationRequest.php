@@ -11,15 +11,7 @@ class StoreColocationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (!$this->user()->owner()->exists()) {
-            return true;
-        }
-
-        if ($this->user()->colocation_id === null) {
-            return true;
-        }
-
-        return false;
+        return $this->user()->owner()->exists() === false && $this->user()->colocation_id === null;
     }
 
     /**
