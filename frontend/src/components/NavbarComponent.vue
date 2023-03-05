@@ -28,31 +28,21 @@
       >
         <ul class="md:flex md:items-center">
           <li class="border-b md:border-none">
-            <RouterLink
-              class="block text-white hover:bg-gray-800 py-2 px-4 rounded"
-              to="/"
-              >Accueil</RouterLink
-            >
+            <RouterLink class="router-link" to="/">Accueil</RouterLink>
           </li>
           <li class="border-b md:border-none">
-            <RouterLink
-              class="block text-white hover:bg-gray-800 py-2 px-4 rounded"
-              to="/dashboard"
+            <RouterLink class="router-link" to="/dashboard"
               >Dashboard</RouterLink
             >
           </li>
           <li class="border-b md:border-none">
-            <RouterLink
-              class="block text-white hover:bg-gray-800 py-2 px-4 rounded"
-              to="/about"
-              >À propos</RouterLink
-            >
+            <RouterLink class="router-link" to="/about">À propos</RouterLink>
           </li>
-          <li v-if="isAuthenticated" class="border-b md:border-none">
-            <button
-              class="block text-white hover:bg-gray-800 py-2 px-4 rounded w-full"
-              @click.prevent="logout"
-            >
+          <li
+            v-if="isAuthenticated && routeIsNotHome"
+            class="border-b md:border-none"
+          >
+            <button class="router-link w-full" @click.prevent="logout">
               Deconnexion
             </button>
           </li>
@@ -93,6 +83,9 @@ export default {
   computed: {
     isAuthenticated() {
       return this.authStore.isAuthenticated;
+    },
+    routeIsNotHome() {
+      return this.$route.name !== "home";
     },
   },
 };

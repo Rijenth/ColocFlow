@@ -9,3 +9,7 @@
 .input-auth {
   @apply border-2 rounded border-gray-300 w-full p-2 mb-4;
 }
+
+.router-link {
+  @apply block text-white hover:bg-gray-800 py-2 px-4 rounded;
+}
