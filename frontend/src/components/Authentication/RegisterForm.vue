@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import LoadingButton from "./LoadingButton.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
 import { useSwal } from "@/composables/useSwal";
 import axios from "@/axios/axios";
 

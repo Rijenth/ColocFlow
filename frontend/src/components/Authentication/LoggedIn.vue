@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { useAuthStore } from "@/stores/useAuthStore";
-import LoadingButton from "./LoadingButton.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
 import { useLogout } from "@/composables/useLogout";
 
 export default {

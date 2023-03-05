@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import axios from "@/axios/axios";
-import LoadingButton from "./LoadingButton.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
 import { useSwal } from "@/composables/useSwal";
