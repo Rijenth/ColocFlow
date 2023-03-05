@@ -37,6 +37,7 @@
 import { useSwal } from "@/composables/useSwal";
 import axios from "@/axios/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useColocationStore } from "@/stores/useColocationStore";
 
 export default {
   name: "JoinColoc",
@@ -50,10 +51,12 @@ export default {
 
   setup() {
     const authStore = useAuthStore();
+    const colocationStore = useColocationStore();
     const { flash } = useSwal();
 
     return {
       authStore,
+      colocationStore,
       flash,
     };
   },
@@ -123,6 +126,7 @@ export default {
               "Vous avez rejoint la colocation",
               "success"
             );
+            this.colocationStore.setColocation(patchColocation.data);
 
             this.$router.push("/dashboard");
           }
@@ -142,6 +146,12 @@ export default {
           );
         } else if (err.response && err.response.status === 401) {
           this.flash("Erreur !", "Le code d'accès est incorrect", "error");
+        } else if (err.response && err.response.status === 409) {
+          this.flash(
+            "Colocation complète !",
+            "Le nombre maximum de colocataires a été atteint",
+            "error"
+          );
         } else {
           this.flash("Erreur !", err.message, "error");
         }

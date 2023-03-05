@@ -41,6 +41,8 @@ class UpdateColocationResourceAction
 
     public function updateRoomatesRelationship(Colocation $colocation, array $data): void
     {
+        abort_if(count($colocation->roomates) + 1 > $colocation->max_roomates, 409, "Max roomates reached, can't add more roomates");
+
         if (! empty($data)) {
             $user = User::findOrFail($data['id']);
 
