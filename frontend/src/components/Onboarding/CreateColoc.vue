@@ -62,6 +62,7 @@
 <script lang="ts">
 import { useSwal } from "@/composables/useSwal";
 import axios from "@/axios/axios";
+import { useColocationStore } from "@/stores/useColocationStore";
 
 interface Colocation {
   name: string;
@@ -86,7 +87,12 @@ export default {
 
   setup() {
     const { flash } = useSwal();
-    return { flash };
+    const colocationStore = useColocationStore();
+
+    return {
+      colocationStore,
+      flash,
+    };
   },
 
   methods: {
@@ -125,9 +131,11 @@ export default {
       await axios
         .post("/api/colocations", Data)
         .then((response) => {
-          if (response.status === 200)
+          if (response.status === 200) {
             this.flash("Succès !", "Colocation créée avec succès", "success");
-          this.$router.push({ name: "dashboard" });
+            this.colocationStore.setColocation(response.data);
+            this.$router.push({ name: "dashboard" });
+          }
         })
         .catch((error) => {
           this.flash("Error !", error.response.data.message, "error");

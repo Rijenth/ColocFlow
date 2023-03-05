@@ -26,6 +26,7 @@ interface Colocation {
     };
     relationships: Relationships;
   };
+  isDefined: boolean;
 }
 
 export const useColocationStore = defineStore("colocation", {
@@ -40,6 +41,7 @@ export const useColocationStore = defineStore("colocation", {
       },
       relationships: {},
     },
+    isDefined: false,
   }),
 
   getters: {
@@ -51,6 +53,7 @@ export const useColocationStore = defineStore("colocation", {
   actions: {
     setColocation(colocation: Colocation) {
       this.data = colocation.data;
+      this.isDefined = true;
     },
     unSetColocation() {
       this.data = {
@@ -63,6 +66,7 @@ export const useColocationStore = defineStore("colocation", {
         },
         relationships: {},
       };
+      this.isDefined = false;
     },
   },
 });
