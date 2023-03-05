@@ -22,7 +22,7 @@ export function useLogout() {
       })
       .catch(() => {
         flash(
-          "Error",
+          "Error Unauthenticated",
           "This action can only be performed while authenticated",
           "error"
         );
