@@ -25,7 +25,7 @@ class UpdateColocationRequest extends FormRequest
             "data.attributes.name" => "string",
             "data.attributes.access_key" => "string",
             "data.attributes.monthly_rent" => "integer|min:0",
-            "data.attributes.max_roomates" => "integer|min:0",
+            "data.attributes.max_roomates" => "integer|min:1",
             "data.relationships.roomates" => "array",
             "data.relationships.roomates.data" => "array",
             "data.relationships.roomates.data.id" => "integer|exists:users,id",

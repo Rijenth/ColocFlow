@@ -37,7 +37,7 @@
         <input
           v-model="Colocation.monthly_rent"
           class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
-          v-on:keypress="NumbersOnly"
+          v-on:keypress="AcceptNumber"
         />
 
         <label class="text-left text-white my-2"
@@ -46,15 +46,19 @@
         <input
           v-model="Colocation.max_roomates"
           class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
-          v-on:keypress="NumbersOnly"
+          v-on:keypress="AcceptNumber"
         />
+        <label class="text-white my-4">
+          <input v-model="isRoomate" type="checkbox" class="mr-2" />
+          Je suis colocataire, je participe aux dépenses et aux tâches
+        </label>
       </div>
 
-      <button
-        class="w-1/2 border h-10 bg-gray-900 text-white rounded-lg mt-6 hover:bg-gray-600"
-      >
-        Créer la colocation
-      </button>
+      <LoadingButton
+        :is-loading="loading"
+        class="w-1/2 border h-10 bg-gray-900 text-white rounded-lg mt-4 hover:bg-gray-600"
+        text="Créer la colocation"
+      />
     </form>
   </div>
 </template>
@@ -63,6 +67,8 @@
 import { useSwal } from "@/composables/useSwal";
 import axios from "@/axios/axios";
 import { useColocationStore } from "@/stores/useColocationStore";
+import { useAuthStore } from "@/stores/useAuthStore";
+import LoadingButton from "@/components/LoadingButton.vue";
 
 interface Colocation {
   name: string;
@@ -73,30 +79,42 @@ interface Colocation {
 
 export default {
   name: "CreateColoc",
+
+  components: {
+    LoadingButton,
+  },
+
   data() {
     return {
       Colocation: {
         name: "",
         access_key: "",
         monthly_rent: 0,
-        max_roomates: 0,
+        max_roomates: 1,
       } as Colocation,
       confirmAccessKey: "",
+      isRoomate: false,
+      loading: false,
     };
   },
 
   setup() {
     const { flash } = useSwal();
+    const authStore = useAuthStore();
     const colocationStore = useColocationStore();
 
     return {
+      authStore,
       colocationStore,
       flash,
     };
   },
 
   methods: {
-    NumbersOnly(event: any) {
+    toggleLoading() {
+      this.loading = !this.loading;
+    },
+    AcceptNumber(event: any) {
       const charCode = event.which ? event.which : event.keyCode;
       if (charCode > 31 && (charCode < 48 || charCode > 57)) {
         event.preventDefault();
@@ -106,18 +124,31 @@ export default {
     },
     async StoreColocation() {
       if (this.FormIsValid() === false) {
-        this.flash("Erreur !", "Veuillez remplir tous les champs", "warning");
+        this.flash(
+          "Erreur de formulaire !",
+          "Veuillez remplir tous les champs",
+          "warning"
+        );
         return;
       } else if (this.Colocation.access_key !== this.confirmAccessKey) {
         this.flash(
-          "error",
+          "Erreur code d'accès !",
           "Les codes d'accès ne correspondent pas",
+          "warning"
+        );
+        return;
+      } else if (this.Colocation.max_roomates < 1) {
+        this.flash(
+          "Erreur nombre de colocataires !",
+          "Le nombre de colocataires doit être supérieur à 0",
           "warning"
         );
         return;
       }
 
-      const Data = {
+      this.toggleLoading();
+
+      const body = {
         data: {
           attributes: {
             name: this.Colocation.name,
@@ -128,18 +159,69 @@ export default {
         },
       };
 
-      await axios
-        .post("/api/colocations", Data)
-        .then((response) => {
-          if (response.status === 200) {
-            this.flash("Succès !", "Colocation créée avec succès", "success");
-            this.colocationStore.setColocation(response.data);
-            this.$router.push({ name: "dashboard" });
+      try {
+        const createColocation = await axios.post(
+          "/api/colocations?include=owner",
+          body
+        );
+
+        if (createColocation.status === 200) {
+          const colocation = createColocation.data;
+          const owner = createColocation.data.included.owner.data[0];
+
+          if (this.isRoomate === true) {
+            const user = this.authStore.getUser;
+
+            const relationships = {
+              data: {
+                relationships: {
+                  roomates: {
+                    data: {
+                      type: user.type,
+                      id: user.id,
+                    },
+                  },
+                },
+              },
+            };
+
+            const colocationUpdated = await axios.patch(
+              `/api/colocations/${colocation.data.id}?include=owner`,
+              relationships
+            );
+
+            if (colocationUpdated.status === 200) {
+              this.colocationStore.setColocation(colocationUpdated.data);
+
+              this.authStore.setUser(
+                colocationUpdated.data.included.owner.data[0]
+              );
+            }
+          } else {
+            this.colocationStore.setColocation(colocation);
+
+            this.authStore.setUser(owner);
           }
-        })
-        .catch((error) => {
-          this.flash("Error !", error.response.data.message, "error");
-        });
+
+          this.toggleLoading();
+
+          this.flash(
+            "Succès !",
+            "Votre colocation a bien été crée.",
+            "success"
+          );
+
+          this.$router.push({ name: "dashboard" });
+        }
+      } catch (error) {
+        this.toggleLoading();
+
+        this.flash(
+          error.response.statusText + " !",
+          error.response.data.message,
+          "error"
+        );
+      }
     },
     FormIsValid() {
       return (

@@ -24,11 +24,11 @@
         placeholder="Code d'accès"
         v-model="access_key"
       />
-      <button
+      <LoadingButton
+        :is-loading="loading"
         class="w-1/2 border h-10 bg-gray-900 text-white rounded-lg mt-4 hover:bg-gray-600"
-      >
-        Rejoindre
-      </button>
+        text="Rejoindre"
+      />
     </form>
   </div>
 </template>
@@ -38,14 +38,20 @@ import { useSwal } from "@/composables/useSwal";
 import axios from "@/axios/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
+import LoadingButton from "@/components/LoadingButton.vue";
 
 export default {
   name: "JoinColoc",
+
+  components: {
+    LoadingButton,
+  },
 
   data() {
     return {
       access_key: "" as string,
       username: "" as string,
+      loading: false,
     };
   },
 
@@ -62,6 +68,9 @@ export default {
   },
 
   methods: {
+    toggleLoading() {
+      this.loading = !this.loading;
+    },
     async joinColocation() {
       const user = this.authStore.getUser;
 
@@ -93,6 +102,8 @@ export default {
         return;
       }
 
+      this.toggleLoading();
+
       try {
         const getColocation = await axios.get("/get-colocation", {
           params: {
@@ -121,6 +132,8 @@ export default {
           );
 
           if (patchColocation.status === 200) {
+            this.toggleLoading();
+
             this.flash(
               "Succès !",
               "Vous avez rejoint la colocation",
@@ -132,6 +145,8 @@ export default {
           }
         }
       } catch (err) {
+        this.toggleLoading();
+
         if (err.response && err.response.status === 422) {
           this.flash(
             err.response.statusText,

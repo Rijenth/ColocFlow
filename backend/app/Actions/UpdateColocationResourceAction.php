@@ -23,7 +23,6 @@ class UpdateColocationResourceAction
 /*             if (isset($data['relationships']['owner'])) {
                 $this->updateOwnerRelationship($colocation, $data['relationships']);
             } */
-
             if (isset($data['relationships']['roomates'])) {
                 $this->updateRoomatesRelationship($colocation, $data['relationships']['roomates']['data']);
             }
@@ -44,7 +43,7 @@ class UpdateColocationResourceAction
         abort_if(count($colocation->roomates) + 1 > $colocation->max_roomates, 409, "Max roomates reached, can't add more roomates");
 
         if (! empty($data)) {
-            $user = User::findOrFail($data['id']);
+            $user = ($data["id"] === auth()->user()->id) ? auth()->user() : User::findOrFail($data['id']);
 
             $colocation->roomates()->save($user);
         }

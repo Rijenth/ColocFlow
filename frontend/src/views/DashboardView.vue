@@ -26,20 +26,18 @@
     </button>
   </div>
 
-  <!-- This is a card -->
-  <div
-    class="w-120 mb-6 p-6 bg-gray-700 text-white border rounded-lg shadow-xl"
-  >
-    <h2 class="text-lg font-bold mb-2">Bienvenue sur ColocFlow</h2>
-    <p class="text-s mb-4">Votre logiciel de gestion de colocation</p>
-  </div>
+  <DashboardOverview />
 </template>
 
 <script lang="ts">
+import DashboardOverview from "@/components/Dashboard/DashboardOverview.vue";
+
 export default {
   name: "DashboardView",
 
-  components: {},
+  components: {
+    DashboardOverview,
+  },
 
   methods: {
     generalCard() {
