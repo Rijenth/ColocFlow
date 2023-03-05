@@ -1,4 +1,4 @@
-dazd# ColocFlow
+# ColocFlow
 Reworked ColocApp using Vue3 |
 
 instructions :
