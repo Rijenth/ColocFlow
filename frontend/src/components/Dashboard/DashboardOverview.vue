@@ -1,34 +1,88 @@
 <template>
-  <div
-    class="w-120 mb-6 p-6 bg-gray-700 text-white border rounded-lg shadow-xl"
-  >
-    <h2 class="text-lg font-bold mb-2">Bienvenue sur ColocFlow</h2>
-    <p class="text-s mb-4">Votre logiciel de gestion de colocation</p>
-    <p>Dashboard General administrateur</p>
+  <div class="bg-gray-700 dashboard-overview-card">
+    <h2 class="text-lg text-center font-semibold">
+      Bienvenue chez {{ colocation.name }} !
+    </h2>
+  </div>
+
+  <div class="bg-gray-900 dashboard-overview-card">
+    <h2 class="text-lg text-center font-bold mb-4">Etat des lieux :</h2>
+    <StateIndicator color="green">
+      <p class="text-sm">Règlement du loyer du mois de {{ TodayMonth }}</p>
+    </StateIndicator>
+  </div>
+
+  <div class="flex flex-col w-full items-center">
+    <div class="bg-gray-900 dashboard-overview-card">
+      <h2 class="text-lg text-center font-bold mb-4">Suivi des règlements :</h2>
+      <ul class="text-sm">
+        <li>
+          <StateIndicator color="green">
+            <p>BATISTA Eric</p>
+          </StateIndicator>
+        </li>
+        <li>
+          <StateIndicator color="green">
+            <p>HOLLANDE Tom</p>
+          </StateIndicator>
+        </li>
+        <li>
+          <StateIndicator color="green">
+            <p>YUI Hui</p>
+          </StateIndicator>
+        </li>
+      </ul>
+    </div>
+
+    <div class="bg-gray-900 dashboard-overview-card">
+      <h2 class="text-lg text-center font-bold mb-4">Suivi des tâches :</h2>
+      <ul class="text-sm">
+        <li>
+          <StateIndicator color="green">
+            <p>BATISTA Eric</p>
+          </StateIndicator>
+        </li>
+        <li>
+          <StateIndicator color="green">
+            <p>HOLLANDE Tom</p>
+          </StateIndicator>
+        </li>
+        <li>
+          <StateIndicator color="green">
+            <p>YUI Hui</p>
+          </StateIndicator>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-/* 
-  todo: 
-    - Etat général de la colocation
-      -> Nombre de colocataires
-      -> Nombre de tâches
-      -> Nombre de dépenses
-      -> Nombre de rapports d'incident
-      -> Nombre de propositions de colocataires
-      -> Etat de payements des dépenses ( tableau ? )
-      si admin :
-        -> Option de modification de la colocation
-        -> Option de suppression de la colocation
-      si colocataire :
-        -> tâche à effectué
-        -> dépenses à payer
-        -> rapports d'incident à lire
-        -> propositions de colocataires à lire
+import { useColocationStore } from "@/stores/useColocationStore";
+import StateIndicator from "@/components/StateIndicator.vue";
 
-*/
 export default {
   name: "DashboardOverview",
+
+  components: {
+    StateIndicator,
+  },
+
+  setup() {
+    const colocation = useColocationStore().getAttributes;
+
+    return {
+      colocation,
+    };
+  },
+
+  methods: {},
+
+  computed: {
+    TodayMonth() {
+      const today = new Date();
+      return today.toLocaleString("fr-FR", { month: "long" }).toUpperCase();
+    },
+  },
 };
 </script>
