@@ -24,7 +24,7 @@
       </div>
       <div
         :class="{ hidden: !isMenuOpen }"
-        class="border w-full text-center md:border-none md:flex md:items-center"
+        class="border w-full text-center md:border-none md:flex md:justify-end"
       >
         <ul class="md:flex md:items-center">
           <li class="border-b md:border-none">
