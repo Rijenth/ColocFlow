@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="w-screen bg-gray-900 md:bg-gray-100 md:w-2/3">
+    <div class="md:w-2/3 bg-gray-900 md:bg-gray-100">
       <div class="flex flex-col items-center justify-center h-full">
         <slot></slot>
       </div>
