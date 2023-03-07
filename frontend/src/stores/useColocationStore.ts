@@ -45,8 +45,12 @@ export const useColocationStore = defineStore("colocation", {
   }),
 
   getters: {
+    // ne devrais pas fonctionner ainsi
     getColocation(): Colocation {
       return this;
+    },
+    getAttributes(): Colocation["data"]["attributes"] {
+      return this.data.attributes;
     },
   },
 

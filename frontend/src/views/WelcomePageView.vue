@@ -1,11 +1,11 @@
 <template>
   <div
-    class="flex flex-col md:flex-row md:items-center p-4 bg-gray-900 text-white md:rounded-xl md:shadow-xl"
+    class="flex flex-col md:flex-row md:items-center p-4 md:m-4 bg-gray-900 text-white md:rounded-xl md:shadow-xl"
   >
-    <div class="w-full border rounded md:border-none p-4 md:w-1/2">
+    <div class="border rounded md:border-none p-4">
       <JoinColoc />
     </div>
-    <div class="w-full border rounded md:border-none p-4 mt-4 md:w-1/2">
+    <div class="border rounded md:border-none p-4 mt-4">
       <CreateColoc class="md:md:border-l-2" />
     </div>
   </div>
