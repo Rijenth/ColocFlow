@@ -7,7 +7,7 @@ interface Relationships {
       id: number;
     };
   };
-  roomates?: {
+  roommates?: {
     data: {
       type: string;
       id: number;
@@ -22,7 +22,7 @@ interface Colocation {
     attributes: {
       name: string;
       monthly_rent: number;
-      max_roomates: number;
+      max_roommates: number;
     };
     relationships: Relationships;
   };
@@ -37,7 +37,7 @@ export const useColocationStore = defineStore("colocation", {
       attributes: {
         name: "",
         monthly_rent: 0,
-        max_roomates: 0,
+        max_roommates: 0,
       },
       relationships: {},
     },
@@ -66,7 +66,7 @@ export const useColocationStore = defineStore("colocation", {
         attributes: {
           name: "",
           monthly_rent: 0,
-          max_roomates: 0,
+          max_roommates: 0,
         },
         relationships: {},
       };

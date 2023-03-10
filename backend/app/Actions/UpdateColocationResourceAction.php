@@ -23,8 +23,8 @@ class UpdateColocationResourceAction
 /*             if (isset($data['relationships']['owner'])) {
                 $this->updateOwnerRelationship($colocation, $data['relationships']);
             } */
-            if (isset($data['relationships']['roomates'])) {
-                $this->updateRoomatesRelationship($colocation, $data['relationships']['roomates']['data']);
+            if (isset($data['relationships']['roommates'])) {
+                $this->updateroommatesRelationship($colocation, $data['relationships']['roommates']['data']);
             }
         }
 
@@ -38,14 +38,14 @@ class UpdateColocationResourceAction
         $colocation->owner()->associate($user);
     } */
 
-    public function updateRoomatesRelationship(Colocation $colocation, array $data): void
+    public function updateroommatesRelationship(Colocation $colocation, array $data): void
     {
-        abort_if(count($colocation->roomates) + 1 > $colocation->max_roomates, 409, "Max roomates reached, can't add more roomates");
+        abort_if(count($colocation->roommates) + 1 > $colocation->max_roommates, 409, "Max roommates reached, can't add more roommates");
 
         if (! empty($data)) {
             $user = ($data["id"] === auth()->user()->id) ? auth()->user() : User::findOrFail($data['id']);
 
-            $colocation->roomates()->save($user);
+            $colocation->roommates()->save($user);
         }
     }
 }

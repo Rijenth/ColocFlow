@@ -13,7 +13,7 @@ class Colocation extends Model
         'name',
         'access_key',
         'monthly_rent',
-        'max_roomates',
+        'max_roommates',
         'user_id',
     ];
 
@@ -30,7 +30,7 @@ class Colocation extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function roomates()
+    public function roommates()
     {
         return $this->hasMany(User::class);
     }

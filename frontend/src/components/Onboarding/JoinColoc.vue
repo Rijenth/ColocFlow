@@ -116,7 +116,7 @@ export default {
           const body = {
             data: {
               relationships: {
-                roomates: {
+                roommates: {
                   data: {
                     type: user.type,
                     id: user.id,

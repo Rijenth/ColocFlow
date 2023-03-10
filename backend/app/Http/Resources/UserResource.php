@@ -22,11 +22,11 @@ class UserResource extends JsonResource
                         ]
                     ]
                 ]),
-                $this->mergeWhen($this->resource->roomate()->exists(), fn () => [
-                    'roomate' => [
+                $this->mergeWhen($this->resource->roommate()->exists(), fn () => [
+                    'roommate' => [
                         'data' => [
                             'type' => 'Colocations',
-                            'id' => $this->resource->roomate->getKey(),
+                            'id' => $this->resource->roommate->getKey(),
                         ]
                     ]
                 ]),

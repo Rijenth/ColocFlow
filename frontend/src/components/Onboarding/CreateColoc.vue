@@ -44,12 +44,12 @@
           >Nombre max de colocataires</label
         >
         <input
-          v-model="Colocation.max_roomates"
+          v-model="Colocation.max_roommates"
           class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
           v-on:keypress="AcceptNumber"
         />
         <label class="text-white my-4">
-          <input v-model="isRoomate" type="checkbox" class="mr-2" />
+          <input v-model="isRoommate" type="checkbox" class="mr-2" />
           Je suis colocataire, je participe aux dépenses et aux tâches
         </label>
       </div>
@@ -74,7 +74,7 @@ interface Colocation {
   name: string;
   access_key: string;
   monthly_rent: number;
-  max_roomates: number;
+  max_roommates: number;
 }
 
 export default {
@@ -90,10 +90,10 @@ export default {
         name: "",
         access_key: "",
         monthly_rent: 0,
-        max_roomates: 1,
+        max_roommates: 1,
       } as Colocation,
       confirmAccessKey: "",
-      isRoomate: false,
+      isRoommate: false,
       loading: false,
     };
   },
@@ -137,7 +137,7 @@ export default {
           "warning"
         );
         return;
-      } else if (this.Colocation.max_roomates < 1) {
+      } else if (this.Colocation.max_roommates < 1) {
         this.flash(
           "Erreur nombre de colocataires !",
           "Le nombre de colocataires doit être supérieur à 0",
@@ -154,7 +154,7 @@ export default {
             name: this.Colocation.name,
             access_key: this.Colocation.access_key,
             monthly_rent: this.Colocation.monthly_rent,
-            max_roomates: this.Colocation.max_roomates,
+            max_roommates: this.Colocation.max_roommates,
           },
         },
       };
@@ -169,13 +169,13 @@ export default {
           const colocation = createColocation.data;
           const owner = createColocation.data.included.owner.data[0];
 
-          if (this.isRoomate === true) {
+          if (this.isRoommate === true) {
             const user = this.authStore.getUser;
 
             const relationships = {
               data: {
                 relationships: {
-                  roomates: {
+                  roommates: {
                     data: {
                       type: user.type,
                       id: user.id,
@@ -228,7 +228,7 @@ export default {
         this.Colocation.name !== "" &&
         this.Colocation.access_key !== "" &&
         this.Colocation.monthly_rent !== "" &&
-        this.Colocation.max_roomates !== ""
+        this.Colocation.max_roommates !== ""
       );
     },
   },

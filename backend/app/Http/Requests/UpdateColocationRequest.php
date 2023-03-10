@@ -25,11 +25,11 @@ class UpdateColocationRequest extends FormRequest
             "data.attributes.name" => "string",
             "data.attributes.access_key" => "string",
             "data.attributes.monthly_rent" => "integer|min:0",
-            "data.attributes.max_roomates" => "integer|min:1",
-            "data.relationships.roomates" => "array",
-            "data.relationships.roomates.data" => "array",
-            "data.relationships.roomates.data.id" => "integer|exists:users,id",
-            "data.relationships.roomates.data.type" => "string|in:Users",
+            "data.attributes.max_roommates" => "integer|min:1",
+            "data.relationships.roommates" => "array",
+            "data.relationships.roommates.data" => "array",
+            "data.relationships.roommates.data.id" => "integer|exists:users,id",
+            "data.relationships.roommates.data.type" => "string|in:Users",
         ];
     }
 }

@@ -7,7 +7,7 @@ interface Relationships {
       id: number;
     };
   };
-  roomate?: {
+  roommate?: {
     data: {
       type: string;
       id: number;

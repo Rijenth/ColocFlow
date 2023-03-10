@@ -52,7 +52,7 @@ class User extends Authenticatable
         return $this->hasOne(Colocation::class);
     }
 
-    public function roomate()
+    public function roommate()
     {
         return $this->belongsTo(Colocation::class, 'colocation_id');
     }

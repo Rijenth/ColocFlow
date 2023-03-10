@@ -6,6 +6,10 @@
   @apply w-80 md:w-1/2 p-4 mb-4 text-white border rounded-lg shadow-xl md:border-none
 }
 
+.dashboard-management-card {
+  @apply w-80 md:w-full p-4 mb-4 text-white border rounded-lg shadow-xl md:border-none
+}
+
 .input-field {
   @apply text-black;
 }
