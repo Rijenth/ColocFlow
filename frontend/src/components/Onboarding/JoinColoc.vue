@@ -127,12 +127,19 @@ export default {
           };
 
           const patchColocation = await axios.patch(
-            "/api/colocations/" + getColocation.data.data.id,
+            "/api/colocations/" +
+              getColocation.data.data.id +
+              "?include=roommates",
             body
           );
 
           if (patchColocation.status === 200) {
-            this.toggleLoading();
+            const updatedUser =
+              patchColocation.data.included.roommates.data.find(
+                (user: any) => user.id === this.authStore.getUser.id
+              );
+
+            this.authStore.setUser(updatedUser);
 
             this.flash(
               "Succès !",
