@@ -114,7 +114,7 @@ export default {
   },
 
   methods: {
-    toggleLoading() {
+    ToggleLoading() {
       this.loading = !this.loading;
     },
     AcceptNumber(event: any) {
@@ -126,7 +126,7 @@ export default {
       return true;
     },
     async StoreColocation() {
-      if (this.FormIsValid() === false) {
+      if (this.ValidateForm() === false) {
         this.flash(
           "Erreur de formulaire !",
           "Veuillez remplir tous les champs",
@@ -149,7 +149,7 @@ export default {
         return;
       }
 
-      this.toggleLoading();
+      this.ToggleLoading();
 
       const body = {
         data: {
@@ -210,7 +210,7 @@ export default {
             this.authStore.setUser(owner);
           }
 
-          this.toggleLoading();
+          this.ToggleLoading();
 
           this.flash(
             "Succès !",
@@ -221,7 +221,7 @@ export default {
           this.$router.push({ name: "dashboard" });
         }
       } catch (error) {
-        this.toggleLoading();
+        this.ToggleLoading();
 
         this.flash(
           error.response.statusText + " !",
@@ -230,7 +230,7 @@ export default {
         );
       }
     },
-    FormIsValid() {
+    ValidateForm() {
       return (
         this.Colocation.name !== "" &&
         this.Colocation.access_key !== "" &&

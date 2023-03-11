@@ -71,7 +71,7 @@ export default {
   },
 
   methods: {
-    toggleLoading() {
+    ToggleLoading() {
       this.loading = !this.loading;
     },
     async joinColocation() {
@@ -105,7 +105,7 @@ export default {
         return;
       }
 
-      this.toggleLoading();
+      this.ToggleLoading();
 
       try {
         const getColocation = await axios.get("/get-colocation", {
@@ -159,7 +159,7 @@ export default {
           }
         }
       } catch (err) {
-        this.toggleLoading();
+        this.ToggleLoading();
 
         if (err.response && err.response.status === 422) {
           this.flash(

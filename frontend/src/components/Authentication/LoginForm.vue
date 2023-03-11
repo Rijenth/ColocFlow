@@ -73,11 +73,11 @@ export default {
     updateSelectedComponent() {
       this.$emit("updateComponent", "RegisterForm");
     },
-    toggleLoading() {
+    ToggleLoading() {
       this.loading = !this.loading;
     },
     async submitForm() {
-      if (!this.formIsValid) {
+      if (!this.ValidateForm) {
         return this.flash(
           "Formulaire vide",
           "Veuillez remplir tous les champs",
@@ -85,7 +85,7 @@ export default {
         );
       }
 
-      this.toggleLoading();
+      this.ToggleLoading();
 
       try {
         const login = await axios.post("/login", {
@@ -135,12 +135,12 @@ export default {
             destination = "/dashboard";
           }
 
-          this.toggleLoading();
+          this.ToggleLoading();
 
           this.$router.push(destination);
         }
       } catch (error) {
-        this.toggleLoading();
+        this.ToggleLoading();
 
         if (error.response.status === 401) {
           return this.flash(
@@ -168,7 +168,7 @@ export default {
   },
 
   computed: {
-    formIsValid() {
+    ValidateForm() {
       return this.username.length > 0 && this.password.length > 0;
     },
   },

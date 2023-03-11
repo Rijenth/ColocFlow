@@ -97,7 +97,7 @@ export default {
     updateSelectedComponent() {
       this.$emit("updateComponent", "LoginForm");
     },
-    toggleLoading() {
+    ToggleLoading() {
       this.loading = !this.loading;
     },
     async registerUser() {
@@ -119,7 +119,7 @@ export default {
         return;
       }
 
-      this.toggleLoading();
+      this.ToggleLoading();
 
       const body = {
         data: {
@@ -142,7 +142,7 @@ export default {
           if (response.status === 201) {
             flash("Succès !", "Vous êtes maintenant inscrit !", "success");
 
-            this.toggleLoading();
+            this.ToggleLoading();
 
             this.updateSelectedComponent();
           }
@@ -167,7 +167,7 @@ export default {
               "error"
             );
           }
-          this.toggleLoading();
+          this.ToggleLoading();
         });
     },
   },
