@@ -6,19 +6,19 @@
       <JoinColoc />
     </div>
     <div class="border rounded md:border-none p-4 mt-4">
-      <CreateColoc class="md:md:border-l-2" />
+      <StartColoc class="md:md:border-l-2" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import CreateColoc from "@/components/Onboarding/CreateColoc.vue";
+import StartColoc from "@/components/Onboarding/StartColoc.vue";
 import JoinColoc from "@/components/Onboarding/JoinColoc.vue";
 
 export default {
   name: "WelcomePage",
   components: {
-    CreateColoc,
+    StartColoc,
     JoinColoc,
   },
 };

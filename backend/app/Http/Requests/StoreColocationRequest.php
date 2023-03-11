@@ -22,8 +22,8 @@ class StoreColocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "data.attributes.name" => ["required", "string", "max:255"],
-            "data.attributes.access_key" => ["required", "string", "min:4", "unique:colocations,access_key"],
+            "data.attributes.name" => ["required", "string", "max:255", "unique:colocations,name"],
+            "data.attributes.access_key" => ["required", "string", "min:4"],
             "data.attributes.monthly_rent" => ["required", "numeric", "min:0"],
             "data.attributes.max_roommates" => ["required", "numeric", "min:1"],
         ];

@@ -19,6 +19,8 @@ export function useLogout() {
         authStore.unsetUser();
         colocationStore.unSetColocation();
         roommateStore.unSetRoomates();
+        sessionStorage.clear();
+
         if (router.currentRoute.value.name !== "home") {
           router.push({ name: "home" });
         }
