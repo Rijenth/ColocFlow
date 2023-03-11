@@ -43,7 +43,7 @@ class ColocationResource extends JsonResource
         }
 
         if ($request->has('include') && $request->get('include') === 'roommates') {
-            $included['roommates'] = $this->mergeWhen($this->resource->roommates()->exists(), fn () => [UserResource::collection($this->resource->roommates)]);
+            $included['roommates'] = $this->mergeWhen($this->resource->roommates()->exists(), fn () => UserResource::collection($this->resource->roommates));
         }
 
         return ['included' => $included];

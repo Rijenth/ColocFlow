@@ -38,6 +38,7 @@ import { useSwal } from "@/composables/useSwal";
 import axios from "@/axios/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
+import { useRoommateStore } from "@/stores/useRoommateStore";
 import LoadingButton from "@/components/LoadingButton.vue";
 
 export default {
@@ -58,12 +59,14 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const colocationStore = useColocationStore();
+    const roommateStore = useRoommateStore();
     const { flash } = useSwal();
 
     return {
       authStore,
       colocationStore,
       flash,
+      roommateStore,
     };
   },
 
@@ -147,6 +150,10 @@ export default {
               "success"
             );
             this.colocationStore.setColocation(patchColocation.data);
+
+            this.roommateStore.fetchRoomates(
+              this.colocationStore.getColocationId
+            );
 
             this.$router.push("/dashboard");
           }

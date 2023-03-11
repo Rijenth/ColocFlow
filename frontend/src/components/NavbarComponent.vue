@@ -30,6 +30,9 @@
           <li class="border-b md:border-none">
             <RouterLink class="router-link" to="/">Accueil</RouterLink>
           </li>
+          <!--           <li class="border-b md:border-none">
+            <RouterLink class="router-link" to="/login">Messagerie</RouterLink>
+          </li> -->
           <li class="border-b md:border-none">
             <RouterLink class="router-link" to="/dashboard"
               >Dashboard</RouterLink

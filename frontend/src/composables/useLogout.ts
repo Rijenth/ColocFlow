@@ -1,6 +1,7 @@
 import axios from "../axios/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
+import { useRoommateStore } from "@/stores/useRoommateStore";
 import { useSwal } from "./useSwal";
 import router from "@/router";
 
@@ -9,6 +10,7 @@ export function useLogout() {
     const { flash } = useSwal();
     const authStore = useAuthStore();
     const colocationStore = useColocationStore();
+    const roommateStore = useRoommateStore();
 
     axios
       .post("/logout")
@@ -16,6 +18,7 @@ export function useLogout() {
         authStore.logout();
         authStore.unsetUser();
         colocationStore.unSetColocation();
+        roommateStore.unSetRoomates();
         if (router.currentRoute.value.name !== "home") {
           router.push({ name: "home" });
         }

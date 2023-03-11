@@ -1,64 +1,81 @@
 <template>
   <div class="bg-gray-700 dashboard-overview-card">
     <h2 class="text-lg text-center font-semibold">
-      Bienvenue chez {{ colocation.name }} !
+      Bienvenue chez
+      {{ colocation.name }}
+      !
     </h2>
   </div>
 
   <div class="bg-gray-900 dashboard-overview-card">
-    <h2 class="text-lg text-center font-bold mb-4">Etat des lieux :</h2>
+    <h2 class="text-sm text-center font-bold mb-4">Etat des lieux :</h2>
     <StateIndicator color="green">
       <p class="text-sm">Règlement du loyer du mois de {{ TodayMonth }}</p>
+    </StateIndicator>
+    <StateIndicator color="green">
+      <p class="text-sm">Aucun message à lire</p>
+    </StateIndicator>
+    <StateIndicator color="green">
+      <p class="text-sm">Incident majeur non résolu</p>
     </StateIndicator>
   </div>
 
   <div class="flex flex-col w-full items-center">
     <div class="bg-gray-900 dashboard-overview-card">
-      <h2 class="text-lg text-center font-bold mb-4">Suivi des règlements :</h2>
-      <ul class="text-sm">
+      <h2 class="text-sm text-center font-bold mb-4">Suivi des règlements :</h2>
+      <ul v-for="roommate in roommates" :key="roommate.id" class="text-sm">
         <li>
           <StateIndicator color="green">
-            <p>BATISTA Eric</p>
-          </StateIndicator>
-        </li>
-        <li>
-          <StateIndicator color="green">
-            <p>HOLLANDE Tom</p>
-          </StateIndicator>
-        </li>
-        <li>
-          <StateIndicator color="green">
-            <p>YUI Hui</p>
+            <p>
+              {{ roommate.attributes.lastname.toUpperCase() }}
+              {{
+                roommate.attributes.firstname.charAt(0).toUpperCase() +
+                roommate.attributes.firstname.slice(1).toLowerCase()
+              }}
+            </p>
           </StateIndicator>
         </li>
       </ul>
     </div>
 
     <div class="bg-gray-900 dashboard-overview-card">
-      <h2 class="text-lg text-center font-bold mb-4">Suivi des tâches :</h2>
+      <h2 class="text-sm text-center font-bold mb-4">Vos charges :</h2>
       <ul class="text-sm">
-        <li>
-          <StateIndicator color="green">
-            <p>BATISTA Eric</p>
-          </StateIndicator>
+        <li class="flex justify-between">
+          <p>Loyer</p>
+          <p>100€</p>
         </li>
-        <li>
-          <StateIndicator color="green">
-            <p>HOLLANDE Tom</p>
-          </StateIndicator>
+        <li class="flex justify-between">
+          <p>Electricité</p>
+          <p>100€</p>
         </li>
-        <li>
-          <StateIndicator color="green">
-            <p>YUI Hui</p>
-          </StateIndicator>
+        <li class="flex justify-between">
+          <p>Eau</p>
+          <p>100€</p>
+        </li>
+        <li class="flex justify-between">
+          <p>Internet</p>
+          <p>100€</p>
+        </li>
+        <li class="flex justify-between">
+          <p>Gaz</p>
+          <p>100€</p>
+        </li>
+        <li class="flex justify-between">
+          <p>Autres</p>
+          <p>100€</p>
         </li>
       </ul>
+    </div>
+
+    <div class="bg-gray-900 dashboard-overview-card">
+      <h2 class="text-sm text-center font-bold mb-4">Messagerie :</h2>
+      <p>Envoyer des messages à quelqu'un en le selectionnant</p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { useColocationStore } from "@/stores/useColocationStore";
 import StateIndicator from "@/components/StateIndicator.vue";
 
 export default {
@@ -68,12 +85,15 @@ export default {
     StateIndicator,
   },
 
-  setup() {
-    const colocation = useColocationStore().getAttributes;
-
-    return {
-      colocation,
-    };
+  props: {
+    colocation: {
+      type: Object,
+      required: true,
+    },
+    roommates: {
+      type: Array,
+      required: true,
+    },
   },
 
   methods: {},

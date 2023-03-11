@@ -48,15 +48,12 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   getters: {
-    isAuthenticated(): boolean {
-      return this.authenticated;
-    },
-    getUser(): User {
-      return this.user;
-    },
-    getColocationId(): number | null {
-      return this.user.attributes.colocation_id;
-    },
+    isAuthenticated: (state: AuthState): boolean => state.authenticated,
+    getColocationId: (state: AuthState): number | undefined =>
+      state.user.relationships.roommate?.data.id,
+    getUser: (state: AuthState): User => state.user,
+    isRoommate: (state: AuthState): boolean =>
+      state.user.relationships.roommate !== undefined,
   },
 
   actions: {

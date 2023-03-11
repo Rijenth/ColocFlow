@@ -37,6 +37,7 @@ import axios from "@/axios/axios";
 import LoadingButton from "@/components/LoadingButton.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
+import { useRoommateStore } from "@/stores/useRoommateStore";
 import { useSwal } from "@/composables/useSwal";
 
 export default {
@@ -57,12 +58,14 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const colocationStore = useColocationStore();
+    const roommateStore = useRoommateStore();
     const { flash } = useSwal();
 
     return {
       authStore,
       colocationStore,
       flash,
+      roommateStore,
     };
   },
 
@@ -98,11 +101,11 @@ export default {
           if (
             (this.authStore.getUser.relationships &&
               this.authStore.getUser.relationships.owner) ||
-            this.authStore.getColocationId !== null
+            this.authStore.isRoommate
           ) {
             let colocation = null;
 
-            if (this.authStore.getColocationId !== null) {
+            if (this.authStore.isRoommate) {
               colocation = await axios.get(
                 `api/colocations/${this.authStore.getColocationId}`
               );
@@ -125,7 +128,9 @@ export default {
 
             this.colocationStore.setColocation(colocation.data);
 
-            this.toggleLoading();
+            this.roommateStore.fetchRoomates(
+              this.colocationStore.getColocationId
+            );
 
             destination = "/dashboard";
           }
