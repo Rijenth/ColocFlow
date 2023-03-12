@@ -17,7 +17,7 @@ class ColocationResource extends JsonResource
                 $this->mergeWhen($this->resource->charges()->exists(), fn () => [
                     'colocation_charges' => [
                         'data' => $this->resource->charges->map(fn ($charge) => [
-                            'type' => "Charges",
+                            'type' => "colocation-charges",
                             'id' => $charge->getKey(),
                         ])
                     ]
@@ -25,7 +25,7 @@ class ColocationResource extends JsonResource
                 $this->mergeWhen($this->resource->owner()->exists(), fn () => [
                     'owner' => [
                         'data' => [
-                            'type' => "Users",
+                            'type' => "users",
                             'id' => $this->resource->owner->getKey(),
                         ]
                     ]
@@ -33,7 +33,7 @@ class ColocationResource extends JsonResource
                 $this->mergeWhen($this->resource->roommates()->exists(), fn () => [
                     'roommates' => [
                         'data' => $this->resource->roommates->map(fn ($user) => [
-                            'type' => "Users",
+                            'type' => "users",
                             'id' => $user->getKey(),
                         ])
                     ]
@@ -47,7 +47,7 @@ class ColocationResource extends JsonResource
         $included = [];
 
         if ($request->has('include') && $request->get('include') === 'colocation_charges') {
-            $included['charges'] = $this->mergeWhen($this->resource->charges()->exists(), fn () => ColocationChargeResource::collection($this->resource->charges));
+            $included['colocation-charges'] = $this->mergeWhen($this->resource->charges()->exists(), fn () => ColocationChargeResource::collection($this->resource->charges));
         }
 
         if ($request->has('include') && $request->get('include') === 'owner') {
