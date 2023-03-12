@@ -29,12 +29,7 @@ export function useLogout() {
         }
       })
       .catch(() => {
-        flash(
-          "Error Unauthenticated",
-          "This action can only be performed while authenticated",
-          "error"
-        );
-        return;
+        window.location.reload();
       });
   }
 
