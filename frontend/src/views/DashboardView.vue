@@ -30,6 +30,7 @@
     <DashboardOverview
       v-if="activeComponent === 'DashboardOverview'"
       :colocation="colocation"
+      :colocationCharges="colocationCharges"
       :roommates="roommates"
     />
     <DashboardManagement
@@ -42,6 +43,7 @@
 import DashboardOverview from "@/components/Dashboard/DashboardOverview.vue";
 import DashboardManagement from "@/components/Dashboard/DashboardManagement.vue";
 import { useColocationStore } from "@/stores/useColocationStore";
+import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
 
 export default {
@@ -54,10 +56,12 @@ export default {
 
   setup() {
     const colocationStore = useColocationStore();
+    const colocationChargeStore = useColocationChargeStore();
     const roommateStore = useRoommateStore();
 
     return {
       colocationStore,
+      colocationChargeStore,
       roommateStore,
     };
   },
@@ -84,6 +88,9 @@ export default {
   computed: {
     colocation() {
       return this.colocationStore.getAttributes;
+    },
+    colocationCharges() {
+      return this.colocationChargeStore.getColocationCharges;
     },
     roommates() {
       return this.roommateStore.getRoommates;

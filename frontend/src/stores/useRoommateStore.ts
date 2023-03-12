@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "@/axios/axios";
+import axios from "@/services/axios";
 
 interface User {
   type: string;
@@ -46,7 +46,7 @@ export const useRoommateStore = defineStore("roommate", {
           this.data = response.data.data;
         }
       } catch (error) {
-        console.log("fetch error");
+        console.log(error);
       }
     },
     unSetRoomates() {

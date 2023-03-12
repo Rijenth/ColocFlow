@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import axios from "@/axios/axios";
+import axios from "@/services/axios";
 import { useSwal } from "@/composables/useSwal";
 import CreateColocation from "@/components/Onboarding/StartColocComponents/CreateColocation.vue";
 import DefineCharges from "@/components/Onboarding/StartColocComponents/DefineCharges.vue";
@@ -102,6 +102,10 @@ export default {
               );
 
               this.roommateStore.fetchRoomates(
+                this.colocationStore.getColocationId
+              );
+
+              this.colocationChargeStore.fetchColocationCharges(
                 this.colocationStore.getColocationId
               );
             }

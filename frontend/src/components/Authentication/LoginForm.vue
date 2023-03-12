@@ -33,10 +33,11 @@
 </template>
 
 <script lang="ts">
-import axios from "@/axios/axios";
+import axios from "@/services/axios";
 import LoadingButton from "@/components/LoadingButton.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
+import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
 import { useSwal } from "@/composables/useSwal";
 
@@ -49,8 +50,8 @@ export default {
 
   data() {
     return {
-      username: "rijenth" as string,
-      password: "rijenth" as string,
+      username: "admin" as string,
+      password: "admin" as string,
       loading: false,
     };
   },
@@ -58,12 +59,14 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const colocationStore = useColocationStore();
+    const colocationChargeStore = useColocationChargeStore();
     const roommateStore = useRoommateStore();
     const { flash } = useSwal();
 
     return {
       authStore,
       colocationStore,
+      colocationChargeStore,
       flash,
       roommateStore,
     };
@@ -129,6 +132,10 @@ export default {
             this.colocationStore.setColocation(colocation.data);
 
             this.roommateStore.fetchRoomates(
+              this.colocationStore.getColocationId
+            );
+
+            this.colocationChargeStore.fetchColocationCharges(
               this.colocationStore.getColocationId
             );
 

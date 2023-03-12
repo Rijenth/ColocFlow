@@ -23,8 +23,8 @@
   <div class="flex flex-col w-full items-center">
     <div class="bg-gray-900 dashboard-overview-card">
       <h2 class="text-sm text-center font-bold mb-4">Suivi des règlements :</h2>
-      <ul v-for="roommate in roommates" :key="roommate.id" class="text-sm">
-        <li>
+      <ul class="text-sm">
+        <li v-for="roommate in roommates" :key="roommate.id">
           <StateIndicator color="green">
             <p>
               {{ roommate.attributes.lastname.toUpperCase() }}
@@ -41,29 +41,13 @@
     <div class="bg-gray-900 dashboard-overview-card">
       <h2 class="text-sm text-center font-bold mb-4">Vos charges :</h2>
       <ul class="text-sm">
-        <li class="flex justify-between">
-          <p>Loyer</p>
-          <p>100€</p>
-        </li>
-        <li class="flex justify-between">
-          <p>Electricité</p>
-          <p>100€</p>
-        </li>
-        <li class="flex justify-between">
-          <p>Eau</p>
-          <p>100€</p>
-        </li>
-        <li class="flex justify-between">
-          <p>Internet</p>
-          <p>100€</p>
-        </li>
-        <li class="flex justify-between">
-          <p>Gaz</p>
-          <p>100€</p>
-        </li>
-        <li class="flex justify-between">
-          <p>Autres</p>
-          <p>100€</p>
+        <li
+          v-for="charge in colocationCharges"
+          :key="charge.id"
+          class="flex justify-between"
+        >
+          <p>{{ $t("colocation.charges." + charge.attributes.name) }}</p>
+          <p>{{ charge.attributes.amount }}</p>
         </li>
       </ul>
     </div>
@@ -88,6 +72,10 @@ export default {
   props: {
     colocation: {
       type: Object,
+      required: true,
+    },
+    colocationCharges: {
+      type: Array,
       required: true,
     },
     roommates: {

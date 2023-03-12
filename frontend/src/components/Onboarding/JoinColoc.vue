@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { useSwal } from "@/composables/useSwal";
-import axios from "@/axios/axios";
+import axios from "@/services/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
@@ -155,6 +155,10 @@ export default {
             this.colocationStore.setColocation(patchColocation.data);
 
             this.roommateStore.fetchRoomates(
+              this.colocationStore.getColocationId
+            );
+
+            this.colocationChargeStore.fetchColocationCharges(
               this.colocationStore.getColocationId
             );
 

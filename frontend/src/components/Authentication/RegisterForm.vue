@@ -59,7 +59,7 @@
 <script lang="ts">
 import LoadingButton from "@/components/LoadingButton.vue";
 import { useSwal } from "@/composables/useSwal";
-import axios from "@/axios/axios";
+import axios from "@/services/axios";
 
 const { flash } = useSwal();
 

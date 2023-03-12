@@ -1,6 +1,7 @@
-import axios from "../axios/axios";
+import axios from "@/services/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
+import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
 import { useSwal } from "./useSwal";
 import router from "@/router";
@@ -10,6 +11,7 @@ export function useLogout() {
     const { flash } = useSwal();
     const authStore = useAuthStore();
     const colocationStore = useColocationStore();
+    const colocationChargeStore = useColocationChargeStore();
     const roommateStore = useRoommateStore();
 
     axios
@@ -18,6 +20,7 @@ export function useLogout() {
         authStore.logout();
         authStore.unsetUser();
         colocationStore.unSetColocation();
+        colocationChargeStore.unSetColocationCharges();
         roommateStore.unSetRoomates();
         sessionStorage.clear();
 
