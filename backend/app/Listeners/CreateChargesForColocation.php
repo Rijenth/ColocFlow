@@ -13,36 +13,26 @@ class CreateChargesForColocation
     {
         $colocation = $event->colocation;
 
-        $colocation->charges()->createMany([
-            [
-                "name" => "Rent",
-                "amount" => $colocation->monthly_rent,
-                "key" => "rent",
-            ],
-            [
-                "name" => "Electricity",
-                "key" => "electricity_charge",
-            ],
-            [
-                "name" => "Heating",
-                "key" => "heating_charge",
-            ],
-            [
-                "name" => "Internet",
-                "key" => "internet_charge",
-            ],
-            [
-                "name" => "Gas",
-                "key" => "gas_charge",
-            ],
-            [
-                "name" => "Others",
-                "key" => "others_charge",
-            ],
-            [
-                "name" => "Water",
-                "key" => "water_charge",
-            ],
-        ]);
+        $data = $event->data['attributes'];
+
+        $storeCharges = [];
+
+        $storeCharges[] = [
+            "name" => "Rent",
+            "amount" => $colocation->monthly_rent,
+            "key" => "rent",
+        ];
+
+        if (isset($data['charges'])) {
+            foreach ($data['charges'] as $charge) {
+                $storeCharges[] = [
+                    "name" => ucwords(explode("_", $charge['key'])[0]),
+                    "amount" => $charge['amount'],
+                    "key" => $charge['key'],
+                ];
+            }
+        };
+
+        $colocation->charges()->createMany($storeCharges);
     }
 }

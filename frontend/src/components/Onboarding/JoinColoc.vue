@@ -11,6 +11,7 @@
     <form
       class="flex w-full flex-col items-center align-middle my-10"
       @submit.prevent="joinColocation"
+      v-on:keydown.space.prevent
     >
       <input
         type="text"
@@ -116,8 +117,12 @@ export default {
         });
 
         if (getColocation.status === 200) {
+          const reponse = getColocation.data;
+
           const body = {
             data: {
+              type: reponse.data.type,
+              id: reponse.data.id,
               relationships: {
                 roommates: {
                   data: {
@@ -130,9 +135,7 @@ export default {
           };
 
           const patchColocation = await axios.patch(
-            "/api/colocations/" +
-              getColocation.data.data.id +
-              "?include=roommates",
+            "/api/colocations/" + reponse.data.id + "?include=roommates",
             body
           );
 

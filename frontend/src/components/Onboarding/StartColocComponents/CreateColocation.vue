@@ -32,7 +32,7 @@
       <input
         v-model="Colocation.monthly_rent"
         class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
-        v-on:keypress="AcceptNumber"
+        v-on:keypress="PreventNonNumericValue"
       />
 
       <label class="text-left text-white my-2"
@@ -41,7 +41,7 @@
       <input
         v-model="Colocation.max_roommates"
         class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
-        v-on:keypress="AcceptNumber"
+        v-on:keypress="PreventNonNumericValue"
       />
       <label class="text-white my-4">
         <input v-model="isRoommate" type="checkbox" class="mr-2" />
@@ -129,7 +129,7 @@ export default {
   },
 
   methods: {
-    AcceptNumber(event: any) {
+    PreventNonNumericValue(event: any) {
       const charCode = event.which ? event.which : event.keyCode;
       if (charCode > 31 && (charCode < 48 || charCode > 57)) {
         event.preventDefault();
@@ -163,6 +163,7 @@ export default {
 
       const body = {
         data: {
+          type: "colocations",
           attributes: {
             name: this.Colocation.name,
             access_key: this.Colocation.access_key,

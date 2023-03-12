@@ -20,9 +20,6 @@ class UpdateColocationResourceAction
         $colocation->save();
 
         if (isset($data['relationships'])) {
-/*             if (isset($data['relationships']['owner'])) {
-                $this->updateOwnerRelationship($colocation, $data['relationships']);
-            } */
             if (isset($data['relationships']['roommates'])) {
                 $this->updateroommatesRelationship($colocation, $data['relationships']['roommates']['data']);
             }
@@ -30,13 +27,6 @@ class UpdateColocationResourceAction
 
         return $colocation->fresh();
     }
-
-/*     public function updateOwnerRelationship(Colocation $colocation, array $data): void
-    {
-        $user = User::firstOrFail($data['owner']['data']['id']);
-
-        $colocation->owner()->associate($user);
-    } */
 
     public function updateroommatesRelationship(Colocation $colocation, array $data): void
     {

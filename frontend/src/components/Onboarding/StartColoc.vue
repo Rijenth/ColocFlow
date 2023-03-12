@@ -81,9 +81,15 @@ export default {
           const relationships = sessionStorage.getItem("relationships");
 
           if (relationships) {
+            const body = JSON.parse(relationships);
+
+            body.data.type = "colocations";
+
+            body.data.id = colocation.data.id;
+
             const colocationUpdated = await axios.patch(
               `/api/colocations/${colocation.data.id}?include=owner`,
-              JSON.parse(relationships)
+              body
             );
 
             if (colocationUpdated.status === 200) {

@@ -6,13 +6,12 @@
     <p class="text-s mb-4">
       Pour vous inscrire, nous allons avoir besoin des informations suivantes
     </p>
-    <form method="post" @submit.prevent="registerUser">
+    <form method="post" @submit.prevent="registerUser" @keydown.space.prevent>
       <input
         class="input-field input-auth"
         type="text"
         placeholder="Nom de famille"
         v-model="user.lastname"
-        @keydown.space.prevent
       />
 
       <input
@@ -20,7 +19,6 @@
         type="text"
         placeholder="Prénom"
         v-model="user.firstname"
-        @keydown.space.prevent
       />
 
       <input
@@ -28,7 +26,6 @@
         type="text"
         placeholder="Nom d'utilisateur"
         v-model="user.username"
-        @keydown.space.prevent
       />
 
       <input
@@ -36,7 +33,6 @@
         type="password"
         placeholder="Mot de passe"
         v-model="user.password"
-        @keydown.space.prevent
       />
 
       <input
@@ -44,7 +40,6 @@
         type="password"
         placeholder="Confirmer votre mot de passe"
         v-model="confirmPassword"
-        @keydown.space.prevent
       />
 
       <LoadingButton :is-loading="loading" class="w-full" text="Inscription" />

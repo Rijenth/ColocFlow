@@ -1,7 +1,11 @@
 <template>
   <h2 class="text-lg font-bold mb-4 text-center">Définissez les dépenses</h2>
-
-  <form class="ml-4" @submit.prevent="$emit('expensesIsDefined', true)">
+  <form
+    class="ml-4"
+    @submit.prevent="StoreExpenses"
+    @keydown.space.prevent
+    v-on:keypress="PreventNonNumericValue"
+  >
     <div class="flex flex-col">
       <label class="text-white mb-4 text-center"
         >Loyer mensuel :
@@ -101,13 +105,13 @@ export default {
 
   data() {
     return {
-      electricity_charge: 0,
-      heating_charge: 0,
-      gas_charge: 0,
-      internet_charge: 0,
-      monthlyRent: 0,
-      others_charge: 0,
-      water_charge: 0,
+      electricity_charge: null,
+      heating_charge: null,
+      gas_charge: null,
+      internet_charge: null,
+      monthlyRent: null,
+      others_charge: null,
+      water_charge: null,
     };
   },
 
@@ -115,6 +119,44 @@ export default {
     loading: {
       type: Boolean,
       required: true,
+    },
+  },
+
+  methods: {
+    PreventNonNumericValue(event: any) {
+      const charCode = event.which ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        event.preventDefault();
+        return false;
+      }
+      return true;
+    },
+    StoreExpenses() {
+      const expenses = [
+        { key: "electricity_charge", amount: this.electricity_charge },
+        { key: "heating_charge", amount: this.heating_charge },
+        { key: "gas_charge", amount: this.gas_charge },
+        { key: "internet_charge", amount: this.internet_charge },
+        { key: "others_charge", amount: this.others_charge },
+        { key: "water_charge", amount: this.water_charge },
+      ];
+
+      const filteredExpenses = Object.fromEntries(
+        // eslint-disable-next-line
+        Object.entries(expenses).filter(([key, value]) => value.amount != null)
+      );
+
+      const colocation = sessionStorage.getItem("colocation");
+
+      if (colocation && Object.keys(filteredExpenses).length > 0) {
+        const colocationData = JSON.parse(colocation);
+
+        colocationData.data.attributes.charges = filteredExpenses;
+
+        sessionStorage.setItem("colocation", JSON.stringify(colocationData));
+      }
+
+      this.$emit("expensesIsDefined", true);
     },
   },
 

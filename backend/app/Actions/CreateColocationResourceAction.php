@@ -20,7 +20,7 @@ class CreateColocationResourceAction
 
         $colocation = $this->updateColocationResourceAction->execute($colocation, $data);
 
-        ColocationCreated::dispatch($colocation);
+        ColocationCreated::dispatch($colocation, $data);
 
         return new ColocationResource($colocation);
     }
