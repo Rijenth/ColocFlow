@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\ColocationController;
 use App\Http\Controllers\RoommateController;
 use Illuminate\Http\Request;
@@ -26,4 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('/colocations/{colocation}/roommates', RoommateController::class)
         ->only(['index']);
+
+    Route::apiResource('/colocations/{colocation}/charges', ChargeController::class)
+        ->only(['store']);
 });

@@ -34,4 +34,9 @@ class Colocation extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function charges()
+    {
+        return $this->hasMany(ColocationCharge::class);
+    }
 }

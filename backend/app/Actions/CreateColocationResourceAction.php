@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Events\ColocationCreated;
 use App\Http\Resources\ColocationResource;
 use App\Models\User;
 
@@ -18,6 +19,8 @@ class CreateColocationResourceAction
         $colocation = $user->owner()->make();
 
         $colocation = $this->updateColocationResourceAction->execute($colocation, $data);
+
+        ColocationCreated::dispatch($colocation);
 
         return new ColocationResource($colocation);
     }

@@ -49,8 +49,8 @@ export default {
 
   data() {
     return {
-      username: "" as string,
-      password: "" as string,
+      username: "rijenth" as string,
+      password: "rijenth" as string,
       loading: false,
     };
   },

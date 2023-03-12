@@ -30,6 +30,7 @@ class UpdateColocationRequest extends FormRequest
             "data.relationships.roommates.data" => "array",
             "data.relationships.roommates.data.id" => "integer|exists:users,id",
             "data.relationships.roommates.data.type" => "string|in:Users",
+            "data.relationships.charges" => "array",
         ];
     }
 }

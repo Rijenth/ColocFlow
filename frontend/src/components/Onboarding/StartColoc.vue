@@ -4,7 +4,7 @@
       v-if="colocationCreated === false"
       @colocationCreated="ColocationHasBeenCreated"
     />
-    <DefineExpenses
+    <DefineCharges
       v-else
       @colocationCreated="ColocationHasBeenCreated"
       @expensesIsDefined="ExpensesHasBeenDefined"
@@ -17,7 +17,7 @@
 import axios from "@/axios/axios";
 import { useSwal } from "@/composables/useSwal";
 import CreateColocation from "@/components/Onboarding/StartColocComponents/CreateColocation.vue";
-import DefineExpenses from "@/components/Onboarding/StartColocComponents/DefineExpenses.vue";
+import DefineCharges from "@/components/Onboarding/StartColocComponents/DefineCharges.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
@@ -27,7 +27,7 @@ export default {
 
   components: {
     CreateColocation,
-    DefineExpenses,
+    DefineCharges,
   },
 
   data() {
