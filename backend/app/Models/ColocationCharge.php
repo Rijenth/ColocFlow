@@ -18,6 +18,7 @@ class ColocationCharge extends Model
 
     protected $hidden = [
         "created_at",
+        "colocation_id",
         "id",
         "updated_at",
     ];
