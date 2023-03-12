@@ -1,0 +1,13 @@
+{
+    "colocation": {
+        "charges": {
+            "Rent": "Rent",
+            "Electricity": "Electricity",
+            "Water": "Water",
+            "Internet": "Internet",
+            "Heating": "Heating",
+            "Gas": "Gas",
+            "Others": "Others"
+        }
+    }
+}
