@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "@/services/axios";
 
 interface Relationships {
   owner?: {
@@ -47,9 +48,17 @@ export const useColocationStore = defineStore("colocation", {
   getters: {
     getAttributes: (state: Colocation) => state.data.attributes,
     getColocationId: (state: Colocation) => state.data.id,
+    colocationIsDefined: (state: Colocation) => state.isDefined,
   },
 
   actions: {
+    async fetchColocation(colocationId: number) {
+      const colocation = await axios.get(`api/colocations/${colocationId}`);
+
+      if (colocation.status === 200) {
+        this.setColocation(colocation.data);
+      }
+    },
     setColocation(colocation: Colocation) {
       this.data = colocation.data;
       this.isDefined = true;

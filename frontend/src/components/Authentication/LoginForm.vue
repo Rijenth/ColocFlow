@@ -33,7 +33,6 @@
 </template>
 
 <script lang="ts">
-import axios from "@/services/axios";
 import LoadingButton from "@/components/LoadingButton.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
@@ -76,11 +75,11 @@ export default {
     updateSelectedComponent() {
       this.$emit("updateComponent", "RegisterForm");
     },
-    ToggleLoading() {
+    toggleLoading() {
       this.loading = !this.loading;
     },
     async submitForm() {
-      if (!this.ValidateForm) {
+      if (!this.validateForm) {
         return this.flash(
           "Formulaire vide",
           "Veuillez remplir tous les champs",
@@ -88,86 +87,45 @@ export default {
         );
       }
 
-      this.ToggleLoading();
+      this.toggleLoading();
 
       try {
-        const login = await axios.post("/login", {
-          username: this.username,
-          password: this.password,
-        });
+        await this.authStore.login(this.username, this.password);
 
-        if (login.status === 200) {
-          this.authStore.login();
-          this.authStore.setUser(login.data.user);
-          let destination = "/welcome";
-
-          if (
-            (this.authStore.getUser.relationships &&
-              this.authStore.getUser.relationships.owner) ||
-            this.authStore.isRoommate
-          ) {
-            let colocation = null;
-
-            if (this.authStore.isRoommate) {
-              colocation = await axios.get(
-                `api/colocations/${this.authStore.getColocationId}`
-              );
-            } else if (
-              this.authStore.getUser.relationships &&
-              this.authStore.getUser.relationships.owner
-            ) {
-              colocation = await axios.get(
-                `api/colocations/${this.authStore.getUser.relationships.owner.data.id}`
-              );
-            }
-
-            if (colocation.status !== 200) {
-              return this.flash(
-                "Erreur !",
-                "Un problème est survenue lors de la récupération de la colocation. Merci de contacter l'administrateur",
-                "error"
-              );
-            }
-
-            this.colocationStore.setColocation(colocation.data);
-
-            this.roommateStore.fetchRoomates(
-              this.colocationStore.getColocationId
-            );
-
-            this.colocationChargeStore.fetchColocationCharges(
-              this.colocationStore.getColocationId
-            );
-
-            destination = "/dashboard";
-          }
-
-          this.ToggleLoading();
-
-          this.$router.push(destination);
+        if (this.authStore.isRoommate) {
+          await this.colocationStore.fetchColocation(
+            this.authStore.getColocationId
+          );
+        } else if (
+          this.authStore.getUser.relationships &&
+          this.authStore.getUser.relationships.owner
+        ) {
+          await this.colocationStore.fetchColocation(
+            this.authStore.getUser.relationships.owner.data.id
+          );
         }
+
+        if (this.colocationStore.colocationIsDefined) {
+          this.roommateStore.fetchRoomates(
+            this.colocationStore.getColocationId
+          );
+
+          this.colocationChargeStore.fetchColocationCharges(
+            this.colocationStore.getColocationId
+          );
+
+          this.$router.push("/dashboard");
+
+          return;
+        }
+
+        this.$router.push("/welcome");
       } catch (error) {
-        this.ToggleLoading();
-
-        if (error.response.status === 401) {
-          return this.flash(
-            "Unauthorized",
-            error.response.data.message,
-            "error"
-          );
-        }
-
-        if (error.response.status === 422) {
-          return this.flash(
-            "Unprocessable Entity",
-            "Veuillez reessayer en remplissant tous les champs requis",
-            "error"
-          );
-        }
+        this.toggleLoading();
 
         return this.flash(
-          "Erreur !",
-          "Un problème est survenue. Merci de contacter l'administrateur",
+          error.response.statusText,
+          error.response.data.message,
           "error"
         );
       }
@@ -175,7 +133,7 @@ export default {
   },
 
   computed: {
-    ValidateForm() {
+    validateForm() {
       return this.username.length > 0 && this.password.length > 0;
     },
   },

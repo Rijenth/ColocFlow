@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "@/services/axios";
 
 interface Relationships {
   owner?: {
@@ -57,8 +58,16 @@ export const useAuthStore = defineStore("auth", {
   },
 
   actions: {
-    login() {
-      this.authenticated = true;
+    async login(username: string, password: string) {
+      const login = await axios.post("/login", {
+        username: username,
+        password: password,
+      });
+
+      if (login.status === 200) {
+        this.authenticated = true;
+        this.setUser(login.data.user);
+      }
     },
     logout() {
       this.authenticated = false;

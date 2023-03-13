@@ -4,7 +4,7 @@ import type { NavigationGuardNext } from "vue-router";
 function HasNoColocation({ next }: { next: NavigationGuardNext }) {
   const colocationStore = useColocationStore();
 
-  if (colocationStore.isDefined) {
+  if (colocationStore.colocationIsDefined) {
     return next({ name: "home" });
   }
 
@@ -14,7 +14,7 @@ function HasNoColocation({ next }: { next: NavigationGuardNext }) {
 function HasColocation({ next }: { next: NavigationGuardNext }) {
   const colocationStore = useColocationStore();
 
-  if (!colocationStore.isDefined) {
+  if (!colocationStore.colocationIsDefined) {
     return next({ name: "home" });
   }
 

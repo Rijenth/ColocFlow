@@ -30,16 +30,12 @@ export const useColocationChargeStore = defineStore("colocationCharges", {
 
   actions: {
     async fetchColocationCharges(colocation_id: number) {
-      try {
-        const response = await axios.get(
-          `api/colocations/${colocation_id}/charges`
-        );
+      const colocationCharges = await axios.get(
+        `api/colocations/${colocation_id}/charges`
+      );
 
-        if (response.status === 200) {
-          this.data = response.data.data;
-        }
-      } catch (error) {
-        console.log(error);
+      if (colocationCharges.status === 200) {
+        this.data = colocationCharges.data.data;
       }
     },
     unSetColocationCharges() {

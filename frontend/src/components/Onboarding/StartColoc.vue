@@ -20,6 +20,7 @@ import CreateColocation from "@/components/Onboarding/StartColocComponents/Creat
 import DefineCharges from "@/components/Onboarding/StartColocComponents/DefineCharges.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
+import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
 
 export default {
@@ -41,12 +42,14 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const colocationStore = useColocationStore();
+    const colocationChargeStore = useColocationChargeStore();
     const roommateStore = useRoommateStore();
     const { flash } = useSwal();
 
     return {
       authStore,
       colocationStore,
+      colocationChargeStore,
       flash,
       roommateStore,
     };
@@ -100,20 +103,20 @@ export default {
               this.authStore.setUser(
                 colocationUpdated.data.included.owner.data[0]
               );
-
-              this.roommateStore.fetchRoomates(
-                this.colocationStore.getColocationId
-              );
-
-              this.colocationChargeStore.fetchColocationCharges(
-                this.colocationStore.getColocationId
-              );
             }
           } else {
             this.colocationStore.setColocation(colocation);
 
             this.authStore.setUser(owner);
           }
+
+          await this.roommateStore.fetchRoomates(
+            this.colocationStore.getColocationId
+          );
+
+          await this.colocationChargeStore.fetchColocationCharges(
+            this.colocationStore.getColocationId
+          );
 
           this.flash(
             "Succès !",
@@ -124,6 +127,7 @@ export default {
           this.$router.push({ name: "dashboard" });
         }
       } catch (error) {
+        console.log(error);
         this.flash(
           error.response.statusText + " !",
           error.response.data.message,

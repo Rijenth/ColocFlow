@@ -37,16 +37,12 @@ export const useRoommateStore = defineStore("roommate", {
 
   actions: {
     async fetchRoomates(colocation_id: number) {
-      try {
-        const response = await axios.get(
-          `api/colocations/${colocation_id}/roommates`
-        );
+      const response = await axios.get(
+        `api/colocations/${colocation_id}/roommates`
+      );
 
-        if (response.status === 200) {
-          this.data = response.data.data;
-        }
-      } catch (error) {
-        console.log(error);
+      if (response.status === 200) {
+        this.data = response.data.data;
       }
     },
     unSetRoomates() {
