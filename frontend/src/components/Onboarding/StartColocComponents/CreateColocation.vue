@@ -108,11 +108,10 @@ export default {
   },
 
   mounted() {
-    const previousColocationData = sessionStorage.getItem("colocation") ?? "";
-    const previousRelationshipsData =
-      sessionStorage.getItem("relationships") ?? "";
+    const previousColocationData = sessionStorage.getItem("colocation");
+    const previousRelationshipsData = sessionStorage.getItem("relationships");
 
-    if (previousColocationData !== "") {
+    if (previousColocationData) {
       const colocation = JSON.parse(previousColocationData);
       this.Colocation.name = colocation.data.attributes.name;
       this.Colocation.access_key = colocation.data.attributes.access_key;
@@ -121,7 +120,7 @@ export default {
       this.confirmAccessKey = colocation.data.attributes.access_key;
     }
 
-    if (previousRelationshipsData !== "") {
+    if (previousRelationshipsData) {
       const relationships = JSON.parse(previousRelationshipsData);
       this.isRoommate =
         relationships.data.relationships.roommates.data !== null;
