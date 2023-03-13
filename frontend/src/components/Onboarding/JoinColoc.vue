@@ -39,6 +39,7 @@ import { useSwal } from "@/composables/useSwal";
 import axios from "@/services/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
+import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
 import LoadingButton from "@/components/LoadingButton.vue";
 
@@ -60,19 +61,21 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const colocationStore = useColocationStore();
+    const colocationChargeStore = useColocationChargeStore();
     const roommateStore = useRoommateStore();
     const { flash } = useSwal();
 
     return {
       authStore,
       colocationStore,
+      colocationChargeStore,
       flash,
       roommateStore,
     };
   },
 
   methods: {
-    ToggleLoading() {
+    toggleLoading() {
       this.loading = !this.loading;
     },
     async joinColocation() {
@@ -106,7 +109,7 @@ export default {
         return;
       }
 
-      this.ToggleLoading();
+      this.toggleLoading();
 
       try {
         const getColocation = await axios.get("/get-colocation", {
@@ -166,7 +169,7 @@ export default {
           }
         }
       } catch (err) {
-        this.ToggleLoading();
+        this.toggleLoading();
 
         if (err.response && err.response.status === 422) {
           this.flash(

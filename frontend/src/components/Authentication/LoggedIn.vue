@@ -61,13 +61,13 @@ export default {
 
   methods: {
     async updateAuthenticationState() {
-      this.ToggleLoading();
+      this.toggleLoading();
 
       await this.logout();
 
       this.$emit("isLoggedIn", false);
     },
-    ToggleLoading() {
+    toggleLoading() {
       this.loading = !this.loading;
     },
   },
