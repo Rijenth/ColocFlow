@@ -23,10 +23,13 @@ interface ColocationCharges {
   data: Charge[];
 }
 
-export const useColocationChargeStore = defineStore("colocationCharges", {
-  state: (): ColocationCharges => ({
-    data: [],
-  }),
+export const useColocationChargeStore = defineStore("colocationChargeStore", {
+  state: (): ColocationCharges =>
+    sessionStorage.getItem("colocationChargeStore")
+      ? JSON.parse(sessionStorage.getItem("colocationChargeStore")!)
+      : {
+          data: [],
+        },
 
   actions: {
     async fetchColocationCharges(colocation_id: number) {

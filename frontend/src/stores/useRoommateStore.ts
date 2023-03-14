@@ -30,10 +30,13 @@ interface Roommates {
   data: User[] | [];
 }
 
-export const useRoommateStore = defineStore("roommate", {
-  state: (): Roommates => ({
-    data: [],
-  }),
+export const useRoommateStore = defineStore("roommateStore", {
+  state: (): Roommates =>
+    sessionStorage.getItem("roommateStore")
+      ? JSON.parse(sessionStorage.getItem("roommateStore")!)
+      : {
+          data: [],
+        },
 
   actions: {
     async fetchRoomates(colocation_id: number) {

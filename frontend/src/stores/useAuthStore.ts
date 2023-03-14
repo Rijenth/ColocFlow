@@ -32,21 +32,24 @@ interface AuthState {
   user: User;
 }
 
-export const useAuthStore = defineStore("auth", {
-  state: (): AuthState => ({
-    authenticated: false,
-    user: {
-      type: "",
-      id: 0,
-      attributes: {
-        lastname: "",
-        firstname: "",
-        username: "",
-        colocation_id: null,
-      },
-      relationships: {},
-    },
-  }),
+export const useAuthStore = defineStore("authStore", {
+  state: (): AuthState =>
+    sessionStorage.getItem("authStore")
+      ? JSON.parse(sessionStorage.getItem("authStore")!)
+      : {
+          authenticated: false,
+          user: {
+            type: "",
+            id: 0,
+            attributes: {
+              lastname: "",
+              firstname: "",
+              username: "",
+              colocation_id: null,
+            },
+            relationships: {},
+          },
+        },
 
   getters: {
     isAuthenticated: (state: AuthState): boolean => state.authenticated,

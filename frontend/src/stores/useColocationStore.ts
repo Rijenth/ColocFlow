@@ -30,20 +30,23 @@ interface Colocation {
   isDefined: boolean;
 }
 
-export const useColocationStore = defineStore("colocation", {
-  state: (): Colocation => ({
-    data: {
-      type: "",
-      id: 0,
-      attributes: {
-        name: "",
-        monthly_rent: 0,
-        max_roommates: 0,
-      },
-      relationships: {},
-    },
-    isDefined: false,
-  }),
+export const useColocationStore = defineStore("colocationStore", {
+  state: (): Colocation =>
+    sessionStorage.getItem("colocationStore")
+      ? JSON.parse(sessionStorage.getItem("colocationStore")!)
+      : {
+          data: {
+            type: "",
+            id: 0,
+            attributes: {
+              name: "",
+              monthly_rent: 0,
+              max_roommates: 0,
+            },
+            relationships: {},
+          },
+          isDefined: false,
+        },
 
   getters: {
     getAttributes: (state: Colocation) => state.data.attributes,
