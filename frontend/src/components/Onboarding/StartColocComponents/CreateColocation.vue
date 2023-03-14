@@ -5,7 +5,7 @@
       <label class="text-left text-white my-2">Nom de la colocation</label>
       <input
         type="text"
-        v-model="Colocation.name"
+        v-model="colocationAttributes.name"
         class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
         placeholder="La joyeuse colonie"
       />
@@ -13,7 +13,7 @@
       <label class="text-left text-white my-2">Code confidentiel d'accès</label>
       <input
         type="text"
-        v-model="Colocation.access_key"
+        v-model="colocationAttributes.access_key"
         class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
         placeholder="*************"
       />
@@ -30,7 +30,7 @@
 
       <label class="text-left text-white my-2">Loyer mensuel</label>
       <input
-        v-model="Colocation.monthly_rent"
+        v-model="colocationAttributes.monthly_rent"
         class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
         v-on:keypress="PreventNonNumericValue"
       />
@@ -39,7 +39,7 @@
         >Nombre max de colocataires</label
       >
       <input
-        v-model="Colocation.max_roommates"
+        v-model="colocationAttributes.max_roommates"
         class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
         v-on:keypress="PreventNonNumericValue"
       />
@@ -81,7 +81,7 @@ export default {
 
   data() {
     return {
-      Colocation: {
+      colocationAttributes: {
         name: "",
         access_key: "",
         monthly_rent: 0,
@@ -113,10 +113,7 @@ export default {
 
     if (previousColocationData) {
       const colocation = JSON.parse(previousColocationData);
-      this.Colocation.name = colocation.data.attributes.name;
-      this.Colocation.access_key = colocation.data.attributes.access_key;
-      this.Colocation.monthly_rent = colocation.data.attributes.monthly_rent;
-      this.Colocation.max_roommates = colocation.data.attributes.max_roommates;
+      this.colocationAttributes = colocation.data.attributes;
       this.confirmAccessKey = colocation.data.attributes.access_key;
     }
 
@@ -144,14 +141,16 @@ export default {
           "warning"
         );
         return;
-      } else if (this.Colocation.access_key !== this.confirmAccessKey) {
+      } else if (
+        this.colocationAttributes.access_key !== this.confirmAccessKey
+      ) {
         this.flash(
           "Erreur code d'accès !",
           "Les codes d'accès ne correspondent pas",
           "warning"
         );
         return;
-      } else if (this.Colocation.max_roommates < 1) {
+      } else if (this.colocationAttributes.max_roommates < 1) {
         this.flash(
           "Erreur nombre de colocataires !",
           "Le nombre de colocataires doit être supérieur à 0",
@@ -163,12 +162,7 @@ export default {
       const body = {
         data: {
           type: "colocations",
-          attributes: {
-            name: this.Colocation.name,
-            access_key: this.Colocation.access_key,
-            monthly_rent: this.Colocation.monthly_rent,
-            max_roommates: this.Colocation.max_roommates,
-          },
+          attributes: this.colocationAttributes,
         },
       };
 
@@ -197,10 +191,10 @@ export default {
     },
     ValidateForm() {
       return (
-        this.Colocation.name !== "" &&
-        this.Colocation.access_key !== "" &&
-        this.Colocation.monthly_rent !== "" &&
-        this.Colocation.max_roommates !== ""
+        this.colocationAttributes.name !== "" &&
+        this.colocationAttributes.access_key !== "" &&
+        this.colocationAttributes.monthly_rent !== "" &&
+        this.colocationAttributes.max_roommates !== ""
       );
     },
   },
