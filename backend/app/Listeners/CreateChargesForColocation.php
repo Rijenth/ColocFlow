@@ -18,20 +18,20 @@ class CreateChargesForColocation
         $storeCharges = [];
 
         $storeCharges[] = [
-            "name" => "Rent",
-            "amount" => $colocation->monthly_rent,
-            "key" => "rent",
+            'name' => 'Rent',
+            'amount' => $colocation->monthly_rent,
+            'key' => 'rent',
         ];
 
         if (isset($data['charges'])) {
             foreach ($data['charges'] as $charge) {
                 $storeCharges[] = [
-                    "name" => ucwords(explode("_", $charge['key'])[0]),
-                    "amount" => $charge['amount'],
-                    "key" => $charge['key'],
+                    'name' => ucwords(explode('_', $charge['key'])[0]),
+                    'amount' => $charge['amount'],
+                    'key' => $charge['key'],
                 ];
             }
-        };
+        }
 
         $colocation->charges()->createMany($storeCharges);
     }

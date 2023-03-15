@@ -14,7 +14,8 @@ class ColocationController extends Controller
     public function __construct(
         private CreateColocationResourceAction $createColocationResourceAction,
         private UpdateColocationResourceAction $updateColocationResourceAction
-    ) {}
+    ) {
+    }
 
     public function index()
     {

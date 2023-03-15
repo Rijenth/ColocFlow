@@ -22,16 +22,16 @@ class UpdateColocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "data.type" => "required|string|in:colocations",
-            "data.id" => "required|integer|exists:colocations,id",
-            "data.attributes.name" => "string",
-            "data.attributes.access_key" => "string",
-            "data.attributes.monthly_rent" => "integer|min:0",
-            "data.attributes.max_roommates" => "integer|min:1",
-            "data.relationships.roommates" => "array",
-            "data.relationships.roommates.data" => "array",
-            "data.relationships.roommates.data.id" => "integer|exists:users,id",
-            "data.relationships.roommates.data.type" => "string|in:users",
+            'data.type' => 'required|string|in:colocations',
+            'data.id' => 'required|integer|exists:colocations,id',
+            'data.attributes.name' => 'string',
+            'data.attributes.access_key' => 'string',
+            'data.attributes.monthly_rent' => 'integer|min:0',
+            'data.attributes.max_roommates' => 'integer|min:1',
+            'data.relationships.roommates' => 'array',
+            'data.relationships.roommates.data' => 'array',
+            'data.relationships.roommates.data.id' => 'integer|exists:users,id',
+            'data.relationships.roommates.data.type' => 'string|in:users',
         ];
     }
 }

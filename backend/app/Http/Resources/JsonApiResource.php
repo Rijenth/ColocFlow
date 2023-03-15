@@ -10,6 +10,7 @@ class JsonApiResource extends JsonResource
     {
         return $this->resource->getAttributes();
     }
+
     public function attributesToArray()
     {
         return [

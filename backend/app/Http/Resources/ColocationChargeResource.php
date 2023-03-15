@@ -22,12 +22,12 @@ class ColocationChargeResource extends JsonResource
                 $this->mergeWhen($this->resource->colocation()->exists(), fn () => [
                     'colocation' => [
                         'data' => [
-                            'type' => "colocations",
+                            'type' => 'colocations',
                             'id' => $this->resource->colocation->getKey(),
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
-            ]
+            ],
         ];
     }
 }

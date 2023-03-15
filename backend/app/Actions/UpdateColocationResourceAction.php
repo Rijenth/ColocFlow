@@ -33,7 +33,7 @@ class UpdateColocationResourceAction
         abort_if(count($colocation->roommates) + 1 > $colocation->max_roommates, 409, "Max roommates reached, can't add more roommates");
 
         if (! empty($data)) {
-            $user = ($data["id"] === auth()->user()->id) ? auth()->user() : User::findOrFail($data['id']);
+            $user = ($data['id'] === auth()->user()->id) ? auth()->user() : User::findOrFail($data['id']);
 
             $colocation->roommates()->save($user);
         }

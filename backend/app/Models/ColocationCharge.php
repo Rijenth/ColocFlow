@@ -10,17 +10,17 @@ class ColocationCharge extends Model
     use HasFactory;
 
     protected $fillable = [
-        "name",
-        "amount",
-        "colocation_id",
-        "key",
+        'name',
+        'amount',
+        'colocation_id',
+        'key',
     ];
 
     protected $hidden = [
-        "created_at",
-        "colocation_id",
-        "id",
-        "updated_at",
+        'created_at',
+        'colocation_id',
+        'id',
+        'updated_at',
     ];
 
     public function colocation()

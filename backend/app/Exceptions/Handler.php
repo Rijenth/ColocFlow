@@ -51,8 +51,7 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Throwable $exception
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function render($request, Throwable $exception)
@@ -61,7 +60,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'status' => 422,
                 'message' => 'One or more fields are invalid.',
-                'details' => $exception->errors()
+                'details' => $exception->errors(),
             ], 422);
         }
 
@@ -90,7 +89,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'status' => 404,
                 'message' => 'This resource does not exist.',
-                'details' => $exception->getMessage()
+                'details' => $exception->getMessage(),
             ], 404);
         }
 
@@ -98,7 +97,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'status' => 405,
                 'message' => 'This method is not allowed.',
-                'details' => $exception->getMessage()
+                'details' => $exception->getMessage(),
             ], 405);
         }
 
@@ -106,7 +105,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'status' => 429,
                 'message' => 'You have exceeded the rate limit.',
-                'details' => $exception->getMessage()
+                'details' => $exception->getMessage(),
             ], 429);
         }
 
@@ -121,7 +120,7 @@ class Handler extends ExceptionHandler
             'status' => 500,
             'message' => 'An internal server error has occurred.',
             'details' => $exception->getMessage(),
-            'trace' => $exception->getTrace()
+            'trace' => $exception->getTrace(),
         ], 500);
     }
 }

@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
 {
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
             'username' => ['required'],
             'password' => ['required'],
@@ -26,8 +27,8 @@ class AuthenticationController extends Controller
         }
 
         return response()->json([
-            "status" => 401,
-            "detail" => "Unauthorized",
+            'status' => 401,
+            'detail' => 'Unauthorized',
             'message' => 'The provided credentials do not match our records.',
         ], 401);
     }

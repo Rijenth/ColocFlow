@@ -10,7 +10,8 @@ class CreateColocationResourceAction
 {
     public function __construct(
         private UpdateColocationResourceAction $updateColocationResourceAction,
-    ) {}
+    ) {
+    }
 
     public function execute(array $data): ColocationResource
     {

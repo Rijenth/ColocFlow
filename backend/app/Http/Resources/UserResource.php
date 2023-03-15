@@ -19,20 +19,18 @@ class UserResource extends JsonResource
                         'data' => [
                             'type' => 'colocations',
                             'id' => $this->resource->owner->getKey(),
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
                 $this->mergeWhen($this->resource->roommate()->exists(), fn () => [
                     'roommate' => [
                         'data' => [
                             'type' => 'colocations',
                             'id' => $this->resource->roommate->getKey(),
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
-            ]
+            ],
         ];
     }
-
-
 }

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return response()->json([
@@ -32,13 +32,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/auth-user', function (Request $request) {
         $user = User::find($request->user()->id);
+
         return response()->json([
             'data' => new UserResource($user),
         ]);
     })->name('authentication.user');
 
-    Route::get('/get-colocation', function(Request $request) {
-        $colocation = Colocation::whereHas('owner', function($query) use ($request) {
+    Route::get('/get-colocation', function (Request $request) {
+        $colocation = Colocation::whereHas('owner', function ($query) use ($request) {
             $query->where('username', $request->username);
         })->firstOrFail();
 

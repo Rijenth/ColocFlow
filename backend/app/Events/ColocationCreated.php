@@ -17,5 +17,6 @@ class ColocationCreated
     public function __construct(
         public Colocation $colocation,
         public array $data,
-    ) {}
+    ) {
+    }
 }

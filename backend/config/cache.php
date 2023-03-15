@@ -13,7 +13,7 @@ return [
     | using this caching library. This connection is used when another is
     | not explicitly specified when executing a given caching function.
     |
-    */
+     */
 
     'default' => env('CACHE_DRIVER', 'file'),
 
@@ -29,7 +29,7 @@ return [
     | Supported drivers: "apc", "array", "database", "file",
     |         "memcached", "redis", "dynamodb", "octane", "null"
     |
-    */
+     */
 
     'stores' => [
 
@@ -103,8 +103,8 @@ return [
     | stores there might be other applications using the same cache. For
     | that reason, you may prefix every cache key to avoid collisions.
     |
-    */
+     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
+    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_cache_'),
 
 ];

@@ -9,7 +9,7 @@ class ColocationResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-            return [
+        return [
             'type' => 'colocations',
             'id' => $this->resource->getKey(),
             'attributes' => $this->resource->toArray(),
@@ -17,28 +17,28 @@ class ColocationResource extends JsonResource
                 $this->mergeWhen($this->resource->charges()->exists(), fn () => [
                     'colocation_charges' => [
                         'data' => $this->resource->charges->map(fn ($charge) => [
-                            'type' => "colocation-charges",
+                            'type' => 'colocation-charges',
                             'id' => $charge->getKey(),
-                        ])
-                    ]
+                        ]),
+                    ],
                 ]),
                 $this->mergeWhen($this->resource->owner()->exists(), fn () => [
                     'owner' => [
                         'data' => [
-                            'type' => "users",
+                            'type' => 'users',
                             'id' => $this->resource->owner->getKey(),
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
                 $this->mergeWhen($this->resource->roommates()->exists(), fn () => [
                     'roommates' => [
                         'data' => $this->resource->roommates->map(fn ($user) => [
-                            'type' => "users",
+                            'type' => 'users',
                             'id' => $user->getKey(),
-                        ])
-                    ]
-                ])
-            ]
+                        ]),
+                    ],
+                ]),
+            ],
         ];
     }
 
