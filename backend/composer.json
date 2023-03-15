@@ -13,7 +13,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
+        "laravel/pint": "^1.6",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
@@ -33,6 +33,8 @@
         }
     },
     "scripts": {
+        "pint:test" : "./vendor/bin/pint --test",
+        "pint:lint" : "./vendor/bin/pint",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
