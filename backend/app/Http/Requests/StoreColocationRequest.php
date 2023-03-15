@@ -23,6 +23,7 @@ class StoreColocationRequest extends FormRequest
     {
         return [
             'data.type' => 'required|string|in:colocations',
+            'data.attributes' => 'array',
             'data.attributes.name' => ['required', 'string', 'max:255', 'unique:colocations,name'],
             'data.attributes.access_key' => ['required', 'string', 'min:4'],
             'data.attributes.monthly_rent' => ['required', 'numeric', 'min:0'],

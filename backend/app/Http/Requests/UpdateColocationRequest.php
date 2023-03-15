@@ -24,6 +24,7 @@ class UpdateColocationRequest extends FormRequest
         return [
             'data.type' => 'required|string|in:colocations',
             'data.id' => 'required|integer|exists:colocations,id',
+            'data.attributes' => 'array',
             'data.attributes.name' => 'string',
             'data.attributes.access_key' => 'string',
             'data.attributes.monthly_rent' => 'integer|min:0',
