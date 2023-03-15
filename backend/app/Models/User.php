@@ -4,6 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -47,12 +50,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function owner()
+    public function charges(): HasMany
+    {
+        return $this->hasMany(Charge::class);
+    }
+
+    public function owner(): HasOne
     {
         return $this->hasOne(Colocation::class);
     }
 
-    public function roommate()
+    public function roommate(): BelongsTo
     {
         return $this->belongsTo(Colocation::class, 'colocation_id');
     }

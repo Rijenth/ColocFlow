@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class ColocationCharge extends Model
+class Charge extends Model
 {
     use HasFactory;
 
@@ -23,8 +25,14 @@ class ColocationCharge extends Model
         'updated_at',
     ];
 
-    public function colocation()
+    public function colocation(): BelongsTo
     {
         return $this->belongsTo(Colocation::class);
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'colocation_charges_users')
+            ->withPivot('amount');
     }
 }

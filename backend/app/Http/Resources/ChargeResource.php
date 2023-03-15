@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ColocationChargeResource extends JsonResource
+class ChargeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,7 @@ class ColocationChargeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'type' => 'colocation-charges',
+            'type' => 'charges',
             'id' => $this->resource->getKey(),
             'attributes' => $this->resource->toArray(),
             'relationships' => [
@@ -27,7 +27,25 @@ class ColocationChargeResource extends JsonResource
                         ],
                     ],
                 ]),
+                $this->mergeWhen($this->resource->users()->exists(), fn () => [
+                    'users' => [
+                        'data' => $this->resource->users->map(fn ($user) => [
+                            'type' => 'users',
+                            'id' => $user->getKey(),
+                            'attributes' => [
+                                'amount' => $user->pivot->amount,
+                            ],
+                        ]),
+                    ],
+                ]),
             ],
+        ];
+    }
+
+    public function with($request)
+    {
+        return [
+            //
         ];
     }
 }

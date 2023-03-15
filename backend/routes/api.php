@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\ColocationChargeController;
 use App\Http\Controllers\ColocationController;
 use App\Http\Controllers\RoommateController;
@@ -30,4 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('/colocations/{colocation}/charges', ColocationChargeController::class)
         ->only(['index']);
+
+    Route::apiResource('/charges', ChargeController::class)
+         ->only(['update', 'show']);
 });
