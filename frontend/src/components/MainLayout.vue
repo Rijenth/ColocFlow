@@ -6,14 +6,16 @@
         Gérez votre coloc en toute simplicité
       </p>
       <img
-        class="p-8"
+        class="p-8 w-2/3 md:w-full"
         src="../assets/background.jpg"
         alt="Drawing with 5 persons talking to each others"
       />
     </div>
 
-    <div class="md:w-2/3 bg-gray-900 md:bg-gray-100">
-      <div class="flex flex-col items-center justify-center h-full">
+    <div class="md:w-2/3 bg-blue-50">
+      <div
+        class="flex flex-col items-center justify-center h-full mt-4 md:mt-0"
+      >
         <slot></slot>
       </div>
     </div>
