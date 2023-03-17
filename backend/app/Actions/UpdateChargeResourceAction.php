@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Events\ChargeUpdated;
 use App\Models\Charge;
 use App\Models\User;
 
@@ -20,6 +21,8 @@ class UpdateChargeResourceAction
                 $this->updateChargeUserRelationship($charge, $data['relationships']['users']['data']);
             }
         }
+
+        ChargeUpdated::dispatch($charge, $data);
 
         return $charge->fresh();
     }
