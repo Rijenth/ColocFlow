@@ -6,9 +6,16 @@
   </div>
   <div class="md:grid md:grid-cols-2 md:gap-4">
     <div class="md:col-span-1">
-      <ManagementOverview />
+      <ManagementOverview
+        :storeRoommates="storeRoommates"
+        :storeCharges="storeCharges"
+      />
     </div>
     <div class="md:col-span-1">
+      <ChargesResume
+        :storeRoommates="storeRoommates"
+        :storeCharges="storeCharges"
+      />
       <ChargesAttribution />
     </div>
   </div>
@@ -17,13 +24,36 @@
 <script lang="ts">
 import ManagementOverview from "@/components/Dashboard/DashboardComponents/ManagementOverview.vue";
 import ChargesAttribution from "@/components/Dashboard/DashboardComponents/ChargesAttribution.vue";
+import ChargesResume from "@/components/Dashboard/DashboardComponents/ChargesResume.vue";
+import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
+import { useRoommateStore } from "@/stores/useRoommateStore";
 
 export default {
   name: "DashboardManagement",
 
+  setup() {
+    const colocationChargeStore = useColocationChargeStore();
+    const roommateStore = useRoommateStore();
+
+    return {
+      colocationChargeStore,
+      roommateStore,
+    };
+  },
+
   components: {
     ManagementOverview,
     ChargesAttribution,
+    ChargesResume,
+  },
+
+  computed: {
+    storeRoommates() {
+      return this.roommateStore;
+    },
+    storeCharges() {
+      return this.colocationChargeStore;
+    },
   },
 };
 </script>

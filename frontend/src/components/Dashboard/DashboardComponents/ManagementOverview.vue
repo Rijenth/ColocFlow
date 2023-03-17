@@ -12,6 +12,9 @@
         <p>Charges</p>
         <p>{{ totalCharges }} €</p>
       </li>
+
+      <hr class="my-2" />
+
       <li class="font-bold flex justify-between">
         <p>Total</p>
         <p>{{ rentAmount + totalCharges }} €</p>
@@ -31,6 +34,13 @@
         <p>{{ charge.attributes.amount }} €</p>
       </li>
     </ul>
+
+    <hr class="my-2" />
+
+    <div class="font-bold flex justify-between">
+      <p>Total</p>
+      <p>{{ totalCharges }} €</p>
+    </div>
   </div>
 
   <div class="bg-gray-900 dashboard-management-card">
@@ -38,49 +48,82 @@
       Répartition des paiements
     </h2>
     <ul class="text-sm">
-      <li class="flex justify-between">
-        <p>Eric BATISTA</p>
-        <p>200€</p>
-      </li>
-      <li class="flex justify-between">
-        <p>Tom HOLLANDE</p>
-        <p>500€</p>
-      </li>
-      <li class="flex justify-between">
-        <p>Hui YUI</p>
-        <p>400€</p>
+      <li
+        class="flex justify-between"
+        v-for="roommate in getRoommates"
+        :key="roommate.id"
+      >
+        <p>
+          {{ roommate.attributes.lastname.toUpperCase() }}
+          {{
+            roommate.attributes.firstname.charAt(0).toUpperCase() +
+            roommate.attributes.firstname.slice(1).toLowerCase()
+          }}
+        </p>
+        <p>{{ getSumUserChargesAmount(roommate.id) }} €</p>
       </li>
     </ul>
 
+    <hr class="my-2" />
+
     <div class="font-bold flex justify-between">
       <p>Total</p>
-      <p>1100€</p>
+      <p>{{ getTotalAmountAffected }} €</p>
+    </div>
+
+    <hr class="my-2" />
+
+    <div class="flex justify-between">
+      <p>Restant dû</p>
+      <p>{{ amountDue }} €</p>
     </div>
   </div>
 </template>
-<script lang="ts">
-import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 
+<script lang="ts">
 export default {
   name: "ManagementOverview",
 
-  setup() {
-    const colocationChargeStore = useColocationChargeStore();
-
-    return {
-      colocationChargeStore,
-    };
+  props: {
+    storeCharges: {
+      type: Object,
+      required: true,
+    },
+    storeRoommates: {
+      type: Object,
+      required: true,
+    },
   },
 
   computed: {
+    amountDue() {
+      return (
+        this.storeCharges.getTotalChargesAmount +
+        this.storeCharges.getRentAmount -
+        this.storeCharges.getTotalAmountAffected
+      );
+    },
     colocationCharges() {
-      return this.colocationChargeStore.getColocationCharges;
+      return this.storeCharges.getColocationCharges.filter(
+        (charge) => charge.attributes.name !== "Rent"
+      );
+    },
+    getSumUserChargesAmount() {
+      return (userId: number) => {
+        return this.storeCharges.getUserTotalAffectedAmount(userId);
+      };
     },
     rentAmount() {
-      return this.colocationChargeStore.getRentAmount;
+      return this.storeCharges.getRentAmount;
+    },
+    getRoommates() {
+      return this.storeRoommates.getRoommates;
     },
     totalCharges() {
-      return this.colocationChargeStore.getTotalChargesAmount;
+      return this.storeCharges.getTotalChargesAmount;
+    },
+    getTotalAmountAffected() {
+      return this.storeCharges.getTotalAmountAffected;
     },
   },
 };
