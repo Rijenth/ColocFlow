@@ -11,12 +11,21 @@
         :storeCharges="storeCharges"
       />
     </div>
-    <div class="md:col-span-1">
+    <div
+      class="md:col-span-1"
+      v-if="
+        storeCharges.getColocationCharges.length !== 0 &&
+        storeRoommates.getRoommates.length !== 0
+      "
+    >
       <ChargesResume
         :storeRoommates="storeRoommates"
         :storeCharges="storeCharges"
       />
-      <ChargesAttribution />
+      <ChargesAttribution
+        :storeRoommates="storeRoommates"
+        :storeCharges="storeCharges"
+      />
     </div>
   </div>
 </template>

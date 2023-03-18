@@ -143,7 +143,7 @@ export default {
 
       const filteredExpenses = Object.fromEntries(
         // eslint-disable-next-line
-        Object.entries(expenses).filter(([key, value]) => value.amount != null)
+        Object.entries(expenses).filter(([key, value]) => value.amount != null && value.amount != "")
       );
 
       const colocation = sessionStorage.getItem("colocation");

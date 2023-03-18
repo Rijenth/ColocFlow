@@ -8,8 +8,14 @@
       </h2>
 
       <ul class="text-sm">
-        <li v-if="user_id === null" class="text-left text-xs">
+        <li v-if="user_id === 0" class="text-left text-xs">
           <p>Aucun colocataire sélectionné</p>
+        </li>
+        <li
+          v-else-if="getUserCharges(user_id).length === 0"
+          class="text-left text-xs"
+        >
+          <p>Aucune charge attribuée</p>
         </li>
         <li
           v-for="charge in getUserCharges(user_id)"
@@ -40,7 +46,9 @@
         class="text-sm w-full px-2 py-1 mt-2 border rounded text-black"
         @change="updateComponentData($event.target.value)"
       >
-        <option value="" disabled selected>Selectionner un colocataire</option>
+        <option :value="0" disabled selected>
+          Selectionner un colocataire
+        </option>
         <option
           v-for="roommate in roommates"
           :key="roommate.id"
@@ -62,7 +70,7 @@ export default {
 
   data() {
     return {
-      user_id: null as number | null,
+      user_id: 0 as number,
       roommate_name: "" as string,
     };
   },

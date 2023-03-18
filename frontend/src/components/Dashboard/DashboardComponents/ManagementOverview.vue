@@ -25,6 +25,9 @@
   <div class="bg-gray-900 dashboard-management-card">
     <h2 class="text-sm text-center font-bold mb-4">Détails des charges</h2>
     <ul class="text-sm">
+      <li v-if="colocationCharges.length === 0" class="text-left text-xs">
+        <p>Aucune charge n'a été ajoutée</p>
+      </li>
       <li
         v-for="charge in colocationCharges"
         :key="charge.id"
@@ -48,6 +51,9 @@
       Répartition des paiements
     </h2>
     <ul class="text-sm">
+      <li v-if="getRoommates.length === 0" class="text-left text-xs">
+        <p>Aucun colocataire n'a été ajouté</p>
+      </li>
       <li
         class="flex justify-between"
         v-for="roommate in getRoommates"
@@ -98,9 +104,11 @@ export default {
   computed: {
     amountDue() {
       return (
-        this.storeCharges.getTotalChargesAmount +
-        this.storeCharges.getRentAmount -
-        this.storeCharges.getTotalAmountAffected
+        (
+          this.storeCharges.getTotalChargesAmount +
+          this.storeCharges.getRentAmount -
+          this.storeCharges.getTotalAmountAffected
+        ).toFixed(2) || 0
       );
     },
     colocationCharges() {
