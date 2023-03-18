@@ -5,7 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,9 +50,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function charges(): HasMany
+    public function charges(): BelongsToMany
     {
-        return $this->hasMany(Charge::class);
+        return $this->belongsToMany(Charge::class, 'colocation_charges_users')
+            ->withPivot('amount');
     }
 
     public function owner(): HasOne
