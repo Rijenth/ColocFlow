@@ -11,9 +11,15 @@ class Charge extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'amount' => 'float',
+        'amount_affected' => 'float',
+    ];
+
     protected $fillable = [
         'name',
         'amount',
+        'amount_affected',
         'colocation_id',
         'key',
     ];

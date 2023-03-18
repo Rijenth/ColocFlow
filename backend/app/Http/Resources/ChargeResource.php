@@ -33,7 +33,7 @@ class ChargeResource extends JsonResource
                             'type' => 'users',
                             'id' => $user->getKey(),
                             'attributes' => [
-                                'amount' => $user->pivot->amount,
+                                'amount' => (float) $user->pivot->amount,
                             ],
                         ]),
                     ],

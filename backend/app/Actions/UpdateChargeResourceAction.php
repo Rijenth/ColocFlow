@@ -32,7 +32,9 @@ class UpdateChargeResourceAction
         if (! empty($data)) {
             $user = User::findOrFail($data['id']);
 
-            $newlyAffectedAmount = ($charge->users()->sum('amount') + $data['attributes']['amount']) - $charge->users()->find($user->id)->pivot->amount;
+            $previouslyAffectedAmount = ($charge->users()->find($user->id)->pivot?->amount) ?? 0;
+
+            $newlyAffectedAmount = ($charge->users()->sum('amount') + $data['attributes']['amount']) - $previouslyAffectedAmount;
 
             abort_if(
                 $newlyAffectedAmount > $charge->amount,
