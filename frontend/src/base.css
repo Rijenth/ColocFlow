@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  input[type='number'] {
+    appearance: textfield !important;
+  }
+}
+
 .dashboard-overview-card {
   @apply w-80 md:w-1/2 p-4 mb-4 text-white border rounded-lg shadow-xl md:border-none
 }

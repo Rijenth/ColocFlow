@@ -1,6 +1,6 @@
 <template>
   <div
-    class="md:w-1/2 m-6 border p-4 bg-gray-900 text-white rounded-lg shadow-xl"
+    class="flex flex-col items-center md:w-1/2 m-6 border p-4 bg-gray-900 text-white rounded-lg shadow-xl"
   >
     <h2 class="text-lg font-bold mb-2">Formulaire d'inscription</h2>
     <p class="text-s mb-4">
@@ -42,9 +42,12 @@
         v-model="confirmPassword"
       />
 
-      <LoadingButton :is-loading="loading" class="w-full" text="Inscription" />
-
-      <div class="text-center mt-2">
+      <div class="flex flex-col items-center mt-2">
+        <LoadingButton
+          :is-loading="loading"
+          class="w-full md:w-1/2"
+          text="Inscription"
+        />
         <a
           class="hover:text-blue-800"
           href="/"

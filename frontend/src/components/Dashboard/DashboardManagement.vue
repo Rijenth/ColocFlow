@@ -4,7 +4,7 @@
   >
     <h2 class="text-lg text-center font-semibold">Gestion des comptes</h2>
   </div>
-  <div class="md:grid md:grid-cols-2 md:gap-4">
+  <div class="md:mx-4 md:grid md:grid-cols-2 md:gap-4">
     <div class="md:col-span-1">
       <ManagementOverview
         :storeRoommates="storeRoommates"
