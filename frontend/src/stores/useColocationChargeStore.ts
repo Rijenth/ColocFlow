@@ -55,6 +55,25 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
     unSetColocationCharges() {
       this.data = [];
     },
+    async updateChargeUserRelationship(charge_id: number, body: string) {
+      const response = await axios.patch(
+        `api/charges/${charge_id}`,
+        JSON.parse(body)
+      );
+
+      if (response && response.status === 200) {
+        const updatedCharge = response.data.data;
+
+        this.data = this.data.map((charge) => {
+          if (charge.id === updatedCharge.id) {
+            return updatedCharge;
+          }
+          return charge;
+        });
+      }
+
+      return response;
+    },
   },
 
   getters: {
@@ -79,7 +98,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
           );
 
           if (user) {
-            return user.attributes.amount;
+            return Number(user.attributes.amount.toFixed(2));
           }
         }
 
@@ -89,12 +108,25 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
     getColocationCharge: (state) => (id: number) => {
       return state.data.find((charge) => charge.id === id);
     },
+    getUserColocationCharge: (state) => (userId: number, chargeId: number) => {
+      const charge = state.data.find((charge) => charge.id === chargeId);
+
+      if (charge) {
+        const user = charge.relationships.users?.data.find(
+          (user) => user.id === userId
+        );
+
+        if (user) {
+          return user;
+        }
+      }
+    },
     getRentAmount: (state) => {
       const rent = state.data.find(
         (charge) => charge.attributes.name === "Rent"
       );
 
-      return rent ? rent.attributes.amount : 0;
+      return rent ? Number(rent.attributes.amount.toFixed(2)) : 0;
     },
     getUserTotalAffectedAmount: (state) => (userId: number) => {
       let total = 0;
@@ -111,7 +143,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         }
       });
 
-      return total;
+      return Number(total.toFixed(2));
     },
     getTotalChargesAmount: (state) => {
       let total = 0;
@@ -122,7 +154,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         }
       });
 
-      return total;
+      return Number(total.toFixed(2));
     },
     getTotalAmountAffected: (state) => {
       let total = 0;
@@ -131,7 +163,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         total += charge.attributes.amount_affected;
       });
 
-      return total;
+      return Number(total.toFixed(2));
     },
   },
 });
