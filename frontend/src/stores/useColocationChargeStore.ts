@@ -98,7 +98,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
           );
 
           if (user) {
-            return Number(user.attributes.amount.toFixed(2));
+            return parseFloat(user.attributes.amount.toFixed(2));
           }
         }
 
@@ -126,7 +126,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         (charge) => charge.attributes.name === "Rent"
       );
 
-      return rent ? Number(rent.attributes.amount.toFixed(2)) : 0;
+      return rent ? parseFloat(rent.attributes.amount.toFixed(2)) : 0;
     },
     getUserTotalAffectedAmount: (state) => (userId: number) => {
       let total = 0;
@@ -143,7 +143,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         }
       });
 
-      return Number(total.toFixed(2));
+      return parseFloat(total.toFixed(2));
     },
     getTotalChargesAmount: (state) => {
       let total = 0;
@@ -154,7 +154,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         }
       });
 
-      return Number(total.toFixed(2));
+      return parseFloat(total.toFixed(2));
     },
     getTotalAmountAffected: (state) => {
       let total = 0;
@@ -163,7 +163,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         total += charge.attributes.amount_affected;
       });
 
-      return Number(total.toFixed(2));
+      return parseFloat(total.toFixed(2));
     },
   },
 });

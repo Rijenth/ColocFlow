@@ -44,18 +44,18 @@
         <label for="amount" class="mb-2">Montant (€ ou %) :</label>
         <div class="flex">
           <input
-            type="text"
+            class="text-sm w-3/4 px-2 py-1 rounded text-black text-right mr-2"
+            :disabled="!chargeId"
             id="amount"
-            class="text-sm w-3/4 px-2 py-1 rounded text-black text-right mr-1"
-            v-model="amount"
-            :disabled="amount === 0"
-            placeholder="0"
             @keypress="allowOnlyPositiveNumbersWithMaxTwoDecimals($event)"
+            type="number"
+            step="0.01"
+            v-model="amount"
           />
           <select
             id="percentage"
             class="text-sm w-1/4 px-2 py-1 rounded text-black"
-            :disabled="amount === 0"
+            :disabled="!chargeId"
             @change="updateComponentDataAmount($event.target.value, true)"
           >
             <option disabled selected>0%</option>
@@ -75,7 +75,7 @@
 
       <div class="flex justify-center">
         <LoadingButton
-          class="w-full mt-4"
+          class="w-full mt-4 text-sm"
           :isLoading="loading"
           :text="'Attribuer'"
         />
@@ -163,10 +163,20 @@ export default {
       }
     },
     async updateChargeUserRelationship() {
-      if (this.userId === 0 || this.chargeId === 0 || this.amount === 0) {
+      if (this.userId === 0 || this.chargeId === 0 || this.amount === "") {
         this.flash(
           "Formulaire incomplet",
           "Veuillez remplir tous les champs du formulaire",
+          "warning"
+        );
+
+        return;
+      }
+
+      if (this.amount === 0) {
+        this.flash(
+          "Erreur de saisie",
+          "Vous ne pouvez pas attribuer 0 à une charge payée par un colocataire",
           "warning"
         );
 
@@ -254,12 +264,11 @@ export default {
         );
 
         if (charge) {
-          const amount =
-            isPercentage === true
-              ? ((charge.attributes.amount * number) / 100).toFixed(2)
-              : charge.attributes.amount;
+          let amount = charge.attributes.amount;
 
-          if (isPercentage === false) {
+          if (isPercentage === true) {
+            amount = parseFloat(((amount * number) / 100).toFixed(2));
+          } else {
             const select = document.getElementById(
               "percentage"
             ) as HTMLSelectElement;
