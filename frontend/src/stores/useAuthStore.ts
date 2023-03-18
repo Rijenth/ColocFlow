@@ -54,7 +54,8 @@ export const useAuthStore = defineStore("authStore", {
   getters: {
     isAuthenticated: (state: AuthState): boolean => state.authenticated,
     getColocationId: (state: AuthState): number | undefined =>
-      state.user.relationships.roommate?.data.id,
+      state.user.relationships.roommate?.data.id ||
+      state.user.relationships.owner?.data.id,
     getUser: (state: AuthState): User => state.user,
     isRoommate: (state: AuthState): boolean =>
       state.user.relationships.roommate !== undefined,

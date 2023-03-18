@@ -19,6 +19,7 @@
       "
     >
       <ChargesResume
+        :storeAuth="storeAuth"
         :storeRoommates="storeRoommates"
         :storeCharges="storeCharges"
       />
@@ -34,6 +35,7 @@
 import ManagementOverview from "@/components/Dashboard/DashboardComponents/ManagementOverview.vue";
 import ChargesAttribution from "@/components/Dashboard/DashboardComponents/ChargesAttribution.vue";
 import ChargesResume from "@/components/Dashboard/DashboardComponents/ChargesResume.vue";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
 
@@ -41,10 +43,12 @@ export default {
   name: "DashboardManagement",
 
   setup() {
+    const authStore = useAuthStore();
     const colocationChargeStore = useColocationChargeStore();
     const roommateStore = useRoommateStore();
 
     return {
+      authStore,
       colocationChargeStore,
       roommateStore,
     };
@@ -57,6 +61,9 @@ export default {
   },
 
   computed: {
+    storeAuth() {
+      return this.authStore;
+    },
     storeRoommates() {
       return this.roommateStore;
     },

@@ -22,7 +22,18 @@
           :key="charge.id"
           class="flex justify-between"
         >
-          <p>{{ $t("colocation.charges." + charge.attributes.name) }}</p>
+          <label for="chargeName" class="flex flex-row">
+            <input
+              class="mr-2"
+              type="checkbox"
+              v-if="removeCharge"
+              :value="charge.id"
+            />
+            <p id="chargeName">
+              {{ $t("colocation.charges." + charge.attributes.name) }}
+            </p>
+          </label>
+
           <p>
             {{ getAffectedAmount(this.user_id, charge.id) }}
             €
@@ -61,21 +72,67 @@
         </option>
       </select>
     </div>
+
+    <div class="flex flex-row justify-around">
+      <LoadingButton
+        @click="deleteCharges"
+        class="text-sm border text-white bg-gray-800 hover:bg-blue-900 py-2 px-4 rounded"
+        :is-loading="loading"
+        text="Valider"
+        v-if="removeCharge && user_id !== 0"
+      />
+
+      <LoadingButton
+        class="text-sm border text-white bg-gray-800 hover:bg-blue-900 py-2 px-4 rounded"
+        @click="removeCharge = false"
+        text="Annuler"
+        v-if="removeCharge && user_id !== 0"
+      />
+
+      <button
+        class="text-sm border text-white bg-gray-800 hover:bg-blue-900 py-2 px-4 rounded"
+        @click="removeCharge = true"
+        v-if="!removeCharge && user_id !== 0"
+      >
+        Retirer des charges
+      </button>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+import LoadingButton from "@/components/LoadingButton.vue";
+import { useSwal } from "@/composables/useSwal";
+
 export default {
   name: "ChargesResume",
+
+  components: {
+    LoadingButton,
+  },
+
+  setup() {
+    const { flash } = useSwal();
+
+    return {
+      flash,
+    };
+  },
 
   data() {
     return {
       user_id: 0 as number,
       roommate_name: "" as string,
+      removeCharge: false as boolean,
+      loading: false as boolean,
     };
   },
 
   props: {
+    storeAuth: {
+      type: Object,
+      required: true,
+    },
     storeRoommates: {
       type: Object,
       required: true,
@@ -87,10 +144,75 @@ export default {
   },
 
   methods: {
+    async deleteCharges() {
+      this.loading = !this.loading;
+
+      const checkboxes = document.querySelectorAll(
+        "input[type=checkbox]:checked"
+      );
+
+      const chargeIds = Array.from(checkboxes).map((el) => el.value);
+
+      if (chargeIds.length === 0) {
+        this.flash(
+          "Aucun élément sélectionné",
+          "Vous devez sélectionner au moins une charge à supprimer",
+          "warning"
+        );
+        this.loading = !this.loading;
+        return;
+      }
+
+      const body = {
+        data: chargeIds.map((chargeId) => {
+          return {
+            id: chargeId,
+            type: "charges",
+          };
+        }),
+      };
+
+      try {
+        const response = await this.storeCharges.deleteChargeUserRelationship(
+          JSON.stringify(body),
+          this.user_id
+        );
+
+        if (response && response.status === 204) {
+          await this.storeCharges.fetchColocationCharges(
+            this.storeAuth.getColocationId
+          );
+
+          this.flash(
+            "Charge(s) supprimée(s)",
+            "Opération effectuée avec succès",
+            "success"
+          );
+        }
+      } catch (error) {
+        if (error.response) {
+          this.flash(
+            error.response.statusText,
+            error.response.data.message,
+            "error"
+          );
+        } else {
+          this.flash(
+            "Une erreur est survenue",
+            "Impossible de supprimer les charges, si le problème persiste, veuillez contacter l'administrateur du site",
+            "error"
+          );
+        }
+      }
+
+      this.removeCharge = false;
+      this.loading = !this.loading;
+    },
     updateComponentData(value: string) {
       const [userId, roommateName] = value.split("|");
       this.user_id = parseInt(userId);
       this.roommate_name = "à " + roommateName;
+      this.removeCharge = false;
     },
   },
 

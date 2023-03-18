@@ -43,6 +43,18 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         },
 
   actions: {
+    async deleteChargeUserRelationship(body: string, user_id: number) {
+      const formattedBody = {
+        data: JSON.parse(body),
+      };
+
+      const response = await axios.delete(
+        `api/users/${user_id}/relationships/charges`,
+        formattedBody
+      );
+
+      return response;
+    },
     async fetchColocationCharges(colocation_id: number) {
       const colocationCharges = await axios.get(
         `api/colocations/${colocation_id}/charges`
@@ -55,7 +67,7 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
     unSetColocationCharges() {
       this.data = [];
     },
-    async updateChargeUserRelationship(charge_id: number, body: string) {
+    async updateChargeUserRelationship(body: string, charge_id: number) {
       const response = await axios.patch(
         `api/charges/${charge_id}`,
         JSON.parse(body)

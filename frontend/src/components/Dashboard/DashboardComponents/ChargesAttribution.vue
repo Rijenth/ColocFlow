@@ -75,7 +75,7 @@
 
       <div class="flex justify-center">
         <LoadingButton
-          class="w-full mt-4 text-sm"
+          class="w-full mt-4 text-sm border"
           :isLoading="loading"
           :text="'Attribuer'"
         />
@@ -222,8 +222,8 @@ export default {
 
       try {
         const response = await this.storeCharges.updateChargeUserRelationship(
-          this.chargeId,
-          JSON.stringify(body)
+          JSON.stringify(body),
+          this.chargeId
         );
 
         if (response && response.status === 200) {
