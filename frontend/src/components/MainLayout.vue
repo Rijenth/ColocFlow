@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col md:flex-row h-screen bg-gray-900">
-    <div class="md:w-1/3 flex flex-col items-center">
+  <div class="flex flex-col md:flex-row h-screen bg-blue-50">
+    <div class="md:w-1/3 flex flex-col items-center bg-gray-900">
       <h1 class="text-white text-4xl font-bold">ColocFlow</h1>
       <p class="text-white text-xl mt-2">
         Gérez votre coloc en toute simplicité
@@ -12,9 +12,9 @@
       />
     </div>
 
-    <div class="md:w-2/3 bg-blue-50">
+    <div class="md:w-2/3">
       <div
-        class="flex flex-col items-center justify-center h-full mt-4 md:mt-0"
+        class="flex flex-col bg-blue-50 items-center justify-center h-full pt-8 md:pt-0"
       >
         <slot></slot>
       </div>
