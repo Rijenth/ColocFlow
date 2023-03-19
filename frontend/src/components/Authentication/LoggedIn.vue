@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       username: "" as string,
-      loading: false,
+      loading: false as boolean,
     };
   },
 
@@ -68,7 +68,11 @@ export default {
       this.$emit("isLoggedIn", false);
     },
     toggleLoading() {
-      this.loading = !this.loading;
+      if (this.loading === true) {
+        this.loading = false;
+      } else {
+        this.loading = true;
+      }
     },
   },
 

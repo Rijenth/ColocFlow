@@ -12,6 +12,7 @@ interface middlewareContext {
 
 export default function middlewarePipeline(
   context: middlewareContext,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   middleware: any[],
   index: number
 ) {

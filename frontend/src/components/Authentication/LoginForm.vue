@@ -49,9 +49,9 @@ export default {
 
   data() {
     return {
-      username: "admin" as string,
-      password: "admin" as string,
-      loading: false,
+      username: "" as string,
+      password: "" as string,
+      loading: false as boolean,
     };
   },
 
@@ -76,10 +76,14 @@ export default {
       this.$emit("updateComponent", "RegisterForm");
     },
     toggleLoading() {
-      this.loading = !this.loading;
+      if (this.loading === true) {
+        this.loading = false;
+      } else {
+        this.loading = true;
+      }
     },
     async submitForm() {
-      if (!this.validateForm) {
+      if (this.validateForm === false) {
         return this.flash(
           "Formulaire vide",
           "Veuillez remplir tous les champs",
@@ -92,20 +96,20 @@ export default {
       try {
         await this.authStore.login(this.username, this.password);
 
-        if (this.authStore.isRoommate) {
+        if (this.authStore.isRoommate === true) {
           await this.colocationStore.fetchColocation(
             this.authStore.getColocationId
           );
         } else if (
-          this.authStore.getUser.relationships &&
-          this.authStore.getUser.relationships.owner
+          this.authStore.getUser.relationships !== undefined &&
+          this.authStore.getUser.relationships.owner !== undefined
         ) {
           await this.colocationStore.fetchColocation(
             this.authStore.getUser.relationships.owner.data.id
           );
         }
 
-        if (this.colocationStore.colocationIsDefined) {
+        if (this.colocationStore.colocationIsDefined === true) {
           this.roommateStore.fetchRoomates(
             this.colocationStore.getColocationId
           );
@@ -123,11 +127,19 @@ export default {
       } catch (error) {
         this.toggleLoading();
 
-        return this.flash(
-          error.response.statusText,
-          error.response.data.message,
-          "error"
-        );
+        if (error.response !== undefined) {
+          return this.flash(
+            error.response.statusText,
+            error.response.data.message,
+            "error"
+          );
+        } else {
+          return this.flash(
+            "Erreur",
+            "Une erreur est survenue lors de la connexion",
+            "error"
+          );
+        }
       }
     },
   },

@@ -87,8 +87,8 @@ export default {
       lastname: "",
       firstname: "",
     } as User,
-    confirmPassword: "",
-    loading: false,
+    confirmPassword: "" as string,
+    loading: false as boolean,
   }),
 
   methods: {
@@ -96,10 +96,14 @@ export default {
       this.$emit("updateComponent", "LoginForm");
     },
     toggleLoading() {
-      this.loading = !this.loading;
+      if (this.loading === true) {
+        this.loading = false;
+      } else {
+        this.loading = true;
+      }
     },
     async registerUser() {
-      if (!this.fieldsAreEmpty) {
+      if (this.fieldsAreNotEmpty === false) {
         flash(
           "Erreur !",
           "Erreur, tous les champs doivent être remplis",
@@ -108,7 +112,7 @@ export default {
         return;
       }
 
-      if (!this.userPasswordIsConfirmed) {
+      if (this.userPasswordIsConfirmed === false) {
         flash(
           "Erreur !",
           "Erreur, les mots de passe ne correspondent pas",
@@ -174,7 +178,7 @@ export default {
     userPasswordIsConfirmed() {
       return this.user.password === this.confirmPassword;
     },
-    fieldsAreEmpty() {
+    fieldsAreNotEmpty() {
       return (
         this.user.username !== "" &&
         this.user.password !== "" &&
