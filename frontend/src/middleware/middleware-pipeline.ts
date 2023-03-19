@@ -18,11 +18,12 @@ export default function middlewarePipeline(
 ) {
   const nextMiddleware = middleware[index];
 
-  if (!nextMiddleware) {
+  if (nextMiddleware === undefined) {
     return context.next;
   }
 
   return (param: RouteLocationRaw) => {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (param) return context.next(param);
 
     const nextPipeline = middlewarePipeline(context, middleware, index + 1);

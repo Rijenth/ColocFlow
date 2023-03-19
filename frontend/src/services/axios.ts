@@ -10,7 +10,7 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (error.response && error.response.status === 419) {
+    if (error.response !== undefined && error.response.status === 419) {
       await instance.get("/sanctum/csrf-cookie");
       error.config.headers["X-XSRF-TOKEN"] = document.cookie
         .split("; ")
