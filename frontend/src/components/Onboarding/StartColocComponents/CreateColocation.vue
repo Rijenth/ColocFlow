@@ -70,6 +70,10 @@ interface Colocation {
   max_roommates: number;
 }
 
+interface keypressEvent extends KeyboardEvent {
+  which: number;
+}
+
 export default {
   name: "StartColoc",
 
@@ -108,8 +112,12 @@ export default {
   },
 
   mounted() {
-    const previousColocationData = sessionStorage.getItem("colocation");
-    const previousRelationshipsData = sessionStorage.getItem("relationships");
+    const previousColocationData = sessionStorage.getItem(
+      "colocation"
+    ) as string;
+    const previousRelationshipsData = sessionStorage.getItem(
+      "relationships"
+    ) as string;
 
     if (previousColocationData) {
       const colocation = JSON.parse(previousColocationData);
@@ -125,7 +133,7 @@ export default {
   },
 
   methods: {
-    PreventNonNumericValue(event: any) {
+    PreventNonNumericValue(event: keypressEvent) {
       const charCode = event.which ? event.which : event.keyCode;
       if (charCode > 31 && (charCode < 48 || charCode > 57)) {
         event.preventDefault();

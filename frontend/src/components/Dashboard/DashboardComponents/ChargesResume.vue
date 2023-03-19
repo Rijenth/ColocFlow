@@ -92,7 +92,9 @@
       <button
         class="text-sm border text-white bg-gray-800 hover:bg-blue-900 py-2 px-4 rounded"
         @click="removeCharge = true"
-        v-if="!removeCharge && user_id !== 0"
+        v-if="
+          !removeCharge && user_id !== 0 && getUserCharges(user_id).length > 0
+        "
       >
         Retirer des charges
       </button>
@@ -145,7 +147,7 @@ export default {
 
   methods: {
     async deleteCharges() {
-      this.loading = !this.loading;
+      this.toggleLoading();
 
       const checkboxes = document.querySelectorAll(
         "input[type=checkbox]:checked"
@@ -159,7 +161,7 @@ export default {
           "Vous devez sélectionner au moins une charge à supprimer",
           "warning"
         );
-        this.loading = !this.loading;
+        this.toggleLoading();
         return;
       }
 
@@ -178,7 +180,7 @@ export default {
           this.user_id
         );
 
-        if (response && response.status === 204) {
+        if (response !== undefined && response.status === 204) {
           await this.storeCharges.fetchColocationCharges(
             this.storeAuth.getColocationId
           );
@@ -190,7 +192,7 @@ export default {
           );
         }
       } catch (error) {
-        if (error.response) {
+        if (error.response !== undefined) {
           this.flash(
             error.response.statusText,
             error.response.data.message,
@@ -206,7 +208,14 @@ export default {
       }
 
       this.removeCharge = false;
-      this.loading = !this.loading;
+      this.toggleLoading();
+    },
+    toggleLoading() {
+      if (this.loading === true) {
+        this.loading = false;
+      } else {
+        this.loading = true;
+      }
     },
     updateComponentData(value: string) {
       const [userId, roommateName] = value.split("|");

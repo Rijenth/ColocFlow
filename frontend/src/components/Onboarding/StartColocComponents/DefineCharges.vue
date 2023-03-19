@@ -94,6 +94,10 @@
 <script lang="ts">
 import LoadingButton from "@/components/LoadingButton.vue";
 
+interface keypressEvent extends KeyboardEvent {
+  which: number;
+}
+
 export default {
   name: "DefineCharges",
 
@@ -123,7 +127,7 @@ export default {
   },
 
   methods: {
-    PreventNonNumericValue(event: any) {
+    PreventNonNumericValue(event: keypressEvent) {
       const charCode = event.which ? event.which : event.keyCode;
       if (charCode > 31 && (charCode < 48 || charCode > 57)) {
         event.preventDefault();
@@ -146,7 +150,7 @@ export default {
         Object.entries(expenses).filter(([key, value]) => value.amount != null && value.amount != "")
       );
 
-      const colocation = sessionStorage.getItem("colocation");
+      const colocation = sessionStorage.getItem("colocation") as string;
 
       if (colocation && Object.keys(filteredExpenses).length > 0) {
         const colocationData = JSON.parse(colocation);
@@ -161,7 +165,7 @@ export default {
   },
 
   mounted() {
-    const colocation = sessionStorage.getItem("colocation");
+    const colocation = sessionStorage.getItem("colocation") as string;
 
     if (colocation) {
       this.colocation = JSON.parse(colocation);

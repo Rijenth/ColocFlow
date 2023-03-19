@@ -60,9 +60,9 @@ export default {
       this.colocationCreated = value;
     },
     async CreateColocation() {
-      const body = sessionStorage.getItem("colocation");
+      const body = sessionStorage.getItem("colocation") as string;
 
-      if (body === undefined || body === null) {
+      if (body) {
         this.flash(
           "Erreur !",
           "Aucune donnée permettant la création de votre colocation n'a été retrouvée.",
@@ -81,7 +81,9 @@ export default {
           sessionStorage.removeItem("colocation");
           const colocation = createColocation.data;
           const owner = createColocation.data.included.owner.data[0];
-          const relationships = sessionStorage.getItem("relationships");
+          const relationships = sessionStorage.getItem(
+            "relationships"
+          ) as string;
 
           if (relationships) {
             const body = JSON.parse(relationships);

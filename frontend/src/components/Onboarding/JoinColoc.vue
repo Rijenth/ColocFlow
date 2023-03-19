@@ -76,7 +76,11 @@ export default {
 
   methods: {
     toggleLoading() {
-      this.loading = !this.loading;
+      if (this.loading === false) {
+        this.loading = true;
+      } else {
+        this.loading = false;
+      }
     },
     async joinColocation() {
       const user = this.authStore.getUser;
@@ -145,7 +149,7 @@ export default {
           if (patchColocation.status === 200) {
             const updatedUser =
               patchColocation.data.included.roommates.data.find(
-                (user: any) => user.id === this.authStore.getUser.id
+                (user) => user.id === this.authStore.getUser.id
               );
 
             this.authStore.setUser(updatedUser);
@@ -171,21 +175,21 @@ export default {
       } catch (err) {
         this.toggleLoading();
 
-        if (err.response && err.response.status === 422) {
+        if (err.response !== undefined && err.response.status === 422) {
           this.flash(
             err.response.statusText,
             "Une erreur est survenue lors de l'ajout de l'utilisateur à la colocation",
             "error"
           );
-        } else if (err.response && err.response.status === 404) {
+        } else if (err.response !== undefined && err.response.status === 404) {
           this.flash(
             "Erreur !",
             "Le nom d'utilisateur ou le code d'accès est incorrect",
             "error"
           );
-        } else if (err.response && err.response.status === 401) {
+        } else if (err.response !== undefined && err.response.status === 401) {
           this.flash("Erreur !", "Le code d'accès est incorrect", "error");
-        } else if (err.response && err.response.status === 409) {
+        } else if (err.response !== undefined && err.response.status === 409) {
           this.flash(
             "Colocation complète !",
             "Le nombre maximum de colocataires a été atteint",
