@@ -37,7 +37,7 @@ interface ColocationCharges {
 export const useColocationChargeStore = defineStore("colocationChargeStore", {
   state: (): ColocationCharges =>
     sessionStorage.getItem("colocationChargeStore")
-      ? JSON.parse(sessionStorage.getItem("colocationChargeStore")!)
+      ? JSON.parse(sessionStorage.getItem("colocationChargeStore") as string)
       : {
           data: [],
         },

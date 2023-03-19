@@ -35,7 +35,7 @@ interface AuthState {
 export const useAuthStore = defineStore("authStore", {
   state: (): AuthState =>
     sessionStorage.getItem("authStore")
-      ? JSON.parse(sessionStorage.getItem("authStore")!)
+      ? JSON.parse(sessionStorage.getItem("authStore") as string)
       : {
           authenticated: false,
           user: {

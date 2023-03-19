@@ -33,7 +33,7 @@ interface Colocation {
 export const useColocationStore = defineStore("colocationStore", {
   state: (): Colocation =>
     sessionStorage.getItem("colocationStore")
-      ? JSON.parse(sessionStorage.getItem("colocationStore")!)
+      ? JSON.parse(sessionStorage.getItem("colocationStore") as string)
       : {
           data: {
             type: "",
