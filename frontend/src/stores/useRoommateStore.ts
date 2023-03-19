@@ -32,7 +32,7 @@ interface Roommates {
 
 export const useRoommateStore = defineStore("roommateStore", {
   state: (): Roommates =>
-    sessionStorage.getItem("roommateStore")
+    (sessionStorage.getItem("roommateStore") as string)
       ? JSON.parse(sessionStorage.getItem("roommateStore") as string)
       : {
           data: [],

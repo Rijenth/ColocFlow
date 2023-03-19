@@ -188,7 +188,7 @@ export default {
         this.chargeId
       );
 
-      if (userAffectedAmount) {
+      if (userAffectedAmount !== undefined) {
         if (this.amount - userAffectedAmount.attributes.amount === 0) {
           this.flash(
             "Montant déjà affecté",
@@ -200,7 +200,7 @@ export default {
         }
       }
 
-      this.loading = !this.loading;
+      this.toggleLoading();
 
       const body = {
         data: {
@@ -226,8 +226,8 @@ export default {
           this.chargeId
         );
 
-        if (response && response.status === 200) {
-          this.loading = !this.loading;
+        if (response !== undefined && response.status === 200) {
+          this.toggleLoading();
 
           this.flash(
             "Attribution de charge",
@@ -236,9 +236,9 @@ export default {
           );
         }
       } catch (error) {
-        this.loading = !this.loading;
+        this.toggleLoading();
 
-        if (error.response && error.response.status === 422) {
+        if (error.response !== undefined && error.response.status === 422) {
           this.flash(
             error.response.statusText + " !",
             error.response.data.message,
@@ -263,10 +263,10 @@ export default {
           (charge) => charge.id === this.chargeId
         );
 
-        if (charge) {
+        if (charge !== undefined) {
           let amount = charge.attributes.amount;
 
-          if (isPercentage === true) {
+          if (isPercentage) {
             amount = parseFloat(((amount * number) / 100).toFixed(2));
           } else {
             const select = document.getElementById(
@@ -278,6 +278,13 @@ export default {
 
           this.amount = amount;
         }
+      }
+    },
+    toggleLoading() {
+      if (this.loading === true) {
+        this.loading = false;
+      } else {
+        this.loading = true;
       }
     },
   },
