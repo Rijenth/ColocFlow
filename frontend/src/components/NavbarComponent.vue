@@ -34,7 +34,10 @@
             <RouterLink class="router-link" to="/login">Messagerie</RouterLink>
           </li> -->
           <li class="border-b md:border-none">
-            <RouterLink class="router-link" to="/dashboard"
+            <RouterLink
+              class="router-link"
+              to="/dashboard"
+              v-if="isAuthenticated"
               >Dashboard</RouterLink
             >
           </li>

@@ -29,8 +29,8 @@
   <div class="flex flex-col md:w-full md:h-full items-center">
     <DashboardOverview
       v-if="activeComponent === 'DashboardOverview'"
+      :userCharges="userCharges"
       :colocation="colocation"
-      :colocationCharges="colocationCharges"
       :roommates="roommates"
     />
     <DashboardManagement
@@ -42,6 +42,7 @@
 <script lang="ts">
 import DashboardOverview from "@/components/Dashboard/DashboardOverview.vue";
 import DashboardManagement from "@/components/Dashboard/DashboardManagement.vue";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
 import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
@@ -55,11 +56,13 @@ export default {
   },
 
   setup() {
+    const authStore = useAuthStore();
     const colocationStore = useColocationStore();
     const colocationChargeStore = useColocationChargeStore();
     const roommateStore = useRoommateStore();
 
     return {
+      authStore,
       colocationStore,
       colocationChargeStore,
       roommateStore,
@@ -89,11 +92,13 @@ export default {
     colocation() {
       return this.colocationStore.getAttributes;
     },
-    colocationCharges() {
-      return this.colocationChargeStore.getColocationCharges;
-    },
     roommates() {
       return this.roommateStore.getRoommates;
+    },
+    userCharges() {
+      return this.colocationChargeStore.getChargesByUser(
+        this.authStore.getUser.id
+      );
     },
   },
 };

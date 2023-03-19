@@ -41,8 +41,11 @@
     <div class="bg-gray-900 dashboard-overview-card">
       <h2 class="text-sm text-center font-bold mb-4">Vos charges :</h2>
       <ul class="text-sm">
+        <li v-if="userCharges.length === 0">
+          <p>Aucune charge enregistrée</p>
+        </li>
         <li
-          v-for="charge in colocationCharges"
+          v-for="charge in userCharges"
           :key="charge.id"
           class="flex justify-between"
         >
@@ -74,7 +77,7 @@ export default {
       type: Object,
       required: true,
     },
-    colocationCharges: {
+    userCharges: {
       type: Array,
       required: true,
     },
