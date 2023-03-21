@@ -4,7 +4,7 @@
   >
     <h2 class="text-lg font-bold mb-2">Bienvenue sur ColocFlow</h2>
     <p class="text-s mb-4">Votre logiciel de gestion de colocation</p>
-    <p class="text-s mb-4">Bonjour {{ username }} !</p>
+    <p class="text-s mb-4">Bonjour {{ firstname }} !</p>
     <p class="text-s mb-4">
       À ce jour, le site propose les fonctionnalités suivantes :
     </p>
@@ -44,7 +44,7 @@ export default {
 
   data() {
     return {
-      username: "" as string,
+      firstname: "" as string,
       loading: false as boolean,
     };
   },
@@ -77,7 +77,7 @@ export default {
   },
 
   mounted() {
-    this.username = this.authStore.getUser.attributes.username;
+    this.firstname = this.authStore.getUser.attributes.firstname;
   },
 };
 </script>

@@ -23,9 +23,9 @@
 
       <input
         class="input-field input-auth"
-        type="text"
-        placeholder="Nom d'utilisateur"
-        v-model="user.username"
+        type="email"
+        placeholder="Adresse email"
+        v-model="user.email"
       />
 
       <input
@@ -67,7 +67,7 @@ import axios from "@/services/axios";
 const { flash } = useSwal();
 
 interface User {
-  username: string;
+  email: string;
   password: string;
   lastname: string;
   firstname: string;
@@ -82,7 +82,7 @@ export default {
 
   data: () => ({
     user: {
-      username: "",
+      email: "",
       password: "",
       lastname: "",
       firstname: "",
@@ -121,12 +121,21 @@ export default {
         return;
       }
 
+      if (this.isValidEmail === false) {
+        flash(
+          "Adresse email invalide",
+          "Merci de saisir une adresse email valide",
+          "warning"
+        );
+        return;
+      }
+
       this.toggleLoading();
 
       const body = {
         data: {
           attributes: {
-            username: this.user.username,
+            email: this.user.email,
             password: this.user.password,
             lastname: this.user.lastname,
             firstname: this.user.firstname,
@@ -150,13 +159,16 @@ export default {
           }
         })
         .catch((error) => {
-          if (error.response.status === 422) {
+          if (error.response !== undefined && error.response.status === 422) {
             flash(
-              "Unprocessable entity",
-              "Ce nom d'utilisateur est déjà utilisé",
+              error.response.statusText,
+              error.response.data.message,
               "error"
             );
-          } else if (error.response.status === 401) {
+          } else if (
+            error.response !== undefined &&
+            error.response.status === 401
+          ) {
             flash(
               "Unauthorized",
               "Vous n'êtes pas autorisé à accéder à cette page",
@@ -175,12 +187,15 @@ export default {
   },
 
   computed: {
+    isValidEmail() {
+      return /^[^@]+@\w+(\.\w+)+\w$/.test(this.user.email);
+    },
     userPasswordIsConfirmed() {
       return this.user.password === this.confirmPassword;
     },
     fieldsAreNotEmpty() {
       return (
-        this.user.username !== "" &&
+        this.user.email !== "" &&
         this.user.password !== "" &&
         this.user.lastname !== "" &&
         this.user.firstname !== ""

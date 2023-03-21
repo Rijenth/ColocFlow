@@ -16,8 +16,8 @@
       <input
         type="text"
         class="w-1/2 h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
-        placeholder="Nom d'utilisateur"
-        v-model="username"
+        placeholder="Adresse email"
+        v-model="email"
       />
       <input
         type="text"
@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       access_key: "" as string,
-      username: "" as string,
+      email: "" as string,
       loading: false,
     };
   },
@@ -104,10 +104,10 @@ export default {
         return;
       }
 
-      if (this.username === "") {
+      if (this.isValidEmail === false) {
         this.flash(
-          "Champs requis",
-          "Veuillez entrer un nom d'utilisateur",
+          "Adresse email invalide",
+          "Veuillez entrer une adresse email valide",
           "warning"
         );
         return;
@@ -118,7 +118,7 @@ export default {
       try {
         const getColocation = await axios.get("/get-colocation", {
           params: {
-            username: this.username,
+            email: this.email,
             access_key: this.access_key,
           },
         });
@@ -199,6 +199,12 @@ export default {
           this.flash("Erreur !", err.message, "error");
         }
       }
+    },
+  },
+
+  computed: {
+    isValidEmail() {
+      return /^[^@]+@\w+(\.\w+)+\w$/.test(this.email);
     },
   },
 };

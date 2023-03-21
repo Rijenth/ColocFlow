@@ -21,7 +21,7 @@ interface User {
   attributes: {
     lastname: string;
     firstname: string;
-    username: string;
+    email: string;
     colocation_id: number | null;
   };
   relationships: Relationships;
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("authStore", {
             attributes: {
               lastname: "",
               firstname: "",
-              username: "",
+              email: "",
               colocation_id: null,
             },
             relationships: {},
@@ -62,9 +62,9 @@ export const useAuthStore = defineStore("authStore", {
   },
 
   actions: {
-    async login(username: string, password: string) {
+    async login(email: string, password: string) {
       const login = await axios.post("/login", {
-        username: username,
+        email: email,
         password: password,
       });
 
@@ -86,7 +86,7 @@ export const useAuthStore = defineStore("authStore", {
         attributes: {
           lastname: "",
           firstname: "",
-          username: "",
+          email: "",
           colocation_id: null,
         },
         relationships: {},

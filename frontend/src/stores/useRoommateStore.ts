@@ -7,7 +7,7 @@ interface User {
   attributes: {
     lastname: string;
     firstname: string;
-    username: string;
+    email: string;
     colocation_id?: number;
   };
   relationships: {

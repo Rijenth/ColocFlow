@@ -62,12 +62,15 @@ export default {
     async CreateColocation() {
       const body = sessionStorage.getItem("colocation") as string;
 
-      if (body) {
+      if (!body) {
         this.flash(
-          "Erreur !",
+          "Données manquantes !",
           "Aucune donnée permettant la création de votre colocation n'a été retrouvée.",
-          "success"
+          "error"
         );
+
+        this.loading = false;
+
         return;
       }
 
@@ -129,12 +132,19 @@ export default {
           this.$router.push({ name: "dashboard" });
         }
       } catch (error) {
-        console.log(error);
-        this.flash(
-          error.response.statusText + " !",
-          error.response.data.message,
-          "error"
-        );
+        if (error.response !== undefined) {
+          this.flash(
+            error.response.statusText + " !",
+            error.response.data.message,
+            "error"
+          );
+        } else {
+          this.flash(
+            "Erreur !",
+            "Une erreur est survenue lors de la création de votre colocation.",
+            "error"
+          );
+        }
 
         this.loading = false;
       }

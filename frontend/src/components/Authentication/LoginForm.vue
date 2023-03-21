@@ -9,7 +9,7 @@
           type="text"
           placeholder="Nom d'utilisateur"
           @keydown.space.prevent
-          v-model="username"
+          v-model="email"
         />
         <input
           class="input-field input-auth"
@@ -49,7 +49,7 @@ export default {
 
   data() {
     return {
-      username: "" as string,
+      email: "" as string,
       password: "" as string,
       loading: false as boolean,
     };
@@ -94,7 +94,7 @@ export default {
       this.toggleLoading();
 
       try {
-        await this.authStore.login(this.username, this.password);
+        await this.authStore.login(this.email, this.password);
 
         if (this.authStore.isRoommate === true) {
           await this.colocationStore.fetchColocation(
@@ -146,7 +146,7 @@ export default {
 
   computed: {
     validateForm() {
-      return this.username.length > 0 && this.password.length > 0;
+      return this.email.length > 0 && this.password.length > 0;
     },
   },
 };
