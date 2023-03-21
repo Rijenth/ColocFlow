@@ -1,6 +1,6 @@
 <template>
   <button
-    class="bg-gray-800 my-2 text-white p-2 px-3 rounded hover:bg-blue-800 text-center"
+    class="bg-gray-800 my-2 text-white p-2 px-3 rounded hover:bg-blue-900 text-center"
     :disabled="isLoading"
   >
     <PulseLoader color="white" v-if="isLoading" size="10px" />

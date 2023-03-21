@@ -1,6 +1,6 @@
 <template>
   <div
-    class="m-6 mt-0 md:w-1/2 mb-6 p-6 bg-gray-900 text-white border rounded-lg shadow-xl"
+    class="m-6 mt-0 mb-6 p-6 bg-gray-900 text-white border rounded-lg shadow-xl"
   >
     <h1 class="text-2xl text-left mb-4">À propos</h1>
     <p class="text-xs mb-4">
