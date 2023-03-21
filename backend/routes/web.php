@@ -40,7 +40,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/get-colocation', function (Request $request) {
         $colocation = Colocation::whereHas('owner', function ($query) use ($request) {
-            $query->where('username', $request->username);
+            $query->where('email', $request->email);
         })->firstOrFail();
 
         if (Hash::check($request->access_key, $colocation->access_key) === false) {

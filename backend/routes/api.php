@@ -27,9 +27,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/charges', ChargeController::class)
         ->only(['update', 'show']);
 
-    Route::apiResource('/users/{user}/relationships', ChargeRelationshipController::class)
-        ->only(['destroy']);
-
     Route::apiResource('/colocations', ColocationController::class)
         ->only(['store', 'show', 'update', 'index']);
 
@@ -38,4 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('/colocations/{colocation}/charges', ColocationChargeController::class)
         ->only(['index']);
+
+    Route::apiResource('/users/{user}/relationships', ChargeRelationshipController::class)
+        ->only(['destroy']);
 });

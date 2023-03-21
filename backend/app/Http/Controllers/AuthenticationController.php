@@ -12,12 +12,12 @@ class AuthenticationController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => ['required'],
+            'email' => ['required'],
             'password' => ['required'],
         ]);
 
         if (Auth::attempt($credentials)) {
-            $user = User::where('username', $credentials['username'])->first();
+            $user = User::where('email', $credentials['email'])->first();
 
             $request->session()->regenerate();
 
