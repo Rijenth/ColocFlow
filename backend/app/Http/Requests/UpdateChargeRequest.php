@@ -22,9 +22,11 @@ class UpdateChargeRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'data' => 'array',
             'data.type' => 'required|string|in:charges',
             'data.id' => 'required|integer|exists:charges,id',
             'data.attributes' => 'array',
+            'data.attributes.amount' => 'numeric|min:0|required_with:data.attributes',
             'data.relationships' => 'array',
             'data.relationships.users' => 'array',
             'data.relationships.users.data' => 'array',

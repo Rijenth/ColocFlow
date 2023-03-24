@@ -16,7 +16,28 @@
       class="border-l text-white p-2 px-3 hover:bg-gray-700"
       @click="propositionCard"
     >
-      Propositions
+      Tâches
+      <!-- 
+        idée 1 :
+        Composant qui permet de créer des taches et de les assigner à des personnes
+        - nom de la tache
+        - description
+        - date de fin
+        - personnes assignées
+        - Etat de complétion
+        - Commentaires
+        
+        -> Les personnes peuvent ensuite valider, refuser ou commenter la tache
+        -> les taches sont rangés par colocataire dans des onglets
+        -> les commentaires s'affichent dans un onglet séparé qui est scrollable
+        -> on peux créer, edit et supprimer un commentaire.
+
+        idée 2 :
+        Composant qui permet de voir l'historique des actions du panel de gestion
+          -> On doit pouvoir interdire l'accès à la page de gestion à certaines personnes
+          -> Quand qqn attribue ou retire une charge, cela doit être enregistré dans un historique consultable.
+          -> cela doit être une liste scrollable
+       -->
     </button>
     <button
       class="border-l text-white p-2 px-3 hover:bg-gray-700 hover:rounded-r"

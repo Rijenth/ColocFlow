@@ -6,8 +6,8 @@
       <form @submit.prevent="submitForm">
         <input
           class="input-field input-auth"
-          type="text"
-          placeholder="Nom d'utilisateur"
+          type="email"
+          placeholder="Adresse email"
           @keydown.space.prevent
           v-model="email"
         />
@@ -49,8 +49,8 @@ export default {
 
   data() {
     return {
-      email: "" as string,
-      password: "" as string,
+      email: "admin@admin.fr" as string,
+      password: "admin" as string,
       loading: false as boolean,
     };
   },
@@ -83,6 +83,14 @@ export default {
       }
     },
     async submitForm() {
+      if (this.isValidEmail === false) {
+        return this.flash(
+          "Adresse email invalide",
+          "Merci de saisir une adresse email valide",
+          "warning"
+        );
+      }
+
       if (this.validateForm === false) {
         return this.flash(
           "Formulaire vide",
@@ -145,6 +153,9 @@ export default {
   },
 
   computed: {
+    isValidEmail() {
+      return /^[^@]+@\w+(\.\w+)+\w$/.test(this.email);
+    },
     validateForm() {
       return this.email.length > 0 && this.password.length > 0;
     },

@@ -31,6 +31,19 @@ class Charge extends Model
         'updated_at',
     ];
 
+    protected static function booted()
+    {
+        static::saving(function ($charge) {
+            if (! $charge->name) {
+                $charge->name = ucwords(explode('_', $charge['key'])[0]);
+            }
+
+            if (! $charge->amount_affected) {
+                $charge->amount_affected = 0;
+            }
+        });
+    }
+
     public function colocation(): BelongsTo
     {
         return $this->belongsTo(Colocation::class);

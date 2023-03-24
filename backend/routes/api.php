@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\ChargeController;
-use App\Http\Controllers\ChargeRelationshipController;
 use App\Http\Controllers\ColocationChargeController;
 use App\Http\Controllers\ColocationController;
-use App\Http\Controllers\RoommateController;
+use App\Http\Controllers\ColocationRelationshipController;
+use App\Http\Controllers\ColocationRoommateController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserRelationshipController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,12 +32,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/colocations', ColocationController::class)
         ->only(['store', 'show', 'update', 'index']);
 
-    Route::apiResource('/colocations/{colocation}/roommates', RoommateController::class)
+    Route::apiResource('/colocations/{colocation}/roommates', ColocationRoommateController::class)
         ->only(['index']);
+
+    Route::apiResource('/colocations/{colocation}/relationships', ColocationRelationshipController::class)
+        ->only(['destroy']);
 
     Route::apiResource('/colocations/{colocation}/charges', ColocationChargeController::class)
-        ->only(['index']);
+        ->only(['index', 'store']);
 
-    Route::apiResource('/users/{user}/relationships', ChargeRelationshipController::class)
+    Route::apiResource('/users', UserController::class)
+        ->only(['update']);
+
+    Route::apiResource('/users/{user}/relationships', UserRelationshipController::class)
         ->only(['destroy']);
 });

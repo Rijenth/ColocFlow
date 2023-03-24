@@ -30,9 +30,11 @@
 
       <label class="text-left text-white my-2">Loyer mensuel</label>
       <input
+        type="number"
+        step="0.01"
         v-model="colocationAttributes.monthly_rent"
         class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
-        v-on:keypress="PreventNonNumericValue"
+        v-on:keypress="allowOnlyPositiveNumbersWithMaxTwoDecimals"
       />
 
       <label class="text-left text-white my-2"
@@ -140,6 +142,16 @@ export default {
         return false;
       }
       return true;
+    },
+    allowOnlyPositiveNumbersWithMaxTwoDecimals($event: KeyboardEvent) {
+      const input = ($event.target as HTMLInputElement).value + $event.key;
+
+      if (
+        isNaN(input) ||
+        (input.includes(".") && input.split(".")[1].length > 2)
+      ) {
+        event.preventDefault();
+      }
     },
     StoreColocation() {
       if (this.ValidateForm() === false) {

@@ -37,6 +37,14 @@ const router = createRouter({
       },
     },
     {
+      path: "/information",
+      name: "information",
+      component: () => import("../views/InformationView.vue"),
+      meta: {
+        middleware: [authMiddleware],
+      },
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "not-found",
       component: () => import("../views/NotFoundView.vue"),
