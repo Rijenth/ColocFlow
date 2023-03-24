@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('access_key')->unique();
-            $table->integer('monthly_rent');
+            $table->float('monthly_rent');
             $table->integer('max_roommates');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();

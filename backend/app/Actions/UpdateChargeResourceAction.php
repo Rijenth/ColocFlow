@@ -11,6 +11,10 @@ class UpdateChargeResourceAction
     public function execute(Charge $charge, array $data): Charge
     {
         if (isset($data['attributes'])) {
+            if (isset($data['attributes']['amount']) && ($data['attributes']['amount'] !== $charge->amount)) {
+                $charge->users()->detach();
+            }
+
             $charge->fill($data['attributes']);
         }
 

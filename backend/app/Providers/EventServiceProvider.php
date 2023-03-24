@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Events\ChargeUpdated;
 use App\Events\ColocationCreated;
+use App\Events\ColocationUpdated;
 use App\Listeners\CreateChargesForColocation;
 use App\Listeners\UpdateChargeAmountAffectedAttribute;
+use App\Listeners\UpdateChargeRentAmount;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -24,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ColocationCreated::class => [
             CreateChargesForColocation::class,
+        ],
+        ColocationUpdated::class => [
+            UpdateChargeRentAmount::class,
         ],
         Registered::class => [
             SendEmailVerificationNotification::class,

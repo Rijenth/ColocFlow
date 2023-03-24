@@ -104,11 +104,13 @@ export default {
   computed: {
     amountDue() {
       return (
-        (
-          this.storeCharges.getTotalChargesAmount +
-          this.storeCharges.getRentAmount -
-          this.storeCharges.getTotalAmountAffected
-        ).toFixed(2) || 0
+        parseFloat(
+          (
+            this.storeCharges.getTotalChargesAmount +
+            this.storeCharges.getRentAmount -
+            this.storeCharges.getTotalAmountAffected
+          ).toFixed(2)
+        ) || 0
       );
     },
     colocationCharges() {

@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Events\ColocationUpdated;
 use App\Models\Colocation;
 use App\Models\User;
 
@@ -24,6 +25,8 @@ class UpdateColocationResourceAction
                 $this->updateroommatesRelationship($colocation, $data['relationships']['roommates']['data']);
             }
         }
+
+        ColocationUpdated::dispatch($colocation, $data);
 
         return $colocation->fresh();
     }

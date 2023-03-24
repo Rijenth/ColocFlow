@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRelationshipRequest;
 use App\Models\User;
 
-class ChargeRelationshipController extends Controller
+class UserRelationshipController extends Controller
 {
     public function destroy(UserRelationshipRequest $request, User $user, string $relationship)
     {

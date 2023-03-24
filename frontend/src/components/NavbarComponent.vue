@@ -42,6 +42,14 @@
             >
           </li>
           <li class="border-b md:border-none">
+            <RouterLink
+              class="router-link"
+              to="/information"
+              v-if="isAuthenticated"
+              >Informations</RouterLink
+            >
+          </li>
+          <li class="border-b md:border-none">
             <RouterLink class="router-link" to="/about">À propos</RouterLink>
           </li>
           <li

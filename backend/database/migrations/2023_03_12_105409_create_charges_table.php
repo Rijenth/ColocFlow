@@ -14,7 +14,7 @@ return new class() extends Migration
         Schema::create('charges', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('amount')->nullable();
+            $table->float('amount');
             $table->foreignId('colocation_id')->constrained('colocations');
             $table->string('key');
             $table->timestamps();

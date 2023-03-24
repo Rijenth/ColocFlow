@@ -11,6 +11,10 @@ class Colocation extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'monthly_rent' => 'float',
+    ];
+
     protected $fillable = [
         'name',
         'access_key',

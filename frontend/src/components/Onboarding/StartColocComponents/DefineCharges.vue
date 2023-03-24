@@ -4,7 +4,7 @@
     class="ml-4"
     @submit.prevent="StoreExpenses"
     @keydown.space.prevent
-    v-on:keypress="PreventNonNumericValue"
+    v-on:keypress="allowOnlyPositiveNumbersWithMaxTwoDecimals"
   >
     <div class="flex flex-col">
       <label class="text-white mb-4 text-center"
@@ -22,7 +22,8 @@
             <label>Chauffage :</label>
             <input
               class="w-20 text-right input-field rounded px-1"
-              type="text"
+              type="number"
+              step="0.01"
               placeholder="0"
               v-model="heating_charge"
             />
@@ -31,7 +32,8 @@
             <label>Eau :</label>
             <input
               class="w-20 text-right input-field rounded px-1"
-              type="text"
+              type="number"
+              step="0.01"
               placeholder="0"
               v-model="water_charge"
             />
@@ -40,7 +42,8 @@
             <label>Electricité :</label>
             <input
               class="w-20 text-right input-field rounded px-1"
-              type="text"
+              type="number"
+              step="0.01"
               placeholder="0"
               v-model="electricity_charge"
             />
@@ -49,7 +52,8 @@
             <label>Internet :</label>
             <input
               class="w-20 text-right input-field rounded px-1"
-              type="text"
+              type="number"
+              step="0.01"
               placeholder="0"
               v-model="internet_charge"
             />
@@ -58,7 +62,8 @@
             <label>Gaz :</label>
             <input
               class="w-20 text-right input-field rounded px-1"
-              type="text"
+              type="number"
+              step="0.01"
               placeholder="0"
               v-model="gas_charge"
             />
@@ -67,7 +72,8 @@
             <label>Autres :</label>
             <input
               class="w-20 text-right input-field rounded px-1"
-              type="text"
+              type="number"
+              step="0.01"
               placeholder="0"
               v-model="others_charge"
             />
@@ -93,10 +99,6 @@
 
 <script lang="ts">
 import LoadingButton from "@/components/LoadingButton.vue";
-
-interface keypressEvent extends KeyboardEvent {
-  which: number;
-}
 
 export default {
   name: "DefineCharges",
@@ -127,13 +129,15 @@ export default {
   },
 
   methods: {
-    PreventNonNumericValue(event: keypressEvent) {
-      const charCode = event.which ? event.which : event.keyCode;
-      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    allowOnlyPositiveNumbersWithMaxTwoDecimals($event: KeyboardEvent) {
+      const input = ($event.target as HTMLInputElement).value + $event.key;
+
+      if (
+        isNaN(input) ||
+        (input.includes(".") && input.split(".")[1].length > 2)
+      ) {
         event.preventDefault();
-        return false;
       }
-      return true;
     },
     StoreExpenses() {
       const expenses = [
