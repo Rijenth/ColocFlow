@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->only(['update', 'show']);
 
     Route::apiResource('/colocations', ColocationController::class)
-        ->only(['store', 'show', 'update', 'index']);
+        ->only(['store', 'show', 'update', 'index', 'destroy']);
 
     Route::apiResource('/colocations/{colocation}/roommates', ColocationRoommateController::class)
         ->only(['index']);

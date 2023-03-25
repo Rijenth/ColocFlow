@@ -19,9 +19,14 @@ class UpdateChargeRentAmount
             $updatedMonthlyRent = (float) $event->data['attributes']['monthly_rent'];
 
             if ($rentCharge->amount !== $updatedMonthlyRent) {
-                $rentCharge->update(['amount' => $updatedMonthlyRent]);
-
                 $rentCharge->users()->detach();
+
+                $rentCharge->update(
+                    [
+                        'amount' => $updatedMonthlyRent,
+                        'amount_affected' => 0,
+                    ]
+                );
             }
         }
     }

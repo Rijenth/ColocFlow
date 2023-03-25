@@ -15,6 +15,10 @@ class UpdateColocationResourceAction
                 $data['attributes']['access_key'] = bcrypt($data['attributes']['access_key']);
             }
 
+            if (isset($data['attributes']['max_roommates'])) {
+                abort_if($data['attributes']['max_roommates'] < count($colocation->roommates), 422, "Max roommates can't be lower than current roommates");
+            }
+
             $colocation->fill($data['attributes']);
         }
 

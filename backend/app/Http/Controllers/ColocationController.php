@@ -46,4 +46,11 @@ class ColocationController extends Controller
 
         return new ColocationResource($colocation);
     }
+
+    public function destroy(Colocation $colocation)
+    {
+        $colocation->delete();
+
+        return response()->noContent();
+    }
 }
