@@ -3,7 +3,7 @@
     class="bg-gray-900 w-xs md:w-full max-w-xs mx-auto p-4 mb-4 text-white border rounded-lg shadow-xl md:border-none"
   >
     <div>
-      <h2 class="text-sm text-center font-bold mb-4">
+      <h2 class="text-sm underline text-center font-bold mb-4">
         Détails des charges attribuées {{ roommate_name }}
       </h2>
 

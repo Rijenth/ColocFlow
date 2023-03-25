@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gray-700 w-80 md:w-1/2 p-4 mb-4 text-white border rounded-lg shadow-xl md:border-none"
+    class="bg-gray-700 w-80 p-4 mb-4 text-white border rounded-lg shadow-xl md:border-none"
   >
     <h2 class="text-lg text-center font-semibold">Gestion des comptes</h2>
   </div>

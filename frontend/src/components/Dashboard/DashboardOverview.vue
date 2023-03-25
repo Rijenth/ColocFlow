@@ -8,7 +8,7 @@
   </div>
 
   <div class="bg-gray-900 dashboard-overview-card">
-    <h2 class="text-sm text-center font-bold mb-4">Etat des lieux :</h2>
+    <h2 class="text-sm underline text-center font-bold mb-4">Etat des lieux</h2>
     <StateIndicator color="green">
       <p class="text-sm">Règlement du loyer du mois de {{ TodayMonth }}</p>
     </StateIndicator>
@@ -22,7 +22,9 @@
 
   <div class="flex flex-col w-full items-center">
     <div class="bg-gray-900 dashboard-overview-card">
-      <h2 class="text-sm text-center font-bold mb-4">Suivi des règlements :</h2>
+      <h2 class="text-sm underline text-center font-bold mb-4">
+        Suivi des règlements
+      </h2>
       <ul class="text-sm">
         <li v-for="roommate in roommates" :key="roommate.id">
           <StateIndicator color="green">
@@ -39,7 +41,7 @@
     </div>
 
     <div class="bg-gray-900 dashboard-overview-card">
-      <h2 class="text-sm text-center font-bold mb-4">Vos charges :</h2>
+      <h2 class="text-sm underline text-center font-bold mb-4">Vos charges</h2>
       <ul class="text-sm">
         <li v-if="userCharges.length === 0">
           <p>Aucune charge enregistrée</p>
@@ -56,7 +58,7 @@
     </div>
 
     <div class="bg-gray-900 dashboard-overview-card">
-      <h2 class="text-sm text-center font-bold mb-4">Messagerie :</h2>
+      <h2 class="text-sm underline text-center font-bold mb-4">Messagerie</h2>
       <p>Envoyer des messages à quelqu'un en le selectionnant</p>
     </div>
   </div>

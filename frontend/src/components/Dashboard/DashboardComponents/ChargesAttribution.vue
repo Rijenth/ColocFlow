@@ -2,7 +2,9 @@
   <div
     class="bg-gray-900 w-xs md:w-full max-w-xs mx-auto p-4 mb-4 text-white border rounded-lg shadow-xl md:border-none"
   >
-    <h2 class="text-sm text-center font-bold mb-4">Attribution de charges</h2>
+    <h2 class="text-sm underline text-center font-bold mb-4">
+      Attribution de charges
+    </h2>
     <form @submit.prevent="updateChargeUserRelationship" @keydown.space.prevent>
       <div class="block mb-4">
         <label for="userId" class="block">Selection du colocataire :</label>

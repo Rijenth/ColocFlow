@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-900 dashboard-management-card">
-    <h2 class="text-sm text-center font-bold mb-4">
+    <h2 class="text-sm underline text-center font-bold mb-4">
       Loyer et charges mensuelles
     </h2>
     <ul class="text-sm">
@@ -23,7 +23,9 @@
   </div>
 
   <div class="bg-gray-900 dashboard-management-card">
-    <h2 class="text-sm text-center font-bold mb-4">Détails des charges</h2>
+    <h2 class="text-sm underline text-center font-bold mb-4">
+      Détails des charges
+    </h2>
     <ul class="text-sm">
       <li v-if="colocationCharges.length === 0" class="text-left text-xs">
         <p>Aucune charge n'a été ajoutée</p>
@@ -47,7 +49,7 @@
   </div>
 
   <div class="bg-gray-900 dashboard-management-card">
-    <h2 class="text-sm text-center font-bold mb-4">
+    <h2 class="text-sm underline text-center font-bold mb-4">
       Répartition des paiements
     </h2>
     <ul class="text-sm">
