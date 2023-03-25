@@ -87,6 +87,8 @@
 </template>
 
 <script lang="ts">
+import type { Charge } from "@/stores/useColocationChargeStore";
+
 export default {
   name: "ManagementOverview",
 
@@ -115,7 +117,7 @@ export default {
     },
     colocationCharges() {
       return this.storeCharges.getColocationCharges.filter(
-        (charge) => charge.attributes.name !== "Rent"
+        (charge: Charge) => charge.attributes.name !== "Rent"
       );
     },
     getSumUserChargesAmount() {

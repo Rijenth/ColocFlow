@@ -41,6 +41,7 @@
         >Nombre max de colocataires</label
       >
       <input
+        type="number"
         v-model="colocationAttributes.max_roommates"
         class="w-full h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
         v-on:keypress="PreventNonNumericValue"
@@ -146,11 +147,12 @@ export default {
     allowOnlyPositiveNumbersWithMaxTwoDecimals($event: KeyboardEvent) {
       const input = ($event.target as HTMLInputElement).value + $event.key;
 
-      if (
-        isNaN(input) ||
-        (input.includes(".") && input.split(".")[1].length > 2)
-      ) {
-        event.preventDefault();
+      if (isNaN(Number(input))) {
+        $event.preventDefault();
+      }
+
+      if (input.includes(".") && input.split(".")[1].length > 2) {
+        $event.preventDefault();
       }
     },
     StoreColocation() {
@@ -213,8 +215,7 @@ export default {
       return (
         this.colocationAttributes.name !== "" &&
         this.colocationAttributes.access_key !== "" &&
-        this.colocationAttributes.monthly_rent !== "" &&
-        this.colocationAttributes.max_roommates !== ""
+        this.colocationAttributes.monthly_rent > 0
       );
     },
   },

@@ -87,6 +87,8 @@
 <script lang="ts">
 import LoadingButton from "@/components/LoadingButton.vue";
 import { useSwal } from "@/composables/useSwal";
+import type { AxiosResponse } from "axios";
+import type { Charge } from "@/stores/useColocationChargeStore";
 
 interface Data {
   amount: number;
@@ -156,14 +158,14 @@ export default {
       const input = ($event.target as HTMLInputElement).value + $event.key;
 
       if (
-        isNaN(input) ||
+        isNaN(Number(input)) ||
         (input.includes(".") && input.split(".")[1].length > 2)
       ) {
-        event.preventDefault();
+        $event.preventDefault();
       }
     },
     async updateChargeUserRelationship() {
-      if (this.userId === 0 || this.chargeId === 0 || this.amount === "") {
+      if (this.userId === 0 || this.chargeId === 0) {
         this.flash(
           "Formulaire incomplet",
           "Veuillez remplir tous les champs du formulaire",
@@ -173,7 +175,7 @@ export default {
         return;
       }
 
-      if (this.amount === 0) {
+      if (this.amount <= 0) {
         this.flash(
           "Erreur de saisie",
           "Vous ne pouvez pas attribuer 0 à une charge payée par un colocataire",
@@ -236,19 +238,25 @@ export default {
           );
         }
       } catch (error) {
+        const e = error as Error & { response: AxiosResponse | undefined };
+
         this.toggleLoading();
 
-        if (error.response !== undefined && error.response.status === 422) {
-          this.flash(
-            error.response.statusText + " !",
-            error.response.data.message,
-            "error"
-          );
-
-          return;
+        if (
+          e.response !== undefined &&
+          e.response.statusText &&
+          e.response.data.message !== undefined
+        ) {
+          if (e.response.status === 422) {
+            return this.flash(
+              e.response.statusText + " !",
+              e.response.data.message,
+              "error"
+            );
+          }
         }
 
-        this.flash(
+        return this.flash(
           "Attribution de charge impossible",
           "Une erreur est survenue lors de l'attribution de la charge",
           "error"
@@ -260,7 +268,7 @@ export default {
 
       if (this.chargeId !== 0) {
         const charge = this.charges.find(
-          (charge) => charge.id === this.chargeId
+          (charge: Charge) => charge.id === this.chargeId
         );
 
         if (charge !== undefined) {

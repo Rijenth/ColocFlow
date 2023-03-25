@@ -8,7 +8,7 @@ interface Users {
     amount: number;
   };
 }
-interface Charge {
+export interface Charge {
   type: string;
   id: number;
   attributes: {

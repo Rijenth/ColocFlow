@@ -133,10 +133,10 @@ export default {
       const input = ($event.target as HTMLInputElement).value + $event.key;
 
       if (
-        isNaN(input) ||
+        isNaN(Number(input)) ||
         (input.includes(".") && input.split(".")[1].length > 2)
       ) {
-        event.preventDefault();
+        $event.preventDefault();
       }
     },
     StoreExpenses() {
@@ -149,14 +149,13 @@ export default {
         { key: "water_charge", amount: this.water_charge },
       ];
 
-      const filteredExpenses = Object.fromEntries(
-        // eslint-disable-next-line
-        Object.entries(expenses).filter(([key, value]) => value.amount != null && value.amount != "")
+      const filteredExpenses = expenses.filter(
+        (expense) => expense.amount != null && expense.amount != ""
       );
 
       const colocation = sessionStorage.getItem("colocation") as string;
 
-      if (colocation && Object.keys(filteredExpenses).length > 0) {
+      if (colocation && filteredExpenses.length > 0) {
         const colocationData = JSON.parse(colocation);
 
         colocationData.data.attributes.charges = filteredExpenses;
@@ -169,12 +168,12 @@ export default {
   },
 
   mounted() {
-    const colocation = sessionStorage.getItem("colocation") as string;
+    const getColocation = sessionStorage.getItem("colocation") as string;
 
-    if (colocation) {
-      this.colocation = JSON.parse(colocation);
+    if (getColocation) {
+      const colocation = JSON.parse(getColocation);
 
-      this.monthlyRent = this.colocation.data.attributes.monthly_rent;
+      this.monthlyRent = colocation.data.attributes.monthly_rent;
     }
   },
 };

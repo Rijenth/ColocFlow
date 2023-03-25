@@ -35,7 +35,7 @@
           </label>
 
           <p>
-            {{ getAffectedAmount(this.user_id, charge.id) }}
+            {{ getAffectedAmount(user_id, charge.id) }}
             €
           </p>
         </li>
@@ -46,7 +46,7 @@
 
     <div class="font-bold flex justify-between">
       <p>Total</p>
-      <p>{{ totalAffectedAmount(this.user_id) }} €</p>
+      <p>{{ totalAffectedAmount(user_id) }} €</p>
     </div>
 
     <hr class="my-2" />
@@ -105,6 +105,7 @@
 <script lang="ts">
 import LoadingButton from "@/components/LoadingButton.vue";
 import { useSwal } from "@/composables/useSwal";
+import type { AxiosResponse } from "axios";
 
 export default {
   name: "ChargesResume",
@@ -123,10 +124,10 @@ export default {
 
   data() {
     return {
+      loading: false as boolean,
       user_id: 0 as number,
       roommate_name: "" as string,
       removeCharge: false as boolean,
-      loading: false as boolean,
     };
   },
 
@@ -153,7 +154,11 @@ export default {
         "input[type=checkbox]:checked"
       );
 
-      const chargeIds = Array.from(checkboxes).map((el) => el.value);
+      const chargeIds = Array.from(checkboxes).map((checkbox) => {
+        if (checkbox instanceof HTMLInputElement) {
+          return checkbox.value;
+        }
+      });
 
       if (chargeIds.length === 0) {
         this.flash(
@@ -192,12 +197,14 @@ export default {
           );
         }
       } catch (error) {
-        if (error.response !== undefined) {
-          this.flash(
-            error.response.statusText,
-            error.response.data.message,
-            "error"
-          );
+        const e = error as Error & { response: AxiosResponse | undefined };
+
+        if (
+          e.response !== undefined &&
+          e.response.statusText &&
+          e.response.data.message !== undefined
+        ) {
+          this.flash(e.response.statusText, e.response.data.message, "error");
         } else {
           this.flash(
             "Une erreur est survenue",
@@ -217,10 +224,15 @@ export default {
         this.loading = true;
       }
     },
-    updateComponentData(value: string) {
+    updateComponentData(value: string | null) {
+      if (value === null) return;
+
       const [userId, roommateName] = value.split("|");
+
       this.user_id = parseInt(userId);
+
       this.roommate_name = "à " + roommateName;
+
       this.removeCharge = false;
     },
   },

@@ -15,7 +15,7 @@ interface Relationships {
     };
   };
 }
-interface User {
+export interface User {
   type: string;
   id: number;
   attributes: {

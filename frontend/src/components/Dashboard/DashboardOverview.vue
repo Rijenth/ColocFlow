@@ -64,6 +64,8 @@
 
 <script lang="ts">
 import StateIndicator from "@/components/StateIndicator.vue";
+import type { Charge } from "@/stores/useColocationChargeStore";
+import type { User } from "@/stores/useAuthStore";
 
 export default {
   name: "DashboardOverview",
@@ -78,11 +80,11 @@ export default {
       required: true,
     },
     userCharges: {
-      type: Array,
+      type: Array as () => Array<Charge>,
       required: true,
     },
     roommates: {
-      type: Array,
+      type: Array as () => Array<User>,
       required: true,
     },
   },

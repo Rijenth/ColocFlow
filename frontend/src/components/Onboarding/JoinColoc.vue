@@ -42,6 +42,8 @@ import { useColocationStore } from "@/stores/useColocationStore";
 import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
 import LoadingButton from "@/components/LoadingButton.vue";
+import type { User } from "@/stores/useAuthStore";
+import type { AxiosResponse } from "axios";
 
 export default {
   name: "JoinColoc",
@@ -83,7 +85,7 @@ export default {
       }
     },
     async joinColocation() {
-      const user = this.authStore.getUser;
+      const user: User = this.authStore.getUser;
 
       if (user.id === 0 || user.type === "") {
         this.flash(
@@ -149,7 +151,7 @@ export default {
           if (patchColocation.status === 200) {
             const updatedUser =
               patchColocation.data.included.roommates.data.find(
-                (user) => user.id === this.authStore.getUser.id
+                (user: User) => user.id === this.authStore.getUser.id
               );
 
             this.authStore.setUser(updatedUser);
@@ -172,31 +174,39 @@ export default {
             this.$router.push("/dashboard");
           }
         }
-      } catch (err) {
+      } catch (error) {
+        const e = error as Error & { response: AxiosResponse | undefined };
+
         this.toggleLoading();
 
-        if (err.response !== undefined && err.response.status === 422) {
-          this.flash(
-            err.response.statusText,
-            "Une erreur est survenue lors de l'ajout de l'utilisateur à la colocation",
-            "error"
-          );
-        } else if (err.response !== undefined && err.response.status === 404) {
-          this.flash(
-            "Erreur !",
-            "Le nom d'utilisateur ou le code d'accès est incorrect",
-            "error"
-          );
-        } else if (err.response !== undefined && err.response.status === 401) {
-          this.flash("Erreur !", "Le code d'accès est incorrect", "error");
-        } else if (err.response !== undefined && err.response.status === 409) {
-          this.flash(
-            "Colocation complète !",
-            "Le nombre maximum de colocataires a été atteint",
-            "error"
-          );
+        if (
+          e.response !== undefined &&
+          e.response.statusText &&
+          e.response.status
+        ) {
+          if (e.response.status === 422) {
+            this.flash(
+              e.response.statusText,
+              "Une erreur est survenue lors de l'ajout de l'utilisateur à la colocation",
+              "error"
+            );
+          } else if (e.response.status === 404) {
+            this.flash(
+              "Erreur !",
+              "Le nom d'utilisateur ou le code d'accès est incorrect",
+              "error"
+            );
+          } else if (e.response.status === 401) {
+            this.flash("Erreur !", "Le code d'accès est incorrect", "error");
+          } else if (e.response.status === 409) {
+            this.flash(
+              "Colocation complète !",
+              "Le nombre maximum de colocataires a été atteint",
+              "error"
+            );
+          }
         } else {
-          this.flash("Erreur !", err.message, "error");
+          this.flash("Une erreur est survenue", e.message, "error");
         }
       }
     },

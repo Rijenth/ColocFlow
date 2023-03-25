@@ -39,6 +39,7 @@ import { useColocationStore } from "@/stores/useColocationStore";
 import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
 import { useSwal } from "@/composables/useSwal";
+import type { AxiosResponse } from "axios";
 
 export default {
   name: "LoginForm",
@@ -105,9 +106,18 @@ export default {
         await this.authStore.login(this.email, this.password);
 
         if (this.authStore.isRoommate === true) {
-          await this.colocationStore.fetchColocation(
-            this.authStore.getColocationId
-          );
+          const colocationId: number | undefined =
+            this.authStore.getColocationId;
+
+          if (colocationId !== undefined) {
+            await this.colocationStore.fetchColocation(
+              Number(this.authStore.getColocationId)
+            );
+          } else {
+            throw new Error(
+              "No colocation id found for this roommate, please contact the administrator"
+            );
+          }
         } else if (
           this.authStore.getUser.relationships !== undefined &&
           this.authStore.getUser.relationships.owner !== undefined
@@ -133,21 +143,27 @@ export default {
 
         this.$router.push("/welcome");
       } catch (error) {
+        const e = error as Error & { response: AxiosResponse | undefined };
+
         this.toggleLoading();
 
-        if (error.response !== undefined) {
+        if (
+          e.response !== undefined &&
+          e.response.statusText &&
+          e.response.data.message !== undefined
+        ) {
           return this.flash(
-            error.response.statusText,
-            error.response.data.message,
-            "error"
-          );
-        } else {
-          return this.flash(
-            "Erreur",
-            "Une erreur est survenue lors de la connexion",
+            e.response.statusText,
+            e.response.data.message,
             "error"
           );
         }
+
+        return this.flash(
+          "Une erreur est survenue",
+          "Une erreur inconnue est survenue, merci de contacter l'administrateur",
+          "error"
+        );
       }
     },
   },

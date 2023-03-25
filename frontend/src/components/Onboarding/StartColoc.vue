@@ -22,6 +22,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
 import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
+import type { AxiosResponse } from "axios";
 
 export default {
   name: "StartColoc",
@@ -132,10 +133,16 @@ export default {
           this.$router.push({ name: "dashboard" });
         }
       } catch (error) {
-        if (error.response !== undefined) {
+        const e = error as Error & { response: AxiosResponse | undefined };
+
+        if (
+          e.response !== undefined &&
+          e.response.statusText &&
+          e.response.data.message !== undefined
+        ) {
           this.flash(
-            error.response.statusText + " !",
-            error.response.data.message,
+            e.response.statusText + " !",
+            e.response.data.message,
             "error"
           );
         } else {

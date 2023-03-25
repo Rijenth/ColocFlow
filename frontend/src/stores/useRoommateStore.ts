@@ -1,30 +1,6 @@
 import { defineStore } from "pinia";
+import type { User } from "@/stores/useAuthStore";
 import axios from "@/services/axios";
-
-interface User {
-  type: string;
-  id: number;
-  attributes: {
-    lastname: string;
-    firstname: string;
-    email: string;
-    colocation_id?: number;
-  };
-  relationships: {
-    owner?: {
-      data: {
-        type: string;
-        id: number;
-      };
-    };
-    roommates?: {
-      data: {
-        type: string;
-        id: number;
-      };
-    };
-  };
-}
 
 interface Roommates {
   data: User[] | [];
