@@ -46,16 +46,24 @@ class ColocationResource extends JsonResource
     {
         $included = [];
 
-        if ($request->has('include') && $request->get('include') === 'charges') {
-            $included['charges'] = $this->mergeWhen($this->resource->charges()->exists(), fn () => ChargeResource::collection($this->resource->charges));
+        if (strpos($request->get('include'), ',') !== false) {
+            $includes = explode(',', $request->get('include'));
+        } else {
+            $includes = [$request->get('include')];
         }
 
-        if ($request->has('include') && $request->get('include') === 'owner') {
-            $included['owner'] = $this->mergeWhen($this->resource->owner()->exists(), fn () => [new UserResource($this->resource->owner)]);
-        }
+        foreach ($includes as $include) {
+            if ($include === 'charges') {
+                $included['charges'] = $this->mergeWhen($this->resource->charges()->exists(), fn () => ChargeResource::collection($this->resource->charges));
+            }
 
-        if ($request->has('include') && $request->get('include') === 'roommates') {
-            $included['roommates'] = $this->mergeWhen($this->resource->roommates()->exists(), fn () => UserResource::collection($this->resource->roommates));
+            if ($include === 'owner') {
+                $included['owner'] = $this->mergeWhen($this->resource->owner()->exists(), fn () => new UserResource($this->resource->owner));
+            }
+
+            if ($include === 'roommates') {
+                $included['roommates'] = $this->mergeWhen($this->resource->roommates()->exists(), fn () => UserResource::collection($this->resource->roommates));
+            }
         }
 
         return ['included' => $included];
