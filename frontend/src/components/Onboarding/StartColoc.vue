@@ -84,10 +84,15 @@ export default {
         if (createColocation.status === 200) {
           sessionStorage.removeItem("colocation");
           const colocation = createColocation.data;
-          const owner = createColocation.data.included.owner.data[0];
           const relationships = sessionStorage.getItem(
             "relationships"
           ) as string;
+
+          const owner = createColocation.data.included.owner.data;
+
+          if (owner !== undefined) {
+            this.colocationStore.setOwnerFirstName(owner.attributes.firstname);
+          }
 
           if (relationships) {
             const body = JSON.parse(relationships);
@@ -107,7 +112,7 @@ export default {
               this.colocationStore.setColocation(colocationUpdated.data);
 
               this.authStore.setUser(
-                colocationUpdated.data.included.owner.data[0]
+                colocationUpdated.data.included.owner.data
               );
             }
           } else {
@@ -146,11 +151,7 @@ export default {
             "error"
           );
         } else {
-          this.flash(
-            "Erreur !",
-            "Une erreur est survenue lors de la création de votre colocation.",
-            "error"
-          );
+          this.flash("Erreur !", e.message, "error");
         }
 
         this.loading = false;

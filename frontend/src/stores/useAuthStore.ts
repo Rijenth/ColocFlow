@@ -52,13 +52,15 @@ export const useAuthStore = defineStore("authStore", {
         },
 
   getters: {
-    isAuthenticated: (state: AuthState): boolean => state.authenticated,
     getColocationId: (state: AuthState): number | undefined =>
       (state.user.relationships.roommate?.data.id as number) ||
       (state.user.relationships.owner?.data.id as number),
     getUser: (state: AuthState): User => state.user,
+    isAuthenticated: (state: AuthState): boolean => state.authenticated,
     isRoommate: (state: AuthState): boolean =>
       state.user.relationships.roommate !== undefined,
+    isOwner: (state: AuthState): boolean =>
+      state.user.relationships.owner !== undefined,
   },
 
   actions: {
@@ -70,11 +72,18 @@ export const useAuthStore = defineStore("authStore", {
 
       if (login.status === 200) {
         this.authenticated = true;
+        this.unsetUser();
         this.setUser(login.data.user);
       }
     },
     logout() {
       this.authenticated = false;
+    },
+    setColocationId(id: number) {
+      this.user.attributes.colocation_id = id;
+    },
+    setRoommateRelationship(roommate: Relationships["roommate"]) {
+      this.user.relationships.roommate = roommate;
     },
     setUser(user: User) {
       this.user = user;

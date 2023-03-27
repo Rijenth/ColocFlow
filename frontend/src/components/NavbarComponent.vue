@@ -37,8 +37,16 @@
             <RouterLink
               class="router-link"
               to="/dashboard"
-              v-if="isAuthenticated"
+              v-if="isAuthenticated && hasColocation === true"
               >Dashboard</RouterLink
+            >
+          </li>
+          <li class="border-b md:border-none">
+            <RouterLink
+              class="router-link"
+              to="/welcome"
+              v-if="isAuthenticated && hasColocation === false"
+              >Bienvenue</RouterLink
             >
           </li>
           <li class="border-b md:border-none">
@@ -70,6 +78,7 @@
 import { RouterLink } from "vue-router";
 import { useLogout } from "../composables/useLogout";
 import { useAuthStore } from "../stores/useAuthStore";
+import { useColocationStore } from "@/stores/useColocationStore";
 
 export default {
   name: "NavbarComponent",
@@ -87,14 +96,19 @@ export default {
   setup() {
     const { logout } = useLogout();
     const authStore = useAuthStore();
+    const colocationStore = useColocationStore();
 
     return {
-      logout,
       authStore,
+      colocationStore,
+      logout,
     };
   },
 
   computed: {
+    hasColocation() {
+      return this.colocationStore.colocationIsDefined;
+    },
     isAuthenticated() {
       return this.authStore.isAuthenticated;
     },

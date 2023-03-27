@@ -159,11 +159,7 @@ export default {
           );
         }
 
-        return this.flash(
-          "Une erreur est survenue",
-          "Une erreur inconnue est survenue, merci de contacter l'administrateur",
-          "error"
-        );
+        return this.flash("Une erreur est survenue", e.message, "error");
       }
     },
   },

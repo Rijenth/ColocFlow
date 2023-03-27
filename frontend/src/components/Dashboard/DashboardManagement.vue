@@ -11,22 +11,31 @@
         :storeCharges="storeCharges"
       />
     </div>
-    <div
-      class="md:col-span-1"
-      v-if="
-        storeCharges.getColocationCharges.length !== 0 &&
-        storeRoommates.getRoommates.length !== 0
-      "
-    >
+    <div class="md:col-span-1">
       <ChargesResume
+        v-if="
+          storeCharges.getColocationCharges.length !== 0 &&
+          storeRoommates.getRoommates.length !== 0
+        "
         :storeAuth="storeAuth"
         :storeRoommates="storeRoommates"
         :storeCharges="storeCharges"
       />
       <ChargesAttribution
+        v-if="
+          storeCharges.getColocationCharges.length !== 0 &&
+          storeRoommates.getRoommates.length !== 0
+        "
         :storeRoommates="storeRoommates"
         :storeCharges="storeCharges"
       />
+
+      <div class="bg-gray-900 dashboard-management-card" v-else>
+        <h2 class="text-sm underline text-center font-bold mb-4">
+          Détails des charges attribuées
+        </h2>
+        <p class="text-xs">Votre colocation n'a pas encore de colocataires.</p>
+      </div>
     </div>
   </div>
 </template>

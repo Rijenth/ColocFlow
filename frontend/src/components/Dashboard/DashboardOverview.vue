@@ -1,10 +1,7 @@
 <template>
   <div class="bg-gray-700 dashboard-overview-card">
-    <h2 class="text-lg text-center font-semibold">
-      Bienvenue chez
-      {{ colocation.name }}
-      !
-    </h2>
+    <h2 class="text-lg text-center font-semibold">Bienvenue chez</h2>
+    <p class="text-sm text-center">{{ colocation.getAttributes.name }} !</p>
   </div>
 
   <div class="bg-gray-900 dashboard-overview-card">
@@ -18,6 +15,10 @@
     <StateIndicator color="green">
       <p class="text-sm">Incident majeur non résolu</p>
     </StateIndicator>
+    <!-- Changer l'etat si la colocation a un owner ou non -->
+    <StateIndicator color="green">
+      <p class="text-sm">Propriétaire : {{ colocation.getOwnerFirstName }}</p>
+    </StateIndicator>
   </div>
 
   <div class="flex flex-col w-full items-center">
@@ -25,7 +26,7 @@
       <h2 class="text-sm underline text-center font-bold mb-4">
         Suivi des règlements
       </h2>
-      <ul class="text-sm">
+      <ul class="text-sm" v-if="roommates.length !== 0">
         <li v-for="roommate in roommates" :key="roommate.id">
           <StateIndicator color="green">
             <p>
@@ -38,6 +39,7 @@
           </StateIndicator>
         </li>
       </ul>
+      <p class="text-sm" v-else>Aucun colocataire enregistré</p>
     </div>
 
     <div class="bg-gray-900 dashboard-overview-card">
@@ -77,7 +79,7 @@ export default {
   },
 
   props: {
-    colocation: {
+    colocationStore: {
       type: Object,
       required: true,
     },
@@ -94,6 +96,9 @@ export default {
   methods: {},
 
   computed: {
+    colocation() {
+      return this.colocationStore;
+    },
     TodayMonth() {
       const today = new Date();
       return today.toLocaleString("fr-FR", { month: "long" }).toUpperCase();

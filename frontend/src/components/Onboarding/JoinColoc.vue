@@ -20,7 +20,7 @@
         v-model="email"
       />
       <input
-        type="text"
+        type="password"
         class="w-1/2 h-10 p-4 border-2 border-gray-900 rounded-lg text-black"
         placeholder="Code d'accès"
         v-model="access_key"
@@ -144,7 +144,7 @@ export default {
           };
 
           const patchColocation = await axios.patch(
-            "/api/colocations/" + reponse.data.id + "?include=roommates",
+            "/api/colocations/" + reponse.data.id + "?include=roommates,owner",
             body
           );
 
@@ -162,6 +162,12 @@ export default {
               "success"
             );
             this.colocationStore.setColocation(patchColocation.data);
+
+            if (patchColocation.data.included.owner !== undefined) {
+              this.colocationStore.setOwnerFirstName(
+                patchColocation.data.included.owner.data.attributes.firstname
+              );
+            }
 
             this.roommateStore.fetchRoomates(
               this.colocationStore.getColocationId

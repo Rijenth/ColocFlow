@@ -260,7 +260,7 @@ export default {
 
         return this.flash(
           "Attribution de charge impossible",
-          "Une erreur est survenue lors de l'attribution de la charge",
+          e.message,
           "error"
         );
       }

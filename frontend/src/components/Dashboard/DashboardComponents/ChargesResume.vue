@@ -206,11 +206,7 @@ export default {
         ) {
           this.flash(e.response.statusText, e.response.data.message, "error");
         } else {
-          this.flash(
-            "Une erreur est survenue",
-            "Impossible de supprimer les charges, si le problème persiste, veuillez contacter l'administrateur du site",
-            "error"
-          );
+          this.flash("Une erreur est survenue", e.message, "error");
         }
       }
 

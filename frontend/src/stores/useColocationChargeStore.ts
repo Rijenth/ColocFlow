@@ -64,6 +64,9 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         this.data = colocationCharges.data.data;
       }
     },
+    setColocationCharges(charges: Charge[]) {
+      this.data = charges;
+    },
     unSetColocationCharges() {
       this.data = [];
     },
