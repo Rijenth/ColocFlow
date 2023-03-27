@@ -120,7 +120,6 @@ class Handler extends ExceptionHandler
             'status' => 500,
             'message' => 'An internal server error has occurred.',
             'details' => $exception->getMessage(),
-            'trace' => $exception->getTrace(),
         ], 500);
     }
 }
