@@ -20,6 +20,11 @@ return new class extends Migration
             $table->dropForeign(['charge_id']);
             $table->foreign('charge_id')->references('id')->on('charges')->onDelete('cascade');
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['colocation_id']);
+            $table->foreign('colocation_id')->references('id')->on('colocations')->nullOnDelete();
+        });
     }
 
     /**
@@ -35,6 +40,11 @@ return new class extends Migration
         Schema::table('colocation_charges_users', function (Blueprint $table) {
             $table->dropForeign(['charge_id']);
             $table->foreign('charge_id')->references('id')->on('charges');
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['colocation_id']);
+            $table->foreign('colocation_id')->references('id')->on('colocations');
         });
     }
 };
