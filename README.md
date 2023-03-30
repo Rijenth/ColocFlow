@@ -9,7 +9,7 @@ cd backend
 
 Créer un fichier .env et le remplir avec les données du .env.exemple
 
-docker-compose up -d
+docker-compose up -d --build
 
 docker-compose exec php composer install
 
