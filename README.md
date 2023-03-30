@@ -1,5 +1,5 @@
 # ColocFlow
-Reworked ColocApp using Vue 3 | Laravel 10 | PostgreSQL | Tailwind
+Reworked ColocApp using Vue 3 | Vite | Laravel 10 | PostgreSQL | Tailwind
 
 instructions :
 
