@@ -6,7 +6,7 @@
       <form @submit.prevent="submitForm">
         <input
           class="input-field input-auth"
-          type="email"
+          type="text"
           placeholder="Adresse email"
           @keydown.space.prevent
           v-model="email"
@@ -50,8 +50,8 @@ export default {
 
   data() {
     return {
-      email: "admin@admin.fr" as string,
-      password: "admin" as string,
+      email: "" as string,
+      password: "" as string,
       loading: false as boolean,
     };
   },

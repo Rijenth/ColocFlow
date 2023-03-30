@@ -9,6 +9,7 @@
     <form method="post" @submit.prevent="registerUser" @keydown.space.prevent>
       <input
         class="input-field input-auth"
+        @keydown="preventNumericOrSymbolsInput"
         type="text"
         placeholder="Nom de famille"
         v-model="user.lastname"
@@ -16,6 +17,7 @@
 
       <input
         class="input-field input-auth"
+        @keydown="preventNumericOrSymbolsInput"
         type="text"
         placeholder="Prénom"
         v-model="user.firstname"
@@ -63,6 +65,7 @@
 import LoadingButton from "@/components/LoadingButton.vue";
 import { useSwal } from "@/composables/useSwal";
 import axios from "@/services/axios";
+import type { AxiosResponse } from "axios";
 
 const { flash } = useSwal();
 
@@ -92,6 +95,16 @@ export default {
   }),
 
   methods: {
+    preventNumericOrSymbolsInput(event: KeyboardEvent) {
+      if (event.key.match(/^[0-9]$/)) {
+        event.preventDefault();
+      }
+
+      // eslint-disable-next-line no-useless-escape
+      if (event.key.match(/^[!@#$€£¤%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/)) {
+        event.preventDefault();
+      }
+    },
     updateSelectedComponent() {
       this.$emit("updateComponent", "LoginForm");
     },
@@ -105,8 +118,8 @@ export default {
     async registerUser() {
       if (this.fieldsAreNotEmpty === false) {
         flash(
-          "Erreur !",
-          "Erreur, tous les champs doivent être remplis",
+          "Formulaire vide",
+          "Tous les champs doivent être remplis",
           "warning"
         );
         return;
@@ -114,8 +127,17 @@ export default {
 
       if (this.userPasswordIsConfirmed === false) {
         flash(
-          "Erreur !",
-          "Erreur, les mots de passe ne correspondent pas",
+          "Mot de passe non confirmé",
+          "Les mots de passe ne correspondent pas",
+          "warning"
+        );
+        return;
+      }
+
+      if (this.user.password.length < 5) {
+        flash(
+          "Mot de passe trop court",
+          "Le mot de passe doit contenir au moins 5 caractères",
           "warning"
         );
         return;
@@ -159,27 +181,16 @@ export default {
           }
         })
         .catch((error) => {
-          if (error.response !== undefined && error.response.status === 422) {
+          const e = error as Error & { response: AxiosResponse | undefined };
+
+          if (e.response !== undefined) {
             flash(
               error.response.statusText,
               error.response.data.message,
               "error"
             );
-          } else if (
-            error.response !== undefined &&
-            error.response.status === 401
-          ) {
-            flash(
-              "Unauthorized",
-              "Vous n'êtes pas autorisé à accéder à cette page",
-              "error"
-            );
           } else {
-            flash(
-              "Internal server error",
-              "Une erreur est survenue, merci de contacter l'administrateur",
-              "error"
-            );
+            flash("Une erreur est survenue", e.message, "error");
           }
           this.toggleLoading();
         });

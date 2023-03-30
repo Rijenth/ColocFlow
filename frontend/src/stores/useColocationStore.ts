@@ -115,9 +115,11 @@ export const useColocationStore = defineStore("colocationStore", {
     },
     async updateColocation(
       updatedAttributes: {
-        name: string;
-        monthly_rent: number;
-        max_roommates: number;
+        access_key?: string;
+        name?: string;
+        monthly_rent?: number;
+        max_roommates?: number;
+        old_access_key?: string;
       },
       options: { include: Array<string> | null } = { include: null },
       updatedRelationships: Relationships = {}

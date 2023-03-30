@@ -22,7 +22,6 @@ export interface User {
     lastname: string;
     firstname: string;
     email: string;
-    colocation_id: number | null;
   };
   relationships: Relationships;
 }
@@ -45,7 +44,6 @@ export const useAuthStore = defineStore("authStore", {
               lastname: "",
               firstname: "",
               email: "",
-              colocation_id: null,
             },
             relationships: {},
           },
@@ -64,6 +62,11 @@ export const useAuthStore = defineStore("authStore", {
   },
 
   actions: {
+    async deleteUser() {
+      const response = await axios.delete("/api/users/" + this.user.id);
+
+      return response;
+    },
     async login(email: string, password: string) {
       const login = await axios.post("/login", {
         email: email,
@@ -79,14 +82,35 @@ export const useAuthStore = defineStore("authStore", {
     logout() {
       this.authenticated = false;
     },
-    setColocationId(id: number) {
-      this.user.attributes.colocation_id = id;
+    async updateUser(attributes: {
+      lastname?: string;
+      firstname?: string;
+      email?: string;
+      password?: string;
+      old_password?: string;
+    }) {
+      const response = await axios.patch("/api/users/" + this.user.id, {
+        data: {
+          type: "users",
+          id: this.user.id,
+          attributes: attributes,
+        },
+      });
+
+      if (response.status === 200) {
+        this.setUserAttributes(response.data.data.attributes);
+      }
+
+      return response;
     },
     setRoommateRelationship(roommate: Relationships["roommate"]) {
       this.user.relationships.roommate = roommate;
     },
     setUser(user: User) {
       this.user = user;
+    },
+    setUserAttributes(attributes: User["attributes"]) {
+      this.user.attributes = attributes;
     },
     unsetUser() {
       this.user = {
@@ -96,7 +120,6 @@ export const useAuthStore = defineStore("authStore", {
           lastname: "",
           firstname: "",
           email: "",
-          colocation_id: null,
         },
         relationships: {},
       };

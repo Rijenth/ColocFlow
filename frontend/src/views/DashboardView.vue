@@ -51,7 +51,7 @@
     <DashboardOverview
       v-if="activeComponent === 'DashboardOverview'"
       :userCharges="userCharges"
-      :colocation="colocation"
+      :colocationStore="colocation"
       :roommates="roommates"
     />
     <DashboardManagement
@@ -111,7 +111,7 @@ export default {
 
   computed: {
     colocation() {
-      return this.colocationStore.getAttributes;
+      return this.colocationStore;
     },
     roommates() {
       return this.roommateStore.getRoommates;

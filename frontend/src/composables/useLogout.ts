@@ -1,33 +1,24 @@
 import axios from "@/services/axios";
-import { useAuthStore } from "@/stores/useAuthStore";
-import { useColocationStore } from "@/stores/useColocationStore";
-import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
-import { useRoommateStore } from "@/stores/useRoommateStore";
 import router from "@/router";
+import type { AxiosResponse } from "axios";
+import { useDestroyStore } from "./useDestroyStore";
 
 export function useLogout() {
   function logout() {
-    const authStore = useAuthStore();
-    const colocationStore = useColocationStore();
-    const colocationChargeStore = useColocationChargeStore();
-    const roommateStore = useRoommateStore();
+    const { destroyStore } = useDestroyStore();
 
     axios
       .post("/logout")
       .then(() => {
-        authStore.logout();
-        authStore.unsetUser();
-        colocationStore.unSetColocation();
-        colocationChargeStore.unSetColocationCharges();
-        roommateStore.unSetRoomates();
-        sessionStorage.clear();
+        destroyStore();
 
         if (router.currentRoute.value.name !== "home") {
           router.push({ name: "home" });
         }
       })
-      .catch(() => {
-        window.location.reload();
+      .catch((error) => {
+        const e = error as Error & { response: AxiosResponse };
+        console.error(e.response.data);
       });
   }
 
