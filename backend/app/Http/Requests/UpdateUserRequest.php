@@ -24,10 +24,11 @@ class UpdateUserRequest extends FormRequest
         return [
             'data' => 'required|array',
             'data.type' => 'required|string|in:users',
-            'data.id' => 'required|string|exists:users,id',
+            'data.id' => 'required|integer|exists:users,id',
             'data.attributes' => 'array',
             'data.attributes.email' => 'unique:users,email|email',
-            'data.attributes.password' => 'string',
+            'data.attributes.password' => 'string|min:5',
+            'data.attributes.old_password' => 'string|min:4',
             'data.attributes.firstname' => 'string',
             'data.attributes.lastname' => 'string',
         ];

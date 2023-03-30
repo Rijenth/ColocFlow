@@ -23,7 +23,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'data.attributes.email' => 'required|unique:users,email|email',
-            'data.attributes.password' => 'required|string',
+            'data.attributes.password' => 'required|string|min:5',
             'data.attributes.firstname' => 'required|string',
             'data.attributes.lastname' => 'required|string',
         ];

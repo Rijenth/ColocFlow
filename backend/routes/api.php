@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->only(['index', 'store']);
 
     Route::apiResource('/users', UserController::class)
-        ->only(['update']);
+        ->only(['destroy', 'update']);
 
     Route::apiResource('/users/{user}/relationships', UserRelationshipController::class)
         ->only(['destroy']);

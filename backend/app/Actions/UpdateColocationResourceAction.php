@@ -12,7 +12,7 @@ class UpdateColocationResourceAction
     {
         if (isset($data['attributes'])) {
             if (isset($data['attributes']['access_key'])) {
-                $data['attributes']['access_key'] = bcrypt($data['attributes']['access_key']);
+                $data['attributes']['access_key'] = $this->verifyAccessKey($colocation, $data['attributes']);
             }
 
             if (isset($data['attributes']['max_roommates'])) {
@@ -33,6 +33,15 @@ class UpdateColocationResourceAction
         ColocationUpdated::dispatch($colocation, $data);
 
         return $colocation->fresh();
+    }
+
+    public function verifyAccessKey(Colocation $colocation, array $data): string
+    {
+        if (isset($data['access_key'], $data['old_access_key']) && $colocation->access_key !== null) {
+            abort_if(! password_verify($data['old_access_key'], $colocation->access_key), 422, 'Old access key is not valid');
+        }
+
+        return bcrypt($data['access_key']);
     }
 
     public function updateroommatesRelationship(Colocation $colocation, array $data): void
