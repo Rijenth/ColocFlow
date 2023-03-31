@@ -71,6 +71,7 @@
 
 <script lang="ts">
 import type { User } from "@/stores/useAuthStore";
+import { useColocationStore } from "@/stores/useColocationStore";
 import LoadingButton from "@/components/LoadingButton.vue";
 import type { AxiosResponse } from "axios";
 
@@ -86,6 +87,12 @@ export default {
 
   components: {
     LoadingButton,
+  },
+
+  setup() {
+    const colocationStore = useColocationStore();
+
+    return { colocationStore };
   },
 
   computed: {
@@ -168,7 +175,12 @@ export default {
             "Vos informations ont bien été modifiées",
             "success"
           );
+
           this.updateInfo = false;
+
+          this.colocationStore.setOwnerFirstName(
+            this.updatedUser.attributes.firstname
+          );
         }
       } catch (error) {
         const e = error as Error & { response: AxiosResponse | undefined };
