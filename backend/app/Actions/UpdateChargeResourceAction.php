@@ -34,9 +34,15 @@ class UpdateChargeResourceAction
     public function updateChargeUserRelationship(Charge $charge, array $data): void
     {
         if (! empty($data)) {
-            $user = User::findOrFail($data['id']);
+            $user = User::find($data['id']);
 
-            $previouslyAffectedAmount = ($charge->users()->find($user->id)->pivot?->amount) ?? 0;
+            abort_if(
+                $user->roommate?->id !== $charge->colocation->id,
+                404,
+                'This roommate is not part of the colocation.'
+            );
+
+            $previouslyAffectedAmount = (float) ($charge->users()->find($user->id)?->pivot->amount) ?? 0;
 
             $newlyAffectedAmount = ($charge->users()->sum('amount') + $data['attributes']['amount']) - $previouslyAffectedAmount;
 

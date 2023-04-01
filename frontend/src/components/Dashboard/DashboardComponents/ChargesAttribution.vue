@@ -249,13 +249,11 @@ export default {
           e.response.statusText &&
           e.response.data.message !== undefined
         ) {
-          if (e.response.status === 422) {
-            return this.flash(
-              e.response.statusText + " !",
-              e.response.data.message,
-              "error"
-            );
-          }
+          return this.flash(
+            e.response.statusText + " !",
+            e.response.data.message,
+            "error"
+          );
         }
 
         return this.flash(

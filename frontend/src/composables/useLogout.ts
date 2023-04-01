@@ -27,11 +27,7 @@ export function useLogout() {
           return;
         }
 
-        flash(
-          e.response.statusText,
-          e.response.data.message,
-          "error"
-        )
+        flash(e.response.statusText, e.response.data.message, "error");
       });
   }
 

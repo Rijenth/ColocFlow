@@ -85,7 +85,7 @@ class Handler extends ExceptionHandler
             ], 403);
         }
 
-        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException || $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
             return response()->json([
                 'status' => 404,
                 'message' => 'This resource does not exist.',
