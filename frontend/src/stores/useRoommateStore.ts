@@ -24,6 +24,9 @@ export const useRoommateStore = defineStore("roommateStore", {
         this.data = response.data.data;
       }
     },
+    removeRoommate(roommate_id: number) {
+      this.data = this.data.filter((roommate) => roommate.id !== roommate_id);
+    },
     unSetRoomates() {
       this.data = [];
     },

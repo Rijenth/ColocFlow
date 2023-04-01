@@ -24,14 +24,10 @@ interface Relationships {
     };
   };
   roommates?: {
-    data: RoommateRelationship[];
-  };
-}
-
-interface RoommateRelationship {
-  data: {
-    type: string;
-    id: number;
+    data: Array<{
+      type: string;
+      id: number;
+    }>;
   };
 }
 
@@ -110,6 +106,20 @@ export const useColocationStore = defineStore("colocationStore", {
         `/api/colocations/${this.data.id}/relationships/roommates`,
         body
       );
+
+      if (response.status === 204) {
+        Users.forEach((user_id) => {
+          const roommateIndex =
+            this.data.relationships.roommates?.data.findIndex(
+              (roommate: { type: string; id: number }) =>
+                roommate.id === user_id
+            );
+
+          if (roommateIndex !== undefined) {
+            this.data.relationships.roommates?.data.splice(roommateIndex, 1);
+          }
+        });
+      }
 
       return response;
     },

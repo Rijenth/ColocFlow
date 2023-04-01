@@ -10,6 +10,10 @@
     <ColocationAccessKey />
   </div>
 
+  <div v-if="isOwner" class="flex flex-col md:flex-row">
+    <ColocationRoommates />
+  </div>
+
   <LoadingButton
     class="bg-red-600 hover:bg-red-900 font-bold"
     @click="deleteColocation"
@@ -33,6 +37,7 @@ import { useLogout } from "@/composables/useLogout";
 import { useSwal } from "@/composables/useSwal";
 import ColocationInfo from "@/components/Information/UpdateColocation/ColocationInfo.vue";
 import ColocationAccessKey from "./UpdateColocation/ColocationAccessKey.vue";
+import ColocationRoommates from "./UpdateColocation/ColocationRoommates.vue";
 import type { AxiosResponse } from "axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
@@ -43,8 +48,9 @@ export default {
   name: "UpdateColocation",
 
   components: {
-    ColocationInfo,
     ColocationAccessKey,
+    ColocationInfo,
+    ColocationRoommates,
     LoadingButton,
   },
 
@@ -69,7 +75,6 @@ export default {
   data() {
     return {
       loading: false as boolean,
-      loadingOngoing: false as boolean,
     };
   },
 
