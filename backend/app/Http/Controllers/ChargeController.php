@@ -27,4 +27,11 @@ class ChargeController extends Controller
 
         return new ChargeResource($charge);
     }
+
+    public function destroy(Charge $charge)
+    {
+        $charge->delete();
+
+        return response()->noContent();
+    }
 }

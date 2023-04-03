@@ -29,10 +29,9 @@ class StoreColocationRequest extends FormRequest
             'data.attributes.monthly_rent' => ['required', 'numeric', 'min:0'],
             'data.attributes.max_roommates' => ['required', 'numeric', 'min:1'],
             'data.attributes.charges' => ['array'],
-            'data.attributes.charges.*.key' => [
+            'data.attributes.charges.*.name' => [
                 'required_with:data.attributes.charges',
                 'string',
-                'in:electricity_charge,water_charge,heating_charge,others_charge,gas_charge,internet_charge',
             ],
             'data.attributes.charges.*.amount' => [
                 'required_with:data.attributes.charges',

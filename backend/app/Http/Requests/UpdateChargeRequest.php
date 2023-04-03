@@ -27,6 +27,7 @@ class UpdateChargeRequest extends FormRequest
             'data.id' => 'required|integer|exists:charges,id',
             'data.attributes' => 'array',
             'data.attributes.amount' => 'numeric|min:0|required_with:data.attributes',
+            'data.attributes.name' => 'string',
             'data.relationships' => 'array',
             'data.relationships.users' => 'array',
             'data.relationships.users.data' => 'array',

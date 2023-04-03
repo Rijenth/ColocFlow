@@ -26,7 +26,7 @@ class StoreChargeRequest extends FormRequest
             'data.type' => 'required|string|in:charges',
             'data.attributes' => 'array|required_with:data',
             'data.attributes.amount' => 'numeric|min:0|required_with:data.attributes',
-            'data.attributes.key' => 'string|required_with:data.attributes',
+            'data.attributes.name' => 'string|required_with:data.attributes|unique:charges,name',
         ];
     }
 }

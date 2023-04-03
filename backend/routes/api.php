@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/charges', ChargeController::class)
-        ->only(['update', 'show']);
+        ->only(['destroy', 'update', 'show']);
 
     Route::apiResource('/colocations', ColocationController::class)
         ->only(['store', 'show', 'update', 'index', 'destroy']);
