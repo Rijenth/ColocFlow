@@ -3,32 +3,36 @@
     <h2 class="text-sm underline text-center font-bold mb-4">
       Modifier le code d'accès
     </h2>
-    <div class="flex flex-col mb-4">
-      <label for="old_access_key" class="mb-2"> Ancien code d'accès : </label>
-      <input
-        class="text-sm w-full px-2 py-1 rounded text-black text-left"
-        :disabled="updateAccessKey === false"
-        type="password"
-        v-model="old_access_key"
-      />
+    <div class="flex flex-col mb-4 text-center">
+      <label for="old_access_key" class="mb-2">
+        Ancien code d'accès :
+        <input
+          class="text-sm w-2/3 mt-2 px-2 py-1 rounded text-black text-left"
+          :disabled="updateAccessKey === false"
+          type="password"
+          v-model="old_access_key"
+        />
+      </label>
 
-      <label for="new_access_key" class="mb-2"> Nouveau code d'accès : </label>
-      <input
-        class="text-sm w-full px-2 py-1 rounded text-black text-left"
-        :disabled="updateAccessKey === false"
-        type="password"
-        v-model="new_access_key"
-      />
+      <label for="new_access_key" class="mb-2">
+        Nouveau code d'accès :
+        <input
+          class="text-sm w-2/3 mt-2 px-2 py-1 rounded text-black text-left"
+          :disabled="updateAccessKey === false"
+          type="password"
+          v-model="new_access_key"
+        />
+      </label>
 
       <label for="new_access_key_confirm" class="mb-2">
         Confirmer le code d'accès :
+        <input
+          class="text-sm w-2/3 mt-2 px-2 py-1 rounded text-black text-left"
+          :disabled="updateAccessKey === false"
+          type="password"
+          v-model="new_access_key_confirm"
+        />
       </label>
-      <input
-        class="text-sm w-full px-2 py-1 rounded text-black text-left"
-        :disabled="updateAccessKey === false"
-        type="password"
-        v-model="new_access_key_confirm"
-      />
     </div>
 
     <div class="flex flex-row justify-around">

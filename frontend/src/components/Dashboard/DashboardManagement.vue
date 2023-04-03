@@ -51,6 +51,12 @@ import { useRoommateStore } from "@/stores/useRoommateStore";
 export default {
   name: "DashboardManagement",
 
+  components: {
+    ManagementOverview,
+    ChargesAttribution,
+    ChargesResume,
+  },
+
   setup() {
     const authStore = useAuthStore();
     const colocationChargeStore = useColocationChargeStore();
@@ -61,12 +67,6 @@ export default {
       colocationChargeStore,
       roommateStore,
     };
-  },
-
-  components: {
-    ManagementOverview,
-    ChargesAttribution,
-    ChargesResume,
   },
 
   computed: {

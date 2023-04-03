@@ -20,7 +20,7 @@
       @click="updateRoomates"
       v-if="hasColocation === true"
     >
-      Colocataires
+      Charges
     </button>
   </div>
 
@@ -31,13 +31,15 @@
       v-else-if="activeComponent === 'UpdatePersonnalInfo'"
     />
 
-    <UpdateRoommates v-else-if="activeComponent === 'updateRoommates'" />
+    <UpdateColocationCharges
+      v-else-if="activeComponent === 'UpdateColocationCharges'"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import UpdateColocation from "@/components/Information/UpdateColocation.vue";
-import UpdateRoommates from "@/components/Information/UpdateRoommates.vue";
+import UpdateColocationCharges from "@/components/Information/UpdateColocationCharges.vue";
 import UpdatePersonnalInfo from "@/components/Information/UpdatePersonnalInfo.vue";
 import { useColocationStore } from "@/stores/useColocationStore";
 
@@ -47,7 +49,7 @@ export default {
   components: {
     UpdateColocation,
     UpdatePersonnalInfo,
-    UpdateRoommates,
+    UpdateColocationCharges,
   },
 
   setup() {
@@ -70,23 +72,6 @@ export default {
       : (this.activeComponent = "UpdatePersonnalInfo");
   },
 
-  /* TODO:
-        Objectif : Pouvoir mettre à jour des informations sur la colocation
-        -> supprimer un colocataire et mettre à jour les charges en conséquence
-          -> /colocations/:colocation/relationships/:relationship (OK) Il faut refetch les charges
-
-        -> mettre à jour les charges (ajouter/supprimer/modifier) 
-          -> supprimer un charge :  users/:user/relationships/:relationship (OK)
-          -> modifier une charge : charges/:charges (OK)
-          -> ajouter une charge : colocation/:colocation/charges (OK)
-
-        -> créer un composant qui permet de mettre à jour les informations de la colocation
-          -> qui permet de supprimer un colocataire et de mettre à jour les charges en conséquence
-        -> créer un composant qui permet d'ajouter / supprimer une charge
-        -> créer un composant qui permet de mettre à jour ses informations personnelles
-
-    */
-
   data: () => ({
     activeComponent: "",
   }),
@@ -99,7 +84,7 @@ export default {
       this.activeComponent = "UpdatePersonnalInfo";
     },
     updateRoomates() {
-      this.activeComponent = "updateRoommates";
+      this.activeComponent = "UpdateColocationCharges";
     },
   },
 };

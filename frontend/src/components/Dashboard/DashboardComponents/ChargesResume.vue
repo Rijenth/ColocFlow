@@ -13,7 +13,7 @@
         </li>
         <li
           v-else-if="getUserCharges(user_id).length === 0"
-          class="text-left text-xs"
+          class="text-left text-sm"
         >
           <p>Aucune charge attribuée</p>
         </li>
@@ -30,7 +30,7 @@
               :value="charge.id"
             />
             <p id="chargeName">
-              {{ $t("colocation.charges." + charge.attributes.name) }}
+              {{ charge.attributes.name }}
             </p>
           </label>
 
@@ -53,13 +53,13 @@
 
     <div class="block mb-4">
       <select
-        id="colocataire"
         class="text-sm w-full px-2 py-1 mt-2 border rounded text-black"
         @change="updateComponentData($event.target.value)"
       >
         <option :value="0" disabled selected>
           Selectionner un colocataire
         </option>
+
         <option
           v-for="roommate in roommates"
           :key="roommate.id"

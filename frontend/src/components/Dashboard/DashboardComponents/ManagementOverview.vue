@@ -35,7 +35,7 @@
         :key="charge.id"
         class="flex justify-between"
       >
-        <p>{{ $t("colocation.charges." + charge.attributes.name) }}</p>
+        <p>{{ charge.attributes.name }}</p>
         <p>{{ charge.attributes.amount }} €</p>
       </li>
     </ul>

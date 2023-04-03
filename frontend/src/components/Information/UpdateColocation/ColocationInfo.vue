@@ -68,7 +68,7 @@
         @click="setInfoInputsData"
         class="main-button"
         :disabled="loading"
-        :text="'Modifier'"
+        :text="'Modifier les informations'"
         v-if="updateColocation === false"
       />
       <LoadingButton

@@ -3,32 +3,36 @@
     <h2 class="text-sm underline text-center font-bold mb-4">
       Modifier votre mot de passe
     </h2>
-    <div class="flex flex-col mb-4">
-      <label for="old_password" class="mb-2"> Ancien mot de passe : </label>
-      <input
-        class="text-sm w-full px-2 py-1 rounded text-black text-left"
-        :disabled="updatePassword === false"
-        type="password"
-        v-model="old_password"
-      />
+    <div class="flex flex-col mb-4 text-center">
+      <label for="old_password" class="mb-2">
+        Ancien mot de passe :
+        <input
+          class="text-sm w-2/3 px-2 py-1 mt-2 rounded text-black text-left"
+          :disabled="updatePassword === false"
+          type="password"
+          v-model="old_password"
+        />
+      </label>
 
-      <label for="new_password" class="mb-2"> Nouveau mot de passe : </label>
-      <input
-        class="text-sm w-full px-2 py-1 rounded text-black text-left"
-        :disabled="updatePassword === false"
-        type="password"
-        v-model="new_password"
-      />
+      <label for="new_password" class="mb-2">
+        Nouveau mot de passe :
+        <input
+          class="text-sm w-2/3 px-2 py-1 mt-2 rounded text-black text-left"
+          :disabled="updatePassword === false"
+          type="password"
+          v-model="new_password"
+        />
+      </label>
 
       <label for="new_password_confirm" class="mb-2">
         Confirmer le mot de passe :
+        <input
+          class="text-sm w-2/3 px-2 py-1 mt-2 rounded text-black text-left"
+          :disabled="updatePassword === false"
+          type="password"
+          v-model="new_password_confirm"
+        />
       </label>
-      <input
-        class="text-sm w-full px-2 py-1 rounded text-black text-left"
-        :disabled="updatePassword === false"
-        type="password"
-        v-model="new_password_confirm"
-      />
     </div>
 
     <div class="flex flex-row justify-around">

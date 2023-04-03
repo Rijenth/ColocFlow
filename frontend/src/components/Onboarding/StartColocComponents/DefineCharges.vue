@@ -141,12 +141,12 @@ export default {
     },
     StoreExpenses() {
       const expenses = [
-        { key: "electricity_charge", amount: this.electricity_charge },
-        { key: "heating_charge", amount: this.heating_charge },
-        { key: "gas_charge", amount: this.gas_charge },
-        { key: "internet_charge", amount: this.internet_charge },
-        { key: "others_charge", amount: this.others_charge },
-        { key: "water_charge", amount: this.water_charge },
+        { name: "Electricité", amount: this.electricity_charge },
+        { name: "Chauffage", amount: this.heating_charge },
+        { name: "Gaz", amount: this.gas_charge },
+        { name: "Internet", amount: this.internet_charge },
+        { name: "Autres", amount: this.others_charge },
+        { name: "Eau", amount: this.water_charge },
       ];
 
       const filteredExpenses = expenses.filter(

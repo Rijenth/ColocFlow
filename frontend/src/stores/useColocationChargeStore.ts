@@ -14,7 +14,6 @@ export interface Charge {
   attributes: {
     amount: number;
     amount_affected: number;
-    key: string;
     name: string;
   };
   relationships: {
@@ -43,6 +42,35 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
         },
 
   actions: {
+    async createCharge(
+      colocation_id: number,
+      charge_attributes: { name: string; amount: number }
+    ) {
+      const response = await axios.post(
+        `api/colocations/${colocation_id}/charges`,
+        {
+          data: {
+            type: "charges",
+            attributes: charge_attributes,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        this.data.push(response.data.data);
+      }
+
+      return response;
+    },
+    async deleteCharge(charge_id: number) {
+      const response = await axios.delete(`api/charges/${charge_id}`);
+
+      if (response.status === 204) {
+        this.data = this.data.filter((charge) => charge.id !== charge_id);
+      }
+
+      return response;
+    },
     async deleteChargeUserRelationship(body: string, user_id: number) {
       const formattedBody = {
         data: JSON.parse(body),
@@ -69,6 +97,22 @@ export const useColocationChargeStore = defineStore("colocationChargeStore", {
     },
     unSetColocationCharges() {
       this.data = [];
+    },
+    async updateColocationCharge(charge: Charge) {
+      const response = await axios.patch(`api/charges/${charge.id}`, {
+        data: charge,
+      });
+
+      if (response.status === 200) {
+        this.data = this.data.map((charge) => {
+          if (charge.id === response.data.data.id) {
+            return response.data.data;
+          }
+          return charge;
+        });
+      }
+
+      return response;
     },
     async updateChargeUserRelationship(body: string, charge_id: number) {
       const response = await axios.patch(

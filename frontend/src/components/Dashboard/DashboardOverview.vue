@@ -13,7 +13,7 @@
       <p class="text-sm">Aucun message à lire</p>
     </StateIndicator>
     <StateIndicator color="green">
-      <p class="text-sm">Incident majeur non résolu</p>
+      <p class="text-sm">Taux d'attribution des charges : 100%</p>
     </StateIndicator>
     <!-- Changer l'etat si la colocation a un owner ou non -->
     <StateIndicator color="green">
@@ -24,7 +24,7 @@
   <div class="flex flex-col w-full items-center">
     <div class="bg-gray-900 dashboard-overview-card">
       <h2 class="text-sm underline text-center font-bold mb-4">
-        Suivi des règlements
+        Indicateur de participation
       </h2>
       <ul class="text-sm" v-if="roommates.length !== 0">
         <li v-for="roommate in roommates" :key="roommate.id">
@@ -53,7 +53,7 @@
           :key="charge.id"
           class="flex justify-between"
         >
-          <p>{{ $t("colocation.charges." + charge.attributes.name) }}</p>
+          <p>{{ charge.attributes.name }}</p>
           <p>{{ charge.attributes.amount }} €</p>
         </li>
       </ul>

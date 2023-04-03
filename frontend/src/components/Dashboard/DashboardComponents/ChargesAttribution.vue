@@ -37,7 +37,7 @@
         >
           <option :value="0" disabled selected>Selectionner une charge</option>
           <option v-for="charge in charges" :key="charge.id" :value="charge.id">
-            {{ $t("colocation.charges." + charge.attributes.name) }}
+            {{ charge.attributes.name }}
           </option>
         </select>
       </div>
