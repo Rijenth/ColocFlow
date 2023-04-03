@@ -86,6 +86,16 @@
         v-if="updateColocation === true"
       />
     </div>
+
+    <div class="flex flex-row justify-center">
+      <LoadingButton
+        v-if="updateColocation === true && userIsOwner"
+        class="bg-red-600 hover:bg-red-900 font-bold text-sm"
+        @click="deleteColocation"
+        :is-loading="deleting"
+        :text="'Supprimer la colocation'"
+      />
+    </div>
   </div>
 </template>
 
@@ -146,6 +156,7 @@ export default {
 
   data() {
     return {
+      deleting: false,
       loading: false,
       registerAsRoommate: false,
       updateColocation: false,
@@ -168,6 +179,47 @@ export default {
         (input.includes(".") && input.split(".")[1].length > 2)
       ) {
         $event.preventDefault();
+      }
+    },
+    async deleteColocation() {
+      const confirmDeletion = window.confirm(
+        "Voulez-vous vraiment supprimer la colocation ?"
+      );
+
+      if (confirmDeletion) {
+        this.deleting = true;
+
+        try {
+          const response = await this.colocationStore.deleteColocation();
+
+          if (response.status === 204) {
+            this.flash(
+              "Colocation supprimée",
+              "La colocation a bien été supprimée",
+              "success"
+            );
+
+            this.logout();
+          }
+        } catch (error) {
+          const err = error as Error & { response: AxiosResponse | undefined };
+
+          this.deleting = false;
+
+          if (
+            err.response !== undefined &&
+            err.response.statusText &&
+            err.response.data.message !== undefined
+          ) {
+            return this.flash(
+              err.response.statusText,
+              err.response.data.message,
+              "error"
+            );
+          }
+
+          return this.flash("Erreur", err.message, "error");
+        }
       }
     },
     positiveNumberOnly($event: KeyboardEvent) {
@@ -310,6 +362,13 @@ export default {
       this.toggleLoading();
       this.updateColocation = false;
       this.registerAsRoommate = false;
+    },
+  },
+
+  props: {
+    logout: {
+      type: Function,
+      required: true,
     },
   },
 };

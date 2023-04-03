@@ -66,6 +66,16 @@
         :text="'Annuler'"
       />
     </div>
+
+    <div class="flex flex-row justify-center">
+      <LoadingButton
+        v-if="updateInfo === true"
+        class="bg-red-600 hover:bg-red-900 font-bold text-sm"
+        @click="deleteUser"
+        :is-loading="deleting"
+        :text="'Supprimer l\'utilisateur'"
+      />
+    </div>
   </div>
 </template>
 
@@ -74,6 +84,7 @@ import type { User } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
 import LoadingButton from "@/components/LoadingButton.vue";
 import type { AxiosResponse } from "axios";
+import { useDestroyStore } from "@/composables/useDestroyStore";
 
 type UserAttributes = {
   firstname: string;
@@ -91,8 +102,9 @@ export default {
 
   setup() {
     const colocationStore = useColocationStore();
+    const { destroyStore } = useDestroyStore();
 
-    return { colocationStore };
+    return { colocationStore, destroyStore };
   },
 
   computed: {
@@ -112,10 +124,44 @@ export default {
       },
       loading: false,
       updateInfo: false,
+      deleting: false,
     };
   },
 
   methods: {
+    async deleteUser() {
+      const response = window.confirm(
+        "Êtes-vous sûr de vouloir supprimer votre compte ?"
+      );
+
+      if (!response) {
+        return;
+      }
+
+      this.loading = true;
+
+      try {
+        const response = await this.userStore.deleteUser();
+
+        if (response.status === 204) {
+          this.flash("Succès", "L'utilisateur a bien été supprimé", "success");
+
+          this.destroyStore();
+
+          this.$router.push({ name: "home" });
+        }
+      } catch (error) {
+        const e = error as Error & { response: AxiosResponse | undefined };
+
+        if (e.response !== undefined) {
+          this.flash(e.response.statusText, e.response.data.message, "error");
+        } else {
+          this.flash("Une erreur est survenue", e.message, "error");
+        }
+      }
+
+      this.loading = false;
+    },
     async updateUser() {
       if (
         this.updatedUser.attributes.firstname === "" ||

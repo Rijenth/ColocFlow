@@ -6,7 +6,7 @@
   </div>
 
   <div class="flex flex-col md:flex-row">
-    <ColocationInfo />
+    <ColocationInfo :logout="logout" />
     <ColocationAccessKey />
   </div>
 
@@ -15,19 +15,11 @@
   </div>
 
   <LoadingButton
-    class="bg-red-600 hover:bg-red-900 font-bold"
-    @click="deleteColocation"
-    :is-loading="loading"
-    :text="'Supprimer la colocation'"
-    v-if="isOwner"
-  />
-
-  <LoadingButton
     class="bg-blue-800 hover:bg-blue-900 font-bold"
     @click="quitColocation"
     :is-loading="loading"
     :text="'Quitter la colocation'"
-    v-else
+    v-if="!isOwner"
   />
 </template>
 
@@ -41,7 +33,6 @@ import ColocationRoommates from "./UpdateColocation/ColocationRoommates.vue";
 import type { AxiosResponse } from "axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useColocationStore } from "@/stores/useColocationStore";
-import { useColocationChargeStore } from "@/stores/useColocationChargeStore";
 import { useRoommateStore } from "@/stores/useRoommateStore";
 
 export default {
@@ -57,7 +48,6 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const colocationStore = useColocationStore();
-    const colocationChargeStore = useColocationChargeStore();
     const { logout } = useLogout();
     const roommateStore = useRoommateStore();
     const { flash } = useSwal();
@@ -65,7 +55,6 @@ export default {
     return {
       authStore,
       colocationStore,
-      colocationChargeStore,
       logout,
       roommateStore,
       flash,
@@ -84,47 +73,6 @@ export default {
         this.loading = false;
       } else {
         this.loading = true;
-      }
-    },
-    async deleteColocation() {
-      const confirmDeletion = window.confirm(
-        "Voulez-vous vraiment supprimer la colocation ?"
-      );
-
-      if (confirmDeletion) {
-        this.toggleLoading();
-
-        try {
-          const response = await this.colocationStore.deleteColocation();
-
-          if (response.status === 204) {
-            this.flash(
-              "Colocation supprimée",
-              "La colocation a bien été supprimée",
-              "success"
-            );
-
-            this.logout();
-          }
-        } catch (error) {
-          const err = error as Error & { response: AxiosResponse | undefined };
-
-          this.toggleLoading();
-
-          if (
-            err.response !== undefined &&
-            err.response.statusText &&
-            err.response.data.message !== undefined
-          ) {
-            return this.flash(
-              err.response.statusText,
-              err.response.data.message,
-              "error"
-            );
-          }
-
-          return this.flash("Erreur", err.message, "error");
-        }
       }
     },
     async quitColocation() {
