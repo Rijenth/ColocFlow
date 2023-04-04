@@ -14,7 +14,7 @@ class UpdateChargeRentAmount
         if (isset($event->data['attributes']['monthly_rent']) && $event->colocation->charges()->exists()) {
             $colocation = $event->colocation;
 
-            $rentCharge = $colocation->charges()->firstWhere('key', 'rent');
+            $rentCharge = $colocation->charges()->firstWhere('name', 'Loyer');
 
             $updatedMonthlyRent = (float) $event->data['attributes']['monthly_rent'];
 

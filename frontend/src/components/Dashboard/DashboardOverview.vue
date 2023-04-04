@@ -7,15 +7,14 @@
   <div class="bg-gray-900 dashboard-overview-card">
     <h2 class="text-sm underline text-center font-bold mb-4">Etat des lieux</h2>
     <StateIndicator color="green">
-      <p class="text-sm">Règlement du loyer du mois de {{ TodayMonth }}</p>
+      <p class="text-sm">Taux d'avancement des tâches : 100%</p>
     </StateIndicator>
-    <StateIndicator color="green">
-      <p class="text-sm">Aucun message à lire</p>
+    <StateIndicator :color="chargeCompletionIndicator">
+      <p class="text-sm">
+        Taux d'attribution des charges :
+        {{ getColocationChargesPercentageOfCompletion }}%
+      </p>
     </StateIndicator>
-    <StateIndicator color="green">
-      <p class="text-sm">Taux d'attribution des charges : 100%</p>
-    </StateIndicator>
-    <!-- Changer l'etat si la colocation a un owner ou non -->
     <StateIndicator color="green">
       <p class="text-sm">Propriétaire : {{ colocation.getOwnerFirstName }}</p>
     </StateIndicator>
@@ -59,10 +58,10 @@
       </ul>
     </div>
 
-    <div class="bg-gray-900 dashboard-overview-card">
+    <!--     <div class="bg-gray-900 dashboard-overview-card">
       <h2 class="text-sm underline text-center font-bold mb-4">Messagerie</h2>
       <p>Envoyer des messages à quelqu'un en le selectionnant</p>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -83,6 +82,10 @@ export default {
       type: Object,
       required: true,
     },
+    colocationChargesStore: {
+      type: Object,
+      required: true,
+    },
     userCharges: {
       type: Array as () => Array<Charge>,
       required: true,
@@ -93,15 +96,30 @@ export default {
     },
   },
 
-  methods: {},
-
   computed: {
     colocation() {
       return this.colocationStore;
     },
-    TodayMonth() {
-      const today = new Date();
-      return today.toLocaleString("fr-FR", { month: "long" }).toUpperCase();
+    chargeCompletionIndicator() {
+      const totalAmount = this.colocationChargesStore.getTotalChargesAmount;
+      const totalAmountPaid =
+        this.colocationChargesStore.getTotalAmountAffected;
+
+      const percentage = Math.round((totalAmountPaid / totalAmount) * 100);
+
+      if (percentage < 50) {
+        return "red";
+      } else if (percentage < 100) {
+        return "yellow";
+      }
+      return "green";
+    },
+    getColocationChargesPercentageOfCompletion() {
+      const totalAmount = this.colocationChargesStore.getTotalChargesAmount;
+      const totalAmountPaid =
+        this.colocationChargesStore.getTotalAmountAffected;
+
+      return Math.round((totalAmountPaid / totalAmount) * 100);
     },
   },
 };

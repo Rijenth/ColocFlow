@@ -39,20 +39,15 @@
           -> cela doit être une liste scrollable
        -->
     </button>
-    <button
-      class="border-l text-white p-2 px-3 hover:bg-gray-700 hover:rounded-r"
-      @click="incidentReportCard"
-    >
-      Rapports
-    </button>
   </div>
 
   <div class="flex flex-col md:w-full md:h-full items-center">
     <DashboardOverview
       v-if="activeComponent === 'DashboardOverview'"
-      :userCharges="userCharges"
       :colocationStore="colocation"
+      :colocationChargesStore="chargeStore"
       :roommates="roommates"
+      :userCharges="userCharges"
     />
     <DashboardManagement
       v-else-if="activeComponent === 'DashboardManagement'"
@@ -104,14 +99,14 @@ export default {
     propositionCard() {
       console.log("propositionCard");
     },
-    incidentReportCard() {
-      console.log("incidentReportCard");
-    },
   },
 
   computed: {
     colocation() {
       return this.colocationStore;
+    },
+    chargeStore() {
+      return this.colocationChargeStore;
     },
     roommates() {
       return this.roommateStore.getRoommates;
