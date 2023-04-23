@@ -48,10 +48,13 @@ export default {
     LoadingButton,
   },
 
+  // Créer une fonctionnalité tel que : Si on cherche a effectuer une action sur un utilisateur, une charge ou une colocation et que l'on reçoit
+  // un 404 not found, on refecth les données de la colocation pour être sur que l'objet n'existe plus
+
   data() {
     return {
-      email: "" as string,
-      password: "" as string,
+      email: "admin@admin.fr" as string,
+      password: "admin" as string,
       loading: false as boolean,
     };
   },

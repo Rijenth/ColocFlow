@@ -12,11 +12,13 @@
     >
       Gestion
     </button>
-    <button
+<!--     <button
       class="border-l text-white p-2 px-3 hover:bg-gray-700"
       @click="propositionCard"
     >
       Tâches
+    </button> -->
+    
       <!-- 
         idée 1 :
         Composant qui permet de créer des taches et de les assigner à des personnes
@@ -38,7 +40,6 @@
           -> Quand qqn attribue ou retire une charge, cela doit être enregistré dans un historique consultable.
           -> cela doit être une liste scrollable
        -->
-    </button>
   </div>
 
   <div class="flex flex-col md:w-full md:h-full items-center">
