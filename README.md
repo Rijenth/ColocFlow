@@ -1,7 +1,8 @@
 # ColocFlow
-Reworked ColocApp using Vue 3 | Vite | Laravel 10 | PostgreSQL | Tailwind
+Vue 3 | Vite | Laravel 10 | PostgreSQL | Tailwind
+objectif : Prise en main du framework Vue3
 
-instructions :
+## Commandes
 
 git clone https://github.com/Rijenth/ColocFlow.git
 
